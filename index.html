@@ -1358,6 +1358,7 @@ method participates in the web payment ecosystem, and how it is to be consumed.<
      <a href="#introduction"><span class="secno">1</span> <span class="content">Introduction</span></a>
      <ol class="toc">
       <li><a href="#use-cases"><span class="secno">1.1</span> <span class="content">Use cases</span></a>
+      <li><a href="#accessing"><span class="secno">1.2</span> <span class="content">Accessing the manifest</span></a>
      </ol>
     <li><a href="#conformance"><span class="secno"></span> <span class="content"> Conformance</span></a>
     <li>
@@ -1369,6 +1370,7 @@ method participates in the web payment ecosystem, and how it is to be consumed.<
      <a href="#references"><span class="secno"></span> <span class="content">References</span></a>
      <ol class="toc">
       <li><a href="#normative"><span class="secno"></span> <span class="content">Normative References</span></a>
+      <li><a href="#informative"><span class="secno"></span> <span class="content">Informative References</span></a>
      </ol>
    </ol>
   </nav>
@@ -1392,8 +1394,8 @@ particular payment app (e.g., via a digital signature for that app).</p>
      <p>When the user has not yet installed a <a data-link-type="dfn" href="https://w3c.github.io/browser-payment-api/#dfn-payment-apps">payment app</a> for a <a data-link-type="dfn" href="https://w3c.github.io/browser-payment-api/#dfn-payment-method">payment method</a>, the user agent
 can provide an improved user experience for procuring a payment app.</p>
    </ul>
-   <p>This is accomplished via the requirement that every <a data-link-type="dfn" href="https://w3c.github.io/browser-payment-api/#dfn-payment-method">payment method</a> whose <a data-link-type="dfn" href="https://w3c.github.io/webpayments-method-identifiers/#">identifier</a> is a URL will, at that URL, provide a manifest file in JSON format
-containing two key pieces of information:</p>
+   <p>This is accomplished via the requirement that every <a data-link-type="dfn" href="https://w3c.github.io/browser-payment-api/#dfn-payment-method">payment method</a> whose <a data-link-type="dfn" href="https://w3c.github.io/webpayments-method-identifiers/#">identifier</a> is a URL will provide a manifest file in JSON format containing two
+key pieces of information:</p>
    <ul>
     <li data-md="">
      <p>any default <a data-link-type="dfn" href="https://w3c.github.io/browser-payment-api/#dfn-payment-apps">payment apps</a>, if any, that are associated with this <a data-link-type="dfn" href="https://w3c.github.io/browser-payment-api/#dfn-payment-method">payment method</a>,
@@ -1401,6 +1403,22 @@ referenced as <a data-link-type="dfn" href="https://url.spec.whatwg.org/#absolut
     <li data-md="">
      <p>any other <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/browsers.html#concept-origin">origins</a>, if any, that are permitted to return back payment credentials for this <a data-link-type="dfn" href="https://w3c.github.io/browser-payment-api/#dfn-payment-method">payment method</a>.</p>
    </ul>
+   <h3 class="heading settled" data-level="1.2" id="accessing"><span class="secno">1.2. </span><span class="content">Accessing the manifest</span><a class="self-link" href="#accessing"></a></h3>
+   <p>The resource identified by the <a data-link-type="dfn" href="https://w3c.github.io/webpayments-method-identifiers/#">payment method identifier</a> URL does not directly contain the
+machine-readable manifest. It is often a generic URL (such as "<code>https://alicepay.com/</code>")
+which is more suitable for containing, e.g., a splash page. Instead, a HTTP Link header is used
+to direct user agents seeking out the machine-readable manifest to another location. <a data-link-type="biblio" href="#biblio-rfc5988">[RFC5988]</a></p>
+   <div class="example" id="example-http-link">
+    <a class="self-link" href="#example-http-link"></a> A user agent might issue a request to the <a data-link-type="dfn" href="https://w3c.github.io/webpayments-method-identifiers/#">payment method identifier</a> URL as follows: 
+<pre>HEAD / HTTP/2
+Host: alicepay.com
+User-Agent: Mellblomenator/9000
+</pre>
+    <p>The server would then respond:</p>
+<pre>HTTP/2 204
+Link: &lt;/pay/payment-manifest.json>; rel="payment-method-manifest"
+</pre>
+   </div>
   </main>
   <div data-fill-with="conformance">
    <h2 class="no-ref no-num heading settled" id="conformance"><span class="content"> Conformance</span><a class="self-link" href="#conformance"></a></h2>
@@ -1566,6 +1584,7 @@ referenced as <a data-link-type="dfn" href="https://url.spec.whatwg.org/#absolut
     <a data-link-type="biblio">[payment-method-id]</a> defines the following terms:
     <ul>
      <li><a href="https://w3c.github.io/webpayments-method-identifiers/#">identifier</a>
+     <li><a href="https://w3c.github.io/webpayments-method-identifiers/#">payment method identifier</a>
     </ul>
    <li>
     <a data-link-type="biblio">[payment-request]</a> defines the following terms:
@@ -1594,4 +1613,9 @@ referenced as <a data-link-type="dfn" href="https://url.spec.whatwg.org/#absolut
    <dd>S. Bradner. <a href="https://tools.ietf.org/html/rfc2119">Key words for use in RFCs to Indicate Requirement Levels</a>. March 1997. Best Current Practice. URL: <a href="https://tools.ietf.org/html/rfc2119">https://tools.ietf.org/html/rfc2119</a>
    <dt id="biblio-url">[URL]
    <dd>Anne van Kesteren. <a href="https://url.spec.whatwg.org/">URL Standard</a>. Living Standard. URL: <a href="https://url.spec.whatwg.org/">https://url.spec.whatwg.org/</a>
+  </dl>
+  <h3 class="no-num no-ref heading settled" id="informative"><span class="content">Informative References</span><a class="self-link" href="#informative"></a></h3>
+  <dl>
+   <dt id="biblio-rfc5988">[RFC5988]
+   <dd>M. Nottingham. <a href="https://tools.ietf.org/html/rfc5988">Web Linking</a>. October 2010. Proposed Standard. URL: <a href="https://tools.ietf.org/html/rfc5988">https://tools.ietf.org/html/rfc5988</a>
   </dl>

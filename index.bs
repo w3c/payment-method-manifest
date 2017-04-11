@@ -23,6 +23,7 @@ urlPrefix: https://www.w3.org/TR/appmanifest/; spec: APPMANIFEST; type: dfn
     text: URL; for: web app manifest; url: #dfn-manifest-url
 url: https://w3c.github.io/webpayments-method-identifiers/#; spec: PAYMENT-METHOD-ID; type: dfn
     text: identifier; for: payment method
+    text: payment method identifier
 </pre>
 
 <!-- TODO: move all this to appropriate working group files in the Bikeshed repo if/when we become
@@ -62,11 +63,35 @@ This specification intends to address the following use cases:
     can provide an improved user experience for procuring a payment app.
 
 This is accomplished via the requirement that every [=payment method=] whose
-[=payment method/identifier=] is a URL will, at that URL, provide a manifest file in JSON format
-containing two key pieces of information:
+[=payment method/identifier=] is a URL will provide a manifest file in JSON format containing two
+key pieces of information:
 
 *   any default [=payment apps=], if any, that are associated with this [=payment method=],
     referenced as [=absolute-URL strings=] giving the [=web app manifest/URL=] of their
     [=web app manifests=]; and
 *   any other [=origins=], if any, that are permitted to return back payment credentials for this
     [=payment method=].
+
+<h3 id="accessing">Accessing the manifest</h3>
+
+The resource identified by the [=payment method identifier=] URL does not directly contain the
+machine-readable manifest. It is often a generic URL (such as "<code>https://alicepay.com/</code>")
+which is more suitable for containing, e.g., a splash page. Instead, a HTTP Link header is used
+to direct user agents seeking out the machine-readable manifest to another location. [[RFC5988]]
+
+<div class="example" id="example-http-link">
+    A user agent might issue a request to the [=payment method identifier=] URL as follows:
+
+    <pre>
+        HEAD / HTTP/2
+        Host: alicepay.com
+        User-Agent: Mellblomenator/9000
+    </pre>
+
+    The server would then respond:
+
+    <pre>
+        HTTP/2 204
+        Link: &lt;/pay/payment-manifest.json>; rel="payment-method-manifest"
+    </pre>
+</div>
