@@ -14,6 +14,12 @@ Complain About: accidental-2119 true, missing-example-ids true
 Assume Explicit For: true
 </pre>
 
+<pre class="anchors">
+urlPrefix: https://w3c.github.io/browser-payment-api/; spec: PAYMENT-REQUEST; type: dfn
+    text: payment method; url: #dfn-payment-method
+    text: payment app; url: #dfn-payment-apps
+</pre>
+
 <!-- TODO: move all this to appropriate working group files in the Bikeshed repo if/when we become
      official. -->
 <div boilerplate="copyright">
@@ -30,3 +36,20 @@ standing of any kind and does not represent the support or consensus of any stan
 <div data-fill-with="status"></div>
 
 <!-- END TODO -->
+
+<h2 id="introduction">Introduction</h2>
+
+<h3 id="use-cases">Use cases</h3>
+
+This specification intends to address the following use cases:
+
+*   The owner of a [=payment method=] wishes to authorize only certain parties to distribute
+    [=payment apps=] that are capable of implementing the payment method. In this use case, the
+    browser helps to ensure that for that payment method, the user can only invoke payment apps from
+    parties authorized by the owner of the payment method.
+
+*   In addition, the owner of a [=payment method=] wishes to confirm the authenticity of a
+    particular payment app (e.g., via a digital signature for that app).
+
+*   When the user has not yet installed a [=payment app=] for a [=payment method=], the user agent
+    can provide an improved user experience for procuring a payment app.

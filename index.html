@@ -1354,7 +1354,17 @@ method participates in the web payment ecosystem, and how it is to be consumed.<
   <nav data-fill-with="table-of-contents" id="toc">
    <h2 class="no-num no-toc no-ref" id="contents">Table of Contents</h2>
    <ol class="toc" role="directory">
+    <li>
+     <a href="#introduction"><span class="secno">1</span> <span class="content">Introduction</span></a>
+     <ol class="toc">
+      <li><a href="#use-cases"><span class="secno">1.1</span> <span class="content">Use cases</span></a>
+     </ol>
     <li><a href="#conformance"><span class="secno"></span> <span class="content"> Conformance</span></a>
+    <li>
+     <a href="#index"><span class="secno"></span> <span class="content">Index</span></a>
+     <ol class="toc">
+      <li><a href="#index-defined-elsewhere"><span class="secno"></span> <span class="content">Terms defined by reference</span></a>
+     </ol>
     <li>
      <a href="#references"><span class="secno"></span> <span class="content">References</span></a>
      <ol class="toc">
@@ -1366,9 +1376,24 @@ method participates in the web payment ecosystem, and how it is to be consumed.<
    <h2 class="no-num no-toc no-ref heading settled" id="status"><span class="content">Status of this document</span></h2>
    <div data-fill-with="status"> This document is merely a public working draft of a potential specification. It has no official
 standing of any kind and does not represent the support or consensus of any standards organisation. </div>
+   <h2 class="heading settled" data-level="1" id="introduction"><span class="secno">1. </span><span class="content">Introduction</span><a class="self-link" href="#introduction"></a></h2>
+   <h3 class="heading settled" data-level="1.1" id="use-cases"><span class="secno">1.1. </span><span class="content">Use cases</span><a class="self-link" href="#use-cases"></a></h3>
+   <p>This specification intends to address the following use cases:</p>
+   <ul>
+    <li data-md="">
+     <p>The owner of a <a data-link-type="dfn" href="https://w3c.github.io/browser-payment-api/#dfn-payment-method">payment method</a> wishes to authorize only certain parties to distribute <a data-link-type="dfn" href="https://w3c.github.io/browser-payment-api/#dfn-payment-apps">payment apps</a> that are capable of implementing the payment method. In this use case, the
+browser helps to ensure that for that payment method, the user can only invoke payment apps from
+parties authorized by the owner of the payment method.</p>
+    <li data-md="">
+     <p>In addition, the owner of a <a data-link-type="dfn" href="https://w3c.github.io/browser-payment-api/#dfn-payment-method">payment method</a> wishes to confirm the authenticity of a
+particular payment app (e.g., via a digital signature for that app).</p>
+    <li data-md="">
+     <p>When the user has not yet installed a <a data-link-type="dfn" href="https://w3c.github.io/browser-payment-api/#dfn-payment-apps">payment app</a> for a <a data-link-type="dfn" href="https://w3c.github.io/browser-payment-api/#dfn-payment-method">payment method</a>, the user agent
+can provide an improved user experience for procuring a payment app.</p>
+   </ul>
   </main>
   <div data-fill-with="conformance">
-   <h2 class="no-ref no-num heading settled" id="conformance"><span class="content"> Conformance</span></h2>
+   <h2 class="no-ref no-num heading settled" id="conformance"><span class="content"> Conformance</span><a class="self-link" href="#conformance"></a></h2>
    <p> Conformance requirements are expressed with a combination of descriptive assertions and RFC 2119 terminology.
             The key words “MUST”, “MUST NOT”, “REQUIRED”, “SHALL”, “SHALL NOT”, “SHOULD”, “SHOULD NOT”, “RECOMMENDED”, “MAY”, and “OPTIONAL”
             in the normative parts of this document
@@ -1513,9 +1538,21 @@ standing of any kind and does not represent the support or consensus of any stan
 
 })();
 </script>
-  <h2 class="no-num no-ref heading settled" id="references"><span class="content">References</span></h2>
-  <h3 class="no-num no-ref heading settled" id="normative"><span class="content">Normative References</span></h3>
+  <h2 class="no-num no-ref heading settled" id="index"><span class="content">Index</span><a class="self-link" href="#index"></a></h2>
+  <h3 class="no-num no-ref heading settled" id="index-defined-elsewhere"><span class="content">Terms defined by reference</span><a class="self-link" href="#index-defined-elsewhere"></a></h3>
+  <ul class="index">
+   <li>
+    <a data-link-type="biblio">[payment-request]</a> defines the following terms:
+    <ul>
+     <li><a href="https://w3c.github.io/browser-payment-api/#dfn-payment-apps">payment app</a>
+     <li><a href="https://w3c.github.io/browser-payment-api/#dfn-payment-method">payment method</a>
+    </ul>
+  </ul>
+  <h2 class="no-num no-ref heading settled" id="references"><span class="content">References</span><a class="self-link" href="#references"></a></h2>
+  <h3 class="no-num no-ref heading settled" id="normative"><span class="content">Normative References</span><a class="self-link" href="#normative"></a></h3>
   <dl>
+   <dt id="biblio-payment-request">[PAYMENT-REQUEST]
+   <dd>Adrian Bateman; et al. <a href="https://www.w3.org/TR/payment-request/">Payment Request API</a>. URL: <a href="https://www.w3.org/TR/payment-request/">https://www.w3.org/TR/payment-request/</a>
    <dt id="biblio-rfc2119">[RFC2119]
    <dd>S. Bradner. <a href="https://tools.ietf.org/html/rfc2119">Key words for use in RFCs to Indicate Requirement Levels</a>. March 1997. Best Current Practice. URL: <a href="https://tools.ietf.org/html/rfc2119">https://tools.ietf.org/html/rfc2119</a>
   </dl>
