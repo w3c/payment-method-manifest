@@ -1,0 +1,32 @@
+<pre class="metadata">
+Title: Payment Method Manifest
+Group: W3C
+Shortname: payment-method-manifest
+Repository: domenic/payment-method-manifest
+Status: LD
+Editor: Domenic Denicola, w3cid 52873, Google https://www.google.com/, d@domenic.me, https://domenic.me/
+Editor: Zach Koch, w3cid 76588, Google https://www.google.com/
+Editor: Dapeng Liu, Alibaba
+Abstract: This specification defines the machine-readable manifest file describing how a payment
+Abstract: method participates in the web payment ecosystem, and how it is to be consumed.
+Default Ref Status: current
+Complain About: accidental-2119 true, missing-example-ids true
+Assume Explicit For: true
+</pre>
+
+<!-- TODO: move all this to appropriate working group files in the Bikeshed repo if/when we become
+     official. -->
+<div boilerplate="copyright">
+This document is licensed under a <a href="https://creativecommons.org/licenses/by/3.0/">Creative
+Commons Attribution 3.0 License</a>.
+</div>
+
+<div boilerplate="status">
+This document is merely a public working draft of a potential specification. It has no official
+standing of any kind and does not represent the support or consensus of any standards organisation.
+</div>
+
+<h2 class="no-num no-toc no-ref" id="status">Status of this document</h2>
+<div data-fill-with="status"></div>
+
+<!-- END TODO -->
