@@ -4,9 +4,9 @@ Group: W3C
 Shortname: payment-method-manifest
 Repository: domenic/payment-method-manifest
 Status: LD
+Editor: Dapeng Liu, Alibaba
 Editor: Domenic Denicola, w3cid 52873, Google https://www.google.com/, d@domenic.me, https://domenic.me/
 Editor: Zach Koch, w3cid 76588, Google https://www.google.com/
-Editor: Dapeng Liu, Alibaba
 Abstract: This specification defines the machine-readable manifest file describing how a payment
 Abstract: method participates in the web payment ecosystem, and how it is to be consumed.
 Default Ref Status: current
