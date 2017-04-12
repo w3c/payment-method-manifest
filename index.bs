@@ -44,6 +44,8 @@ standing of any kind and does not represent the support or consensus of any stan
 
 <!-- END TODO -->
 
+<div class="non-normative">
+
 <h2 id="introduction">Introduction</h2>
 
 <em>This section and its sub-sections are non-normative.</em>
@@ -119,13 +121,15 @@ can get one by consulting the [=web app manifest=] at
 
 It also indicates that, apart from this default payment app, AlicePay also allows [=payment apps=]
 hosted at the two indicated [=origins=] to be used for AlicePay. This means that if the user agent
-ever encounters payment apps hosted at those origins claiming support for AlicePay, it should indeed
-allow them to act as payment apps for the AlicePay [=payment method=].
+ever encounters payment apps hosted at those origins claiming support for AlicePay, it can allow
+them to act as payment apps for the AlicePay [=payment method=].
 
 The manifest file could also omit the "<code>supported_origins</code>" key, if no third-party
 [=payment apps=] are supported for the [=payment method=] in question, or it could use the value
 "<code>*</code>" instead of an array of [=origins=], to indicate that any third party is allowed to
 support the payment method.
+
+</div>
 
 <h2 id="processing-model">Processing model</h2>
 
@@ -180,3 +184,7 @@ manifests.
 1. Once all ongoing [=fetch=] algorithms initiated by the above steps are complete, including the
    specified [=process response=] and [=process response end-of-body=] steps, asynchronously
    complete this algorithm with |manifests|.
+
+<h2 id="acknowledgments" class="no-num">Acknowledgments</h2>
+
+[[#processing-model]] is based heavily on algorithms originally outlined by Rouslan Solomakhin.
