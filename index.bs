@@ -158,13 +158,16 @@ manifests.
     1. Let |linkHeaders| be the result of
        [=extract header list values|extracting header list values=] given `<code>Link</code>` and
        |identifierResponse|'s [=response/header list=].
+    1. Let |manifestURLString| be null.
     1. [=list/For each=] |linkHeader| of |linkHeaders|:
       1. Parse |linkHeader| according to the <code>link-value</code> production. If it cannot be
          parsed, [=iteration/continue=]. [[!RFC5988]]
       1. If the parsed header contains a parameter whose name is an [=ASCII case-insensitive=] match
          for the string "<code>rel</code>" and whose value is an [=ASCII case-insensitive=] match
-         for the string "<code>payment-method-manifest</code>", let |manifestURLString| be the
-         string given by the <code>URI-Reference</code> production in the parsed header.
+         for the string "<code>payment-method-manifest</code>", then set |manifestURLString| to the
+         string given by the <code>URI-Reference</code> production in the parsed header, and
+         [=iteration/break=].
+    1. If |manifestURLString| is not null, then:
       1. Let |manifestURL| be the result of [=basic URL parser|basic URL parsing=]
          |manifestURLString| with base URL given by |identifierResponse|'s [=response/url=]. If the
          result is failure, [=iteration/continue=].

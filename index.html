@@ -1540,6 +1540,8 @@ manifests.</p>
         <li data-md="">
          <p>Let <var>linkHeaders</var> be the result of <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#extract-header-list-values">extracting header list values</a> given `<code>Link</code>` and <var>identifierResponse</var>’s <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#concept-response-header-list">header list</a>.</p>
         <li data-md="">
+         <p>Let <var>manifestURLString</var> be null.</p>
+        <li data-md="">
          <p><a data-link-type="dfn" href="https://infra.spec.whatwg.org/#list-iterate">For each</a> <var>linkHeader</var> of <var>linkHeaders</var>:</p>
          <ol>
           <li data-md="">
@@ -1548,8 +1550,12 @@ manifests.</p>
           <li data-md="">
            <p>If the parsed header contains a parameter whose name is an <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#ascii-case-insensitive">ASCII case-insensitive</a> match
  for the string "<code>rel</code>" and whose value is an <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#ascii-case-insensitive">ASCII case-insensitive</a> match
- for the string "<code>payment-method-manifest</code>", let <var>manifestURLString</var> be the
- string given by the <code>URI-Reference</code> production in the parsed header.</p>
+ for the string "<code>payment-method-manifest</code>", then set <var>manifestURLString</var> to the
+ string given by the <code>URI-Reference</code> production in the parsed header, and <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#iteration-break">break</a>.</p>
+         </ol>
+        <li data-md="">
+         <p>If <var>manifestURLString</var> is not null, then:</p>
+         <ol>
           <li data-md="">
            <p>Let <var>manifestURL</var> be the result of <a data-link-type="dfn" href="https://url.spec.whatwg.org/#concept-basic-url-parser">basic URL parsing</a> <var>manifestURLString</var> with base URL given by <var>identifierResponse</var>’s <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#concept-response-url">url</a>. If the
  result is failure, <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#iteration-continue">continue</a>.</p>
@@ -1775,6 +1781,7 @@ manifests.</p>
     <ul>
      <li><a href="https://infra.spec.whatwg.org/#list-append">append</a>
      <li><a href="https://infra.spec.whatwg.org/#ascii-case-insensitive">ascii case-insensitive</a>
+     <li><a href="https://infra.spec.whatwg.org/#iteration-break">break</a>
      <li><a href="https://infra.spec.whatwg.org/#byte-sequence">byte sequence</a>
      <li><a href="https://infra.spec.whatwg.org/#iteration-continue">continue</a>
      <li><a href="https://infra.spec.whatwg.org/#list-iterate">for each</a>
