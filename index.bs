@@ -79,19 +79,48 @@ machine-readable manifest. It is often a generic URL (such as "<code>https://ali
 which is more suitable for containing, e.g., a splash page. Instead, a HTTP Link header is used
 to direct user agents seeking out the machine-readable manifest to another location. [[RFC5988]]
 
-<div class="example" id="example-http-link">
-    A user agent might issue a request to the [=payment method identifier=] URL as follows:
+For an example [=payment method=] AlicePay, with [=payment method identifier=]
+"<code>https://alicepay.com/</code>", a user agent might issue a request to that
+[=payment method identifier=] URL as follows:
 
-    <pre>
-        HEAD / HTTP/2
-        Host: alicepay.com
-        User-Agent: Mellblomenator/9000
-    </pre>
+<pre>
+    HEAD / HTTP/2
+    Host: alicepay.com
+    User-Agent: Mellblomenator/9000
+</pre>
 
-    The server would then respond:
+The server would then respond:
 
-    <pre>
-        HTTP/2 204
-        Link: &lt;/pay/payment-manifest.json>; rel="payment-method-manifest"
-    </pre>
-</div>
+<pre>
+    HTTP/2 204
+    Link: &lt;/pay/payment-manifest.json>; rel="payment-method-manifest"
+</pre>
+
+<h3 id="manifest-example">Example manifest file</h3>
+
+Continuing our example from [[#accessing]], the AlicePay [=payment method=] could provide the
+following manifest file at <code>https://alicepay.com/pay/payment-manifest.json</code>:
+
+<pre highlight="json">
+{
+  "default_applications": ["https://alicepay.com/pay/app/webappmanifest.json"],
+  "supported_origins": [
+    "https://bobpay.xyz",
+    "https://alicepay.friendsofalice.example"
+  ]
+}
+</pre>
+
+This indicates that, if the user agent does not have a [=payment app=] for AlicePay installed, it
+can get one by consulting the [=web app manifest=] at
+"<code>https://alicepay.com/pay/app/webappmanifest.json</code>".
+
+It also indicates that, apart from this default payment app, AlicePay also allows [=payment apps=]
+hosted at the two indicated [=origins=] to be used for AlicePay. This means that if the user agent
+ever encounters payment apps hosted at those origins claiming support for AlicePay, it should indeed
+allow them to act as payment apps for the AlicePay [=payment method=].
+
+The manifest file could also omit the "<code>supported_origins</code>" key, if no third-party
+[=payment apps=] are supported for the [=payment method=] in question, or it could use the value
+"<code>*</code>" instead of an array of [=origins=], to indicate that any third party is allowed to
+support the payment method.
