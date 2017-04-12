@@ -1459,8 +1459,9 @@ method participates in the web payment ecosystem, and how it is to be consumed.<
     <li>
      <a href="#processing-model"><span class="secno">2</span> <span class="content">Processing model</span></a>
      <ol class="toc">
-      <li><a href="#fetch"><span class="secno">2.1</span> <span class="content">Fetching payment method manifests</span></a>
+      <li><a href="#fetch-pmm"><span class="secno">2.1</span> <span class="content">Fetching payment method manifests</span></a>
       <li><a href="#validate-and-parse"><span class="secno">2.2</span> <span class="content">Validating and parsing payment method manifests</span></a>
+      <li><a href="#fetch-wam"><span class="secno">2.3</span> <span class="content">Fetching web app manifests</span></a>
      </ol>
     <li><a href="#acknowledgments"><span class="secno"></span> <span class="content">Acknowledgments</span></a>
     <li><a href="#conformance"><span class="secno"></span> <span class="content"> Conformance</span></a>
@@ -1544,7 +1545,7 @@ them to act as payment apps for the AlicePay <a data-link-type="dfn" href="https
 support the payment method.</p>
    </div>
    <h2 class="heading settled" data-level="2" id="processing-model"><span class="secno">2. </span><span class="content">Processing model</span><a class="self-link" href="#processing-model"></a></h2>
-   <h3 class="heading settled" data-level="2.1" id="fetch"><span class="secno">2.1. </span><span class="content">Fetching payment method manifests</span><a class="self-link" href="#fetch"></a></h3>
+   <h3 class="heading settled" data-level="2.1" id="fetch-pmm"><span class="secno">2.1. </span><span class="content">Fetching payment method manifests</span><a class="self-link" href="#fetch-pmm"></a></h3>
    <p>To <dfn data-dfn-type="dfn" data-export="" id="fetch-payment-method-manifests">fetch payment method manifests<a class="self-link" href="#fetch-payment-method-manifests"></a></dfn>, given a <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#list">list</a> of <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#javascript-string">JavaScript strings</a> <var>supportedMethods</var>, perform the following steps. This algorithm will asynchronously complete with
 a <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#list">list</a> (possibly empty) of <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#byte-sequence">byte sequences</a> containing the contents of any discovered
 manifests.</p>
@@ -1605,6 +1606,8 @@ manifests.</p>
           <li data-md="">
            <p><a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#concept-fetch">Fetch</a> <var>manifestRequest</var>. To <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#process-response-end-of-body">process response end-of-body</a> with the <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#concept-response">response</a> <var>manifestResponse</var>:</p>
            <ol>
+            <li data-md="">
+             <p>If <var>manifestResponse</var> is a <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#concept-network-error">network error</a> or <var>manifestResponse</var>’s <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#concept-response-status">status</a> is not an <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#ok-status">ok status</a>, <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#iteration-continue">continue</a>.</p>
             <li data-md="">
              <p>Let <var>body</var> be <var>manifestResponse</var>’s <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#concept-response-body">body</a>.</p>
             <li data-md="">
@@ -1716,6 +1719,38 @@ steps. The result will either be a <a data-link-type="dfn" href="#parsed-payment
 <span class="p">}</span>
 </pre>
    </div>
+   <h3 class="heading settled" data-level="2.3" id="fetch-wam"><span class="secno">2.3. </span><span class="content">Fetching web app manifests</span><a class="self-link" href="#fetch-wam"></a></h3>
+   <p>Because the determination of <a data-link-type="dfn" href="https://w3c.github.io/browser-payment-api/#dfn-payment-apps">payment apps</a> happens independent of any embedding HTML document,
+the procedure for obtaining a <a data-link-type="dfn" href="https://www.w3.org/TR/appmanifest/#dfn-manifest">web app manifest</a> that gives information about a default payment
+app is different from the usual <a data-link-type="dfn" href="https://www.w3.org/TR/appmanifest/#dfn-steps-for-obtaining-a-manifest">steps for obtaining a web app manifest</a>.</p>
+   <p>To <dfn data-dfn-type="dfn" data-export="" id="fetch-a-web-app-manifest-for-a-default-payment-app">fetch a web app manifest for a default payment app<a class="self-link" href="#fetch-a-web-app-manifest-for-a-default-payment-app"></a></dfn>, given a <a data-link-type="dfn" href="https://url.spec.whatwg.org/#concept-url">URL</a> <var>url</var>,
+perform the following steps. This algorithm will asynchronously complete with either a <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#scalar-value-string">scalar value string</a> or failure.</p>
+   <ol>
+    <li data-md="">
+     <p>Let <var>request</var> be a new <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#concept-request">request</a> whose <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#concept-request-url">url</a> is <var>url</var>, <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#concept-request-client">client</a> is null, <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#concept-request-credentials-mode">credentials mode</a> is "<code>omit</code>", and <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#concept-request-redirect-mode">redirect mode</a> is
+ "<code>error</code>".</p>
+    <li data-md="">
+     <p><a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#concept-fetch">Fetch</a> <var>request</var>. To <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#process-response-end-of-body">process response end-of-body</a> with the <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#concept-response">response</a> <var>response</var>:</p>
+     <ol>
+      <li data-md="">
+       <p>If <var>response</var> is a <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#concept-network-error">network error</a> or <var>response</var>’s <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#concept-response-status">status</a> is not an <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#ok-status">ok status</a>, asynchronously complete this algorithm with failure.</p>
+     </ol>
+     <ol>
+      <li data-md="">
+       <p>Let <var>body</var> be <var>response</var>’s <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#concept-response-body">body</a>.</p>
+      <li data-md="">
+       <p>If <var>body</var> is null, asynchronously complete this algorithm with failure.</p>
+      <li data-md="">
+       <p>Let <var>reader</var> be the result of <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#concept-get-reader">getting a reader</a> from <var>body</var>.</p>
+      <li data-md="">
+       <p>Let <var>promise</var> be the result of <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#concept-read-all-bytes-from-readablestream">reading all bytes</a> from <var>body</var> with <var>reader</var>.</p>
+      <li data-md="">
+       <p><a data-link-type="dfn" href="https://www.w3.org/2001/tag/doc/promises-guide/#upon-fulfillment">Upon fulfillment</a> of <var>promise</var> with a <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#byte-sequence">byte sequence</a> <var>bytes</var>, asynchronously complete
+  this algorithm with the resutl of <a data-link-type="dfn" href="https://encoding.spec.whatwg.org/#utf-8-decode">UTF-8 decoding</a> <var>bytes</var>.</p>
+      <li data-md="">
+       <p><a data-link-type="dfn" href="https://www.w3.org/2001/tag/doc/promises-guide/#upon-rejection">Upon rejection</a> of <var>promise</var>, asynchronously complete this algorithm with failure.</p>
+     </ol>
+   </ol>
    <h2 class="no-num heading settled" id="acknowledgments"><span class="content">Acknowledgments</span><a class="self-link" href="#acknowledgments"></a></h2>
    <p><a href="#processing-model">§2 Processing model</a> is based heavily on algorithms originally outlined by Rouslan Solomakhin.</p>
   </main>
@@ -1869,6 +1904,7 @@ steps. The result will either be a <a data-link-type="dfn" href="#parsed-payment
   <h3 class="no-num no-ref heading settled" id="index-defined-here"><span class="content">Terms defined by this specification</span><a class="self-link" href="#index-defined-here"></a></h3>
   <ul class="index">
    <li><a href="#parsed-payment-method-manifest-default-applications">default applications</a><span>, in §2.2</span>
+   <li><a href="#fetch-a-web-app-manifest-for-a-default-payment-app">fetch a web app manifest for a default payment app</a><span>, in §2.3</span>
    <li><a href="#fetch-payment-method-manifests">fetch payment method manifests</a><span>, in §2.1</span>
    <li><a href="#parsed-payment-method-manifest">parsed payment method manifest</a><span>, in §2.2</span>
    <li><a href="#parsed-payment-method-manifest-supported-origins">supported origins</a><span>, in §2.2</span>
@@ -1879,6 +1915,7 @@ steps. The result will either be a <a data-link-type="dfn" href="#parsed-payment
    <li>
     <a data-link-type="biblio">[appmanifest]</a> defines the following terms:
     <ul>
+     <li><a href="https://www.w3.org/TR/appmanifest/#dfn-steps-for-obtaining-a-manifest">steps for obtaining a web app manifest</a>
      <li><a href="https://www.w3.org/TR/appmanifest/#dfn-manifest-url">url</a>
      <li><a href="https://www.w3.org/TR/appmanifest/#dfn-manifest">web app manifest</a>
     </ul>
@@ -1939,6 +1976,7 @@ steps. The result will either be a <a data-link-type="dfn" href="#parsed-payment
      <li><a href="https://infra.spec.whatwg.org/#javascript-string">javascript string</a>
      <li><a href="https://infra.spec.whatwg.org/#list">list</a>
      <li><a href="https://infra.spec.whatwg.org/#ordered-set">ordered set</a>
+     <li><a href="https://infra.spec.whatwg.org/#scalar-value-string">scalar value string</a>
      <li><a href="https://infra.spec.whatwg.org/#list-size">size</a>
      <li><a href="https://infra.spec.whatwg.org/#struct">struct</a>
     </ul>
@@ -1958,6 +1996,7 @@ steps. The result will either be a <a data-link-type="dfn" href="#parsed-payment
     <a data-link-type="biblio">[promises-guide]</a> defines the following terms:
     <ul>
      <li><a href="https://www.w3.org/2001/tag/doc/promises-guide/#upon-fulfillment">upon fulfillment</a>
+     <li><a href="https://www.w3.org/2001/tag/doc/promises-guide/#upon-rejection">upon rejection</a>
     </ul>
    <li>
     <a data-link-type="biblio">[URL]</a> defines the following terms:
@@ -1977,6 +2016,8 @@ steps. The result will either be a <a data-link-type="dfn" href="#parsed-payment
   <h2 class="no-num no-ref heading settled" id="references"><span class="content">References</span><a class="self-link" href="#references"></a></h2>
   <h3 class="no-num no-ref heading settled" id="normative"><span class="content">Normative References</span><a class="self-link" href="#normative"></a></h3>
   <dl>
+   <dt id="biblio-appmanifest">[APPMANIFEST]
+   <dd>Marcos Caceres; et al. <a href="https://www.w3.org/TR/appmanifest/">Web App Manifest</a>. URL: <a href="https://www.w3.org/TR/appmanifest/">https://www.w3.org/TR/appmanifest/</a>
    <dt id="biblio-ecmascript">[ECMASCRIPT]
    <dd><a href="https://tc39.github.io/ecma262/">ECMAScript Language Specification</a>. URL: <a href="https://tc39.github.io/ecma262/">https://tc39.github.io/ecma262/</a>
    <dt id="biblio-encoding">[ENCODING]
@@ -1987,6 +2028,8 @@ steps. The result will either be a <a data-link-type="dfn" href="#parsed-payment
    <dd>Anne van Kesteren; et al. <a href="https://html.spec.whatwg.org/multipage/">HTML Standard</a>. Living Standard. URL: <a href="https://html.spec.whatwg.org/multipage/">https://html.spec.whatwg.org/multipage/</a>
    <dt id="biblio-infra">[INFRA]
    <dd>Anne van Kesteren; Domenic Denicola. <a href="https://infra.spec.whatwg.org/">Infra Standard</a>. Living Standard. URL: <a href="https://infra.spec.whatwg.org/">https://infra.spec.whatwg.org/</a>
+   <dt id="biblio-payment-request">[PAYMENT-REQUEST]
+   <dd>Adrian Bateman; et al. <a href="https://www.w3.org/TR/payment-request/">Payment Request API</a>. URL: <a href="https://www.w3.org/TR/payment-request/">https://www.w3.org/TR/payment-request/</a>
    <dt id="biblio-promises-guide">[PROMISES-GUIDE]
    <dd>Domenic Denicola. <a href="https://www.w3.org/2001/tag/doc/promises-guide">Writing Promise-Using Specifications</a>. 16 February 2016. Finding of the W3C TAG. URL: <a href="https://www.w3.org/2001/tag/doc/promises-guide">https://www.w3.org/2001/tag/doc/promises-guide</a>
    <dt id="biblio-rfc2119">[RFC2119]
@@ -1998,12 +2041,8 @@ steps. The result will either be a <a data-link-type="dfn" href="#parsed-payment
   </dl>
   <h3 class="no-num no-ref heading settled" id="informative"><span class="content">Informative References</span><a class="self-link" href="#informative"></a></h3>
   <dl>
-   <dt id="biblio-appmanifest">[APPMANIFEST]
-   <dd>Marcos Caceres; et al. <a href="https://www.w3.org/TR/appmanifest/">Web App Manifest</a>. URL: <a href="https://www.w3.org/TR/appmanifest/">https://www.w3.org/TR/appmanifest/</a>
    <dt id="biblio-payment-method-id">[PAYMENT-METHOD-ID]
    <dd>Adrian Bateman; Zach Koch; Roy McElmurry. <a href="https://www.w3.org/TR/payment-method-id/">Payment Method Identifiers</a>. URL: <a href="https://www.w3.org/TR/payment-method-id/">https://www.w3.org/TR/payment-method-id/</a>
-   <dt id="biblio-payment-request">[PAYMENT-REQUEST]
-   <dd>Adrian Bateman; et al. <a href="https://www.w3.org/TR/payment-request/">Payment Request API</a>. URL: <a href="https://www.w3.org/TR/payment-request/">https://www.w3.org/TR/payment-request/</a>
   </dl>
   <aside class="dfn-panel" data-for="parsed-payment-method-manifest">
    <b><a href="#parsed-payment-method-manifest">#parsed-payment-method-manifest</a></b><b>Referenced in:</b>
