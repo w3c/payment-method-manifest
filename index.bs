@@ -16,13 +16,17 @@ Indent: 2
 </pre>
 
 <pre class="anchors">
-urlPrefix: https://w3c.github.io/browser-payment-api/; spec: PAYMENT-REQUEST; type: dfn
-  text: payment method; url: #dfn-payment-method
-  text: payment app; url: #dfn-payment-apps
+urlPrefix: https://w3c.github.io/browser-payment-api/; spec: PAYMENT-REQUEST
+  type: dfn
+    text: payment method; url: #dfn-payment-method
+    text: payment app; url: #dfn-payment-apps
+  text: PaymentRequest(methodData, details, options); type: constructor; for: PaymentRequest
 urlPrefix: https://www.w3.org/TR/appmanifest/; spec: APPMANIFEST; type: dfn
   text: web app manifest; url: #dfn-manifest
   text: URL; for: web app manifest; url: #dfn-manifest-url
   text: steps for obtaining a web app manifest; url: #dfn-steps-for-obtaining-a-manifest
+  text: steps for processing a web app manifest; url: #dfn-steps-for-processing-a-manifest
+  text: processed web app manifest; url: #dfn-processed-manifest
 url: https://w3c.github.io/webpayments-method-identifiers/#; spec: PAYMENT-METHOD-ID; type: dfn
   text: identifier; for: payment method
   text: payment method identifier
@@ -35,6 +39,27 @@ urlPrefix: https://tc39.github.io/ecma262/; spec: ECMASCRIPT
     text: Get; url: #sec-get-o-p
     text: IsArray; url: #sec-isarray
     text: Type; url: #sec-ecmascript-data-types-and-values
+</pre>
+
+<pre class="biblio">
+{
+  "PAYMENT-HANDLER": {
+    "authors": [
+      "Adrian Hope-Bailie",
+      "Tommy Thorsen",
+      "Adam Roach",
+      "Jason Normore",
+      "Ian Jacobs"
+    ],
+    "href": "https://w3c.github.io/webpayments-payment-apps-api/",
+    "title": "Payment Handler API",
+    "status": "ED",
+    "publisher": "W3C",
+    "deliveredBy": [
+      "https://www.w3.org/Payments/WG/"
+    ]
+  }
+}
 </pre>
 
 <!-- TODO: move all this to appropriate working group files in the Bikeshed repo if/when we become
@@ -143,12 +168,58 @@ support the payment method.
 
 <h2 id="processing-model">Processing model</h2>
 
+<h3 id="ingest">Ingesting payment method manifests</h3>
+
+A user agent is expected to receive, from various sources, a list of [=payment method identifiers=].
+A notable source is as the first parameter to the
+{{PaymentRequest/PaymentRequest(methodData, details, options)}} constructor, but other sources are
+possible, in a user-agent specific manner.
+
+<p class="example" id="example-local-scanning">A user agent could scan locally-installed
+[=payment apps=] on the device to see which [=payment methods=] they support.</p>
+
+<p class="example" id="example-business-deals">A user agent could have built-in support for certain
+[=payment methods=] as a result of business deals.</p>
+
+Given such a list of [=payment method identifiers=] |identifiers|, the user agent may at any time
+run the following steps, to <dfn export>ingest payment method manifests</dfn>:
+
+1. [=Fetch payment method manifests=], given |identifiers|, and wait for this to asynchronously
+   complete with |manifestsMap|. If the result is failure, return.
+1. [=list/For each=] |identifier| → |manifest| of |manifestsMap|:
+  1. Let |parsed| be the result of
+     [=validate and parse the payment method manifest|validating and parsing=] |manifest|. If this
+     returns failure, [=iteration/continue=].
+  1. [=set/For each=] |url| in |parsed|'s [=parsed payment method manifest/default applications=]:
+    1. [=fetch the web app manifest for a default payment app|Fetch the web app manifest=] at |url|,
+       and wait for it to asynchronously complete with |webAppManifestString|. If the result is
+       failure, [=iteration/continue=].
+    1. Let |webAppManifest| be the result of running the [=steps for processing a web app manifest=]
+       given |webAppManifestString|.
+
+       <p class="note">The [=steps for processing a web app manifest=] are very forgiving and will
+       return empty objects or objects missing crucial fields instead of failing. User agents will
+       need to separately validate the [=processed web app manifest=] to ensure it contains enough
+       data for their purposes in the next step.</p>
+
+    1. In a user-agent-specific way, use the resulting [=processed web app manifest=]
+       |webAppManifest| to install any applicable [=payment apps=] for the [=payment method=]
+       identified by |identifier|.
+
+       <p class="note">In the future, the plan is for there to be a user-agent-independent way to
+       use the resulting [=processed web app manifest=], by consulting its
+       <code>serviceworker</code> field and using that to install a web-based [=payment app=]
+       conforming to the <cite>Payment Handler API</cite> specification. [[PAYMENT-HANDLER]]</p>
+  1. Associate the [=parsed payment method manifest/supported origins=] to |identifier| so that the
+     user agent can use it in the future to determine what third-party [=payment apps=] can be
+     displayed for the [=payment method=] identified by |identifier|.
+
 <h3 id="fetch-pmm">Fetching payment method manifests</h3>
 
 To <dfn export>fetch payment method manifests</dfn>, given a [=list=] of [=JavaScript strings=]
 |supportedMethods|, perform the following steps. This algorithm will asynchronously complete with
-a [=list=] (possibly empty) of [=byte sequences=] containing the contents of any discovered
-manifests.
+a [=map=] (possibly empty) from [=URLs=] to [=byte sequences=], mapping
+[=payment method identifiers=] to the contents of the corresponding manifest.
 
 1. Let |identifierURLs| be an empty [=list=].
 1. [=list/For each=] |string| of |supportedMethods|:
@@ -156,7 +227,7 @@ manifests.
      result is failure, [=iteration/continue=].
   1. If |identifierURL|'s [=url/scheme=] is not "<code>https</code>", [=iteration/continue=].
   1. [=list/Append=] |identifierURL| to |identifierURLs|.
-1. Let |manifests| be an empty [=list=].
+1. Let |manifestsMap| be an empty [=map=].
 1. [=list/For each=] |identifierURL| of |identifierURLs|:
   1. Let |identifierRequest| be a new [=request=] whose [=request/method=] is `<code>HEAD</code>`,
      [=request/url=] is |identifierURL|, [=request/client=] is null, [=request/credentials mode=] is
@@ -195,11 +266,11 @@ manifests.
             |body|.
          1. Let |promise| be the result of [=ReadableStream/read all bytes|reading all bytes=] from
             |body| with |reader|.
-         1. [=Upon fulfillment=] of |promise| with a [=byte sequence=] |bytes|, [=list/append=]
-            |bytes| to |manifests|.
+         1. [=Upon fulfillment=] of |promise| with a [=byte sequence=] |bytes|, [=map/set=]
+            |manifestsMap|[|identifierURL|] to |bytes|.
 1. Once all ongoing [=fetch=] algorithms initiated by the above steps are complete, including the
    specified [=process response=] and [=process response end-of-body=] steps, asynchronously
-   complete this algorithm with |manifests|.
+   complete this algorithm with |manifestsMap|.
 
 <h3 id="validate-and-parse">Validating and parsing payment method manifests</h3>
 
@@ -210,7 +281,7 @@ A <dfn export>parsed payment method manifest</dfn> is a [=struct=] containing tw
 : <dfn export for="parsed payment method manifest">supported origins</dfn>
 :: Either the string "<code>*</code>", or an [=ordered set=] of [=origins=]
 
-To <dfn export lt="validate and parse a payment method manifest">validate and parse</dfn> a
+To <dfn export lt="validate and parse the payment method manifest">validate and parse</dfn> a
 [=byte sequence=] |bytes| purporting to contain a payment method manifest, perform the following
 steps. The result will either be a [=parsed payment method manifest=], or failure.
 
@@ -271,7 +342,7 @@ Because the determination of [=payment apps=] happens independent of any embeddi
 the procedure for obtaining a [=web app manifest=] that gives information about a default payment
 app is different from the usual [=steps for obtaining a web app manifest=].
 
-To <dfn export>fetch a web app manifest for a default payment app</dfn>, given a [=URL=] |url|,
+To <dfn export>fetch the web app manifest for a default payment app</dfn>, given a [=URL=] |url|,
 perform the following steps. This algorithm will asynchronously complete with either a
 [=scalar value string=] or failure.
 
