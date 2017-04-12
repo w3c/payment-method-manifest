@@ -166,7 +166,8 @@ manifests.
          for the string "<code>payment-method-manifest</code>", let |manifestURLString| be the
          string given by the <code>URI-Reference</code> production in the parsed header.
       1. Let |manifestURL| be the result of [=basic URL parser|basic URL parsing=]
-         |manifestURLString|. If the result is failure, [=iteration/continue=].
+         |manifestURLString| with base URL given by |identifierResponse|'s [=response/url=]. If the
+         result is failure, [=iteration/continue=].
       1. If |manifestURL|'s [=url/scheme=] is not "<code>https</code>", [=iteration/continue=].
       1. Let |manifestRequest| be a new [=request=] whose [=request/url=] is |manifestURL|,
          [=request/client=] is null, [=request/credentials mode=] is

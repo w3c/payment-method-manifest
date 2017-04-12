@@ -1551,7 +1551,8 @@ manifests.</p>
  for the string "<code>payment-method-manifest</code>", let <var>manifestURLString</var> be the
  string given by the <code>URI-Reference</code> production in the parsed header.</p>
           <li data-md="">
-           <p>Let <var>manifestURL</var> be the result of <a data-link-type="dfn" href="https://url.spec.whatwg.org/#concept-basic-url-parser">basic URL parsing</a> <var>manifestURLString</var>. If the result is failure, <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#iteration-continue">continue</a>.</p>
+           <p>Let <var>manifestURL</var> be the result of <a data-link-type="dfn" href="https://url.spec.whatwg.org/#concept-basic-url-parser">basic URL parsing</a> <var>manifestURLString</var> with base URL given by <var>identifierResponse</var>’s <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#concept-response-url">url</a>. If the
+ result is failure, <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#iteration-continue">continue</a>.</p>
           <li data-md="">
            <p>If <var>manifestURL</var>’s <a data-link-type="dfn" href="https://url.spec.whatwg.org/#concept-url-scheme">scheme</a> is not "<code>https</code>", <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#iteration-continue">continue</a>.</p>
           <li data-md="">
@@ -1761,7 +1762,8 @@ manifests.</p>
      <li><a href="https://fetch.spec.whatwg.org/#concept-request">request</a>
      <li><a href="https://fetch.spec.whatwg.org/#concept-response">response</a>
      <li><a href="https://fetch.spec.whatwg.org/#concept-response-status">status</a>
-     <li><a href="https://fetch.spec.whatwg.org/#concept-request-url">url</a>
+     <li><a href="https://fetch.spec.whatwg.org/#concept-request-url">url <small>(for request)</small></a>
+     <li><a href="https://fetch.spec.whatwg.org/#concept-response-url">url <small>(for response)</small></a>
     </ul>
    <li>
     <a data-link-type="biblio">[HTML]</a> defines the following terms:
