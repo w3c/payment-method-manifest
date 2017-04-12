@@ -1464,6 +1464,11 @@ method participates in the web payment ecosystem, and how it is to be consumed.<
       <li><a href="#validate-and-parse"><span class="secno">2.3</span> <span class="content">Validating and parsing payment method manifests</span></a>
       <li><a href="#fetch-wam"><span class="secno">2.4</span> <span class="content">Fetching web app manifests</span></a>
      </ol>
+    <li>
+     <a href="#iana"><span class="secno">3</span> <span class="content">IANA considerations</span></a>
+     <ol class="toc">
+      <li><a href="#payment-method-manifest-link"><span class="secno">3.1</span> <span class="content">The <code>payment-method-manifest</code> link relation</span></a>
+     </ol>
     <li><a href="#acknowledgments"><span class="secno"></span> <span class="content">Acknowledgments</span></a>
     <li><a href="#conformance"><span class="secno"></span> <span class="content"> Conformance</span></a>
     <li>
@@ -1793,6 +1798,25 @@ perform the following steps. This algorithm will asynchronously complete with ei
        <p><a data-link-type="dfn" href="https://www.w3.org/2001/tag/doc/promises-guide/#upon-rejection">Upon rejection</a> of <var>promise</var>, asynchronously complete this algorithm with failure.</p>
      </ol>
    </ol>
+   <h2 class="heading settled" data-level="3" id="iana"><span class="secno">3. </span><span class="content">IANA considerations</span><a class="self-link" href="#iana"></a></h2>
+   <h3 class="heading settled" data-level="3.1" id="payment-method-manifest-link"><span class="secno">3.1. </span><span class="content">The <code>payment-method-manifest</code> link relation</span><a class="self-link" href="#payment-method-manifest-link"></a></h3>
+   <p>This registration is for community review and will be submitted to the IESG for review, approval,
+and registration with IANA.</p>
+   <dl>
+    <dt data-md="">Relation name
+    <dd data-md="">
+     <p>payment-method-manifest</p>
+    <dt data-md="">Description
+    <dd data-md="">
+     <p>Links to a payment method manifest, which describes a specific <a data-link-type="dfn" href="https://w3c.github.io/browser-payment-api/#dfn-payment-method">payment method</a> within the Web
+ Payments ecosystem.</p>
+    <dt data-md="">Reference
+    <dd data-md="">
+     <p><a href="https://domenic.github.io/payment-method-manifest/">https://domenic.github.io/payment-method-manifest/</a></p>
+    <dt data-md="">Notes
+    <dd data-md="">
+     <p>See <a href="#fetch-pmm">§2.2 Fetching payment method manifests</a> for the specific manner in which such links are expected to be fetched, and <a href="#ingest">§2.1 Ingesting payment method manifests</a> for the larger context in which they are used.</p>
+   </dl>
    <h2 class="no-num heading settled" id="acknowledgments"><span class="content">Acknowledgments</span><a class="self-link" href="#acknowledgments"></a></h2>
    <p><a href="#processing-model">§2 Processing model</a> is based heavily on algorithms originally outlined by Rouslan Solomakhin.</p>
   </main>

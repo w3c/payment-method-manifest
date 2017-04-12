@@ -362,6 +362,26 @@ perform the following steps. This algorithm will asynchronously complete with ei
       this algorithm with the result of [=UTF-8 decode|UTF-8 decoding=] |bytes|.
    1. [=Upon rejection=] of |promise|, asynchronously complete this algorithm with failure.
 
+<h2 id="iana">IANA considerations</h2>
+
+<h3 id="payment-method-manifest-link">The <code>payment-method-manifest</code> link relation</h3>
+
+This registration is for community review and will be submitted to the IESG for review, approval,
+and registration with IANA.
+
+: Relation name
+:: payment-method-manifest
+
+: Description
+:: Links to a payment method manifest, which describes a specific [=payment method=] within the Web
+   Payments ecosystem.
+
+: Reference
+:: <a href="https://domenic.github.io/payment-method-manifest/">https://domenic.github.io/payment-method-manifest/</a>
+
+: Notes
+:: See [[#fetch-pmm]] for the specific manner in which such links are expected to be fetched, and
+   [[#ingest]] for the larger context in which they are used.
 
 <h2 id="acknowledgments" class="no-num">Acknowledgments</h2>
 
