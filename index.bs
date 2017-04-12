@@ -126,3 +126,57 @@ The manifest file could also omit the "<code>supported_origins</code>" key, if n
 [=payment apps=] are supported for the [=payment method=] in question, or it could use the value
 "<code>*</code>" instead of an array of [=origins=], to indicate that any third party is allowed to
 support the payment method.
+
+<h2 id="processing-model">Processing model</h2>
+
+<h3 id="fetch">Fetching payment method manifests</h3>
+
+To <dfn export>fetch payment method manifests</dfn>, given a [=list=] of [=JavaScript strings=]
+|supportedMethods|, perform the following steps. This algorithm will asynchronously complete with
+a [=list=] (possibly empty) of [=byte sequences=] containing the contents of any discovered
+manifests.
+
+1. Let |identifierURLs| be an empty [=list=].
+1. [=list/For each=] |string| of |supportedMethods|:
+  1. Let |identifierURL| be the result of [=basic URL parser|basic URL parsing=] |string|. If the
+     result is failure, [=iteration/continue=].
+  1. If |identifierURL|'s [=url/scheme=] is not "<code>https</code>", [=iteration/continue=].
+  1. [=list/Append=] |identifierURL| to |identifierURLs|.
+1. Let |manifests| be an empty [=list=].
+1. [=list/For each=] |identifierURL| of |identifierURLs|:
+  1. Let |identifierRequest| be a new [=request=] whose [=request/method=] is `<code>HEAD</code>`,
+     [=request/url=] is |identifierURL|, [=request/client=] is null, [=request/credentials mode=] is
+     "<code>omit</code>", and [=request/redirect mode=] is "<code>error</code>".
+  1. [=Fetch=] |identifierRequest|. To [=process response=] with the [=response=]
+     |identifierResponse|:
+    1. If |identifierResponse| is a [=network error=] or |identifierResponse|'s [=response/status=]
+       is not an [=ok status=], [=iteration/continue=].
+    1. Let |linkHeaders| be the result of
+       [=extract header list values|extracting header list values=] given `<code>Link</code>` and
+       |identifierResponse|'s [=response/header list=].
+    1. [=list/For each=] |linkHeader| of |linkHeaders|:
+      1. Parse |linkHeader| according to the <code>link-value</code> production. If it cannot be
+         parsed, [=iteration/continue=]. [[!RFC5988]]
+      1. If the parsed header contains a parameter whose name is an [=ASCII case-insensitive=] match
+         for the string "<code>rel</code>" and whose value is an [=ASCII case-insensitive=] match
+         for the string "<code>payment-method-manifest</code>", let |manifestURLString| be the
+         string given by the <code>URI-Reference</code> production in the parsed header.
+      1. Let |manifestURL| be the result of [=basic URL parser|basic URL parsing=]
+         |manifestURLString|. If the result is failure, [=iteration/continue=].
+      1. If |manifestURL|'s [=url/scheme=] is not "<code>https</code>", [=iteration/continue=].
+      1. Let |manifestRequest| be a new [=request=] whose [=request/url=] is |manifestURL|,
+         [=request/client=] is null, [=request/credentials mode=] is
+         "<code>omit</code>", and [=request/redirect mode=] is "<code>error</code>".
+      1. [=Fetch=] |manifestRequest|. To [=process response end-of-body=] with the [=response=]
+         |manifestResponse|:
+         1. Let |body| be |manifestResponse|'s [=response/body=].
+         1. If |body| is null, [=iteration/continue=].
+         1. Let |reader| be the result of [=ReadableStream/get a reader|getting a reader=] from
+            |body|.
+         1. Let |promise| be the result of [=ReadableStream/read all bytes|reading all bytes=] from
+            |body| with |reader|.
+         1. [=Upon fulfillment=] of |promise| with a [=byte sequence=] |bytes|, [=list/append=]
+            |bytes| to |manifests|.
+1. Once all ongoing [=fetch=] algorithms initiated by the above steps are complete, including the
+   specified [=process response=] and [=process response end-of-body=] steps, asynchronously
+   complete this algorithm with |manifests|.
