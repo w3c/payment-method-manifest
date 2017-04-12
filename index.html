@@ -1176,7 +1176,7 @@ Possible extra rowspan handling
 		}
 	}
 </style>
-  <meta content="Bikeshed version ebf2734db77b4aff3d5749f39c4209550544a23e" name="generator">
+  <meta content="Bikeshed version 5b822dd2cae2f0240f48e0045ff5e3cf26af1eac" name="generator">
 <style>/* style-md-lists */
 
             /* This is a weird hack for me not yet following the commonmark spec
@@ -1509,16 +1509,15 @@ can provide an improved user experience for procuring a payment app.</p>
 format containing two key pieces of information:</p>
     <ul>
      <li data-md="">
-      <p>any default <a data-link-type="dfn" href="https://w3c.github.io/browser-payment-api/#dfn-payment-apps">payment apps</a>, if any, that are associated with this <a data-link-type="dfn" href="https://w3c.github.io/browser-payment-api/#dfn-payment-method">payment method</a>,
-referenced as <a data-link-type="dfn" href="https://url.spec.whatwg.org/#absolute-url-string">absolute-URL strings</a> giving the <a data-link-type="dfn" href="https://www.w3.org/TR/appmanifest/#dfn-manifest-url">URL</a> of their <a data-link-type="dfn" href="https://www.w3.org/TR/appmanifest/#dfn-manifest">web app manifests</a>; and</p>
+      <p>any default <a data-link-type="dfn" href="https://w3c.github.io/browser-payment-api/#dfn-payment-apps">payment apps</a> that are associated with this <a data-link-type="dfn" href="https://w3c.github.io/browser-payment-api/#dfn-payment-method">payment method</a>, referenced as <a data-link-type="dfn" href="https://url.spec.whatwg.org/#absolute-url-string">absolute-URL strings</a> giving the <a data-link-type="dfn" href="https://www.w3.org/TR/appmanifest/#dfn-manifest-url">URL</a> of their <a data-link-type="dfn" href="https://www.w3.org/TR/appmanifest/#dfn-manifest">web app manifests</a>; and</p>
      <li data-md="">
-      <p>any other <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/browsers.html#concept-origin">origins</a>, if any, that are permitted to return back payment credentials for this <a data-link-type="dfn" href="https://w3c.github.io/browser-payment-api/#dfn-payment-method">payment method</a>.</p>
+      <p>any other <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/browsers.html#concept-origin">origins</a> that are permitted to return back payment credentials for this <a data-link-type="dfn" href="https://w3c.github.io/browser-payment-api/#dfn-payment-method">payment method</a>.</p>
     </ul>
     <h3 class="heading settled" data-level="1.2" id="accessing"><span class="secno">1.2. </span><span class="content">Accessing the manifest</span><a class="self-link" href="#accessing"></a></h3>
     <p>The resource identified by the <a data-link-type="dfn" href="https://w3c.github.io/webpayments-method-identifiers/#">payment method identifier</a> URL does not directly contain the
 machine-readable <a data-link-type="dfn" href="#payment-method-manifest" id="ref-for-payment-method-manifest-2">payment method manifest</a>. It is often a generic URL (such as
-"<code>https://alicepay.com/</code>") which is more suitable for containing, e.g., a splash page.
-Instead, a HTTP Link header is used to direct user agents seeking out the <a data-link-type="dfn" href="#payment-method-manifest" id="ref-for-payment-method-manifest-3">payment method manifest</a> toward another location. <a data-link-type="biblio" href="#biblio-rfc5988">[RFC5988]</a></p>
+"<code>https://alicepay.com/</code>") which is more suitable for containing other content such as
+a splash page. Instead, a HTTP Link header is used to direct user agents seeking out the <a data-link-type="dfn" href="#payment-method-manifest" id="ref-for-payment-method-manifest-3">payment method manifest</a> toward another location. <a data-link-type="biblio" href="#biblio-rfc5988">[RFC5988]</a></p>
     <p>For an example <a data-link-type="dfn" href="https://w3c.github.io/browser-payment-api/#dfn-payment-method">payment method</a> AlicePay, with <a data-link-type="dfn" href="https://w3c.github.io/webpayments-method-identifiers/#">payment method identifier</a> "<code>https://alicepay.com/</code>", a user agent might issue a request to that <a data-link-type="dfn" href="https://w3c.github.io/webpayments-method-identifiers/#">payment method identifier</a> URL as follows:</p>
 <pre>HEAD / HTTP/2
 Host: alicepay.com

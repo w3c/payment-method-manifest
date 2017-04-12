@@ -105,19 +105,18 @@ This is accomplished via the requirement that every [=payment method=] whose
 [=payment method/identifier=] is a URL will provide a [=payment method manifest=] file in JSON
 format containing two key pieces of information:
 
-* any default [=payment apps=], if any, that are associated with this [=payment method=],
-  referenced as [=absolute-URL strings=] giving the [=web app manifest/URL=] of their
-  [=web app manifests=]; and
+* any default [=payment apps=] that are associated with this [=payment method=], referenced as
+  [=absolute-URL strings=] giving the [=web app manifest/URL=] of their [=web app manifests=]; and
 
-* any other [=origins=], if any, that are permitted to return back payment credentials for this
+* any other [=origins=] that are permitted to return back payment credentials for this
   [=payment method=].
 
 <h3 id="accessing">Accessing the manifest</h3>
 
 The resource identified by the [=payment method identifier=] URL does not directly contain the
 machine-readable [=payment method manifest=]. It is often a generic URL (such as
-"<code>https://alicepay.com/</code>") which is more suitable for containing, e.g., a splash page.
-Instead, a HTTP Link header is used to direct user agents seeking out the
+"<code>https://alicepay.com/</code>") which is more suitable for containing other content such as
+a splash page. Instead, a HTTP Link header is used to direct user agents seeking out the
 [=payment method manifest=] toward another location. [[RFC5988]]
 
 For an example [=payment method=] AlicePay, with [=payment method identifier=]
