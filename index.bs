@@ -12,18 +12,19 @@ Abstract: method participates in the web payment ecosystem, and how it is to be 
 Default Ref Status: current
 Complain About: accidental-2119 true, missing-example-ids true
 Assume Explicit For: true
+Indent: 2
 </pre>
 
 <pre class="anchors">
 urlPrefix: https://w3c.github.io/browser-payment-api/; spec: PAYMENT-REQUEST; type: dfn
-    text: payment method; url: #dfn-payment-method
-    text: payment app; url: #dfn-payment-apps
+  text: payment method; url: #dfn-payment-method
+  text: payment app; url: #dfn-payment-apps
 urlPrefix: https://www.w3.org/TR/appmanifest/; spec: APPMANIFEST; type: dfn
-    text: web app manifest; url: #dfn-manifest
-    text: URL; for: web app manifest; url: #dfn-manifest-url
+  text: web app manifest; url: #dfn-manifest
+  text: URL; for: web app manifest; url: #dfn-manifest-url
 url: https://w3c.github.io/webpayments-method-identifiers/#; spec: PAYMENT-METHOD-ID; type: dfn
-    text: identifier; for: payment method
-    text: payment method identifier
+  text: identifier; for: payment method
+  text: payment method identifier
 </pre>
 
 <!-- TODO: move all this to appropriate working group files in the Bikeshed repo if/when we become
@@ -51,26 +52,27 @@ standing of any kind and does not represent the support or consensus of any stan
 
 This specification intends to address the following use cases:
 
-*   The owner of a [=payment method=] wishes to authorize only certain parties to distribute
-    [=payment apps=] that are capable of implementing the payment method. In this use case, the
-    browser helps to ensure that for that payment method, the user can only invoke payment apps from
-    parties authorized by the owner of the payment method.
+* The owner of a [=payment method=] wishes to authorize only certain parties to distribute
+  [=payment apps=] that are capable of implementing the payment method. In this use case, the
+  browser helps to ensure that for that payment method, the user can only invoke payment apps from
+  parties authorized by the owner of the payment method.
 
-*   In addition, the owner of a [=payment method=] wishes to confirm the authenticity of a
-    particular payment app (e.g., via a digital signature for that app).
+* In addition, the owner of a [=payment method=] wishes to confirm the authenticity of a
+  particular payment app (e.g., via a digital signature for that app).
 
-*   When the user has not yet installed a [=payment app=] for a [=payment method=], the user agent
-    can provide an improved user experience for procuring a payment app.
+* When the user has not yet installed a [=payment app=] for a [=payment method=], the user agent
+  can provide an improved user experience for procuring a payment app.
 
 This is accomplished via the requirement that every [=payment method=] whose
 [=payment method/identifier=] is a URL will provide a manifest file in JSON format containing two
 key pieces of information:
 
-*   any default [=payment apps=], if any, that are associated with this [=payment method=],
-    referenced as [=absolute-URL strings=] giving the [=web app manifest/URL=] of their
-    [=web app manifests=]; and
-*   any other [=origins=], if any, that are permitted to return back payment credentials for this
-    [=payment method=].
+* any default [=payment apps=], if any, that are associated with this [=payment method=],
+  referenced as [=absolute-URL strings=] giving the [=web app manifest/URL=] of their
+  [=web app manifests=]; and
+
+* any other [=origins=], if any, that are permitted to return back payment credentials for this
+  [=payment method=].
 
 <h3 id="accessing">Accessing the manifest</h3>
 
@@ -84,16 +86,16 @@ For an example [=payment method=] AlicePay, with [=payment method identifier=]
 [=payment method identifier=] URL as follows:
 
 <pre>
-    HEAD / HTTP/2
-    Host: alicepay.com
-    User-Agent: Mellblomenator/9000
+  HEAD / HTTP/2
+  Host: alicepay.com
+  User-Agent: Mellblomenator/9000
 </pre>
 
 The server would then respond:
 
 <pre>
-    HTTP/2 204
-    Link: &lt;/pay/payment-manifest.json>; rel="payment-method-manifest"
+  HTTP/2 204
+  Link: &lt;/pay/payment-manifest.json>; rel="payment-method-manifest"
 </pre>
 
 <h3 id="manifest-example">Example manifest file</h3>
