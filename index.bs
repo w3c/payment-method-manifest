@@ -7,8 +7,9 @@ Status: LD
 Editor: Dapeng Liu, Alibaba
 Editor: Domenic Denicola, w3cid 52873, Google https://www.google.com/, d@domenic.me, https://domenic.me/
 Editor: Zach Koch, w3cid 76588, Google https://www.google.com/
-Abstract: This specification defines the machine-readable manifest file describing how a payment
-Abstract: method participates in the web payment ecosystem, and how it is to be consumed.
+Abstract: This specification defines the machine-readable manifest file, known as a
+Abstract: <dfn export>payment method manifest</dfn>, describing how a [=payment method=]
+Abstract: participates in the Web Payments ecosystem, and how such files are to be used.
 Default Ref Status: current
 Complain About: accidental-2119 true, missing-example-ids true
 Assume Explicit For: true
@@ -101,8 +102,8 @@ This specification intends to address the following use cases:
   can provide an improved user experience for procuring a payment app.
 
 This is accomplished via the requirement that every [=payment method=] whose
-[=payment method/identifier=] is a URL will provide a manifest file in JSON format containing two
-key pieces of information:
+[=payment method/identifier=] is a URL will provide a [=payment method manifest=] file in JSON
+format containing two key pieces of information:
 
 * any default [=payment apps=], if any, that are associated with this [=payment method=],
   referenced as [=absolute-URL strings=] giving the [=web app manifest/URL=] of their
@@ -114,9 +115,10 @@ key pieces of information:
 <h3 id="accessing">Accessing the manifest</h3>
 
 The resource identified by the [=payment method identifier=] URL does not directly contain the
-machine-readable manifest. It is often a generic URL (such as "<code>https://alicepay.com/</code>")
-which is more suitable for containing, e.g., a splash page. Instead, a HTTP Link header is used
-to direct user agents seeking out the machine-readable manifest to another location. [[RFC5988]]
+machine-readable [=payment method manifest=]. It is often a generic URL (such as
+"<code>https://alicepay.com/</code>") which is more suitable for containing, e.g., a splash page.
+Instead, a HTTP Link header is used to direct user agents seeking out the
+[=payment method manifest=] toward another location. [[RFC5988]]
 
 For an example [=payment method=] AlicePay, with [=payment method identifier=]
 "<code>https://alicepay.com/</code>", a user agent might issue a request to that
@@ -138,7 +140,8 @@ The server would then respond:
 <h3 id="manifest-example">Example manifest file</h3>
 
 Continuing our example from [[#accessing]], the AlicePay [=payment method=] could provide the
-following manifest file at <code>https://alicepay.com/pay/payment-manifest.json</code>:
+following [=payment method manifest=] file at
+<code>https://alicepay.com/pay/payment-manifest.json</code>:
 
 <pre highlight="json">
 {

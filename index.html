@@ -1441,9 +1441,7 @@ Commons Attribution 3.0 License</a>. </p>
   </div>
   <h2 class="no-num no-toc no-ref heading settled" id="abstract"><span class="content">Abstract</span></h2>
   <div class="p-summary" data-fill-with="abstract">
-   <p>This specification defines the machine-readable manifest file describing how a payment
-
-method participates in the web payment ecosystem, and how it is to be consumed.</p>
+   <p>This specification defines the machine-readable manifest file, known as a <dfn class="dfn-paneled" data-dfn-type="dfn" data-export="" id="payment-method-manifest">payment method manifest</dfn>, describing how a <a data-link-type="dfn" href="https://w3c.github.io/browser-payment-api/#dfn-payment-method">payment method</a> participates in the Web Payments ecosystem, and how such files are to be used.</p>
   </div>
   <div data-fill-with="at-risk"></div>
   <nav data-fill-with="table-of-contents" id="toc">
@@ -1506,8 +1504,8 @@ particular payment app (e.g., via a digital signature for that app).</p>
       <p>When the user has not yet installed a <a data-link-type="dfn" href="https://w3c.github.io/browser-payment-api/#dfn-payment-apps">payment app</a> for a <a data-link-type="dfn" href="https://w3c.github.io/browser-payment-api/#dfn-payment-method">payment method</a>, the user agent
 can provide an improved user experience for procuring a payment app.</p>
     </ul>
-    <p>This is accomplished via the requirement that every <a data-link-type="dfn" href="https://w3c.github.io/browser-payment-api/#dfn-payment-method">payment method</a> whose <a data-link-type="dfn" href="https://w3c.github.io/webpayments-method-identifiers/#">identifier</a> is a URL will provide a manifest file in JSON format containing two
-key pieces of information:</p>
+    <p>This is accomplished via the requirement that every <a data-link-type="dfn" href="https://w3c.github.io/browser-payment-api/#dfn-payment-method">payment method</a> whose <a data-link-type="dfn" href="https://w3c.github.io/webpayments-method-identifiers/#">identifier</a> is a URL will provide a <a data-link-type="dfn" href="#payment-method-manifest" id="ref-for-payment-method-manifest-1">payment method manifest</a> file in JSON
+format containing two key pieces of information:</p>
     <ul>
      <li data-md="">
       <p>any default <a data-link-type="dfn" href="https://w3c.github.io/browser-payment-api/#dfn-payment-apps">payment apps</a>, if any, that are associated with this <a data-link-type="dfn" href="https://w3c.github.io/browser-payment-api/#dfn-payment-method">payment method</a>,
@@ -1517,9 +1515,9 @@ referenced as <a data-link-type="dfn" href="https://url.spec.whatwg.org/#absolut
     </ul>
     <h3 class="heading settled" data-level="1.2" id="accessing"><span class="secno">1.2. </span><span class="content">Accessing the manifest</span><a class="self-link" href="#accessing"></a></h3>
     <p>The resource identified by the <a data-link-type="dfn" href="https://w3c.github.io/webpayments-method-identifiers/#">payment method identifier</a> URL does not directly contain the
-machine-readable manifest. It is often a generic URL (such as "<code>https://alicepay.com/</code>")
-which is more suitable for containing, e.g., a splash page. Instead, a HTTP Link header is used
-to direct user agents seeking out the machine-readable manifest to another location. <a data-link-type="biblio" href="#biblio-rfc5988">[RFC5988]</a></p>
+machine-readable <a data-link-type="dfn" href="#payment-method-manifest" id="ref-for-payment-method-manifest-2">payment method manifest</a>. It is often a generic URL (such as
+"<code>https://alicepay.com/</code>") which is more suitable for containing, e.g., a splash page.
+Instead, a HTTP Link header is used to direct user agents seeking out the <a data-link-type="dfn" href="#payment-method-manifest" id="ref-for-payment-method-manifest-3">payment method manifest</a> toward another location. <a data-link-type="biblio" href="#biblio-rfc5988">[RFC5988]</a></p>
     <p>For an example <a data-link-type="dfn" href="https://w3c.github.io/browser-payment-api/#dfn-payment-method">payment method</a> AlicePay, with <a data-link-type="dfn" href="https://w3c.github.io/webpayments-method-identifiers/#">payment method identifier</a> "<code>https://alicepay.com/</code>", a user agent might issue a request to that <a data-link-type="dfn" href="https://w3c.github.io/webpayments-method-identifiers/#">payment method identifier</a> URL as follows:</p>
 <pre>HEAD / HTTP/2
 Host: alicepay.com
@@ -1531,7 +1529,7 @@ Link: &lt;/pay/payment-manifest.json>; rel="payment-method-manifest"
 </pre>
     <h3 class="heading settled" data-level="1.3" id="manifest-example"><span class="secno">1.3. </span><span class="content">Example manifest file</span><a class="self-link" href="#manifest-example"></a></h3>
     <p>Continuing our example from <a href="#accessing">§1.2 Accessing the manifest</a>, the AlicePay <a data-link-type="dfn" href="https://w3c.github.io/browser-payment-api/#dfn-payment-method">payment method</a> could provide the
-following manifest file at <code>https://alicepay.com/pay/payment-manifest.json</code>:</p>
+following <a data-link-type="dfn" href="#payment-method-manifest" id="ref-for-payment-method-manifest-4">payment method manifest</a> file at <code>https://alicepay.com/pay/payment-manifest.json</code>:</p>
 <pre class="highlight"><span class="p">{</span>
   <span class="nt">"default_applications"</span><span class="p">:</span> <span class="p">[</span><span class="s2">"https://alicepay.com/pay/app/webappmanifest.json"</span><span class="p">]</span><span class="p">,</span>
   <span class="nt">"supported_origins"</span><span class="p">:</span> <span class="p">[</span>
@@ -1974,6 +1972,7 @@ and registration with IANA.</p>
    <li><a href="#fetch-the-web-app-manifest-for-a-default-payment-app">fetch the web app manifest for a default payment app</a><span>, in §2.4</span>
    <li><a href="#ingest-payment-method-manifests">ingest payment method manifests</a><span>, in §2.1</span>
    <li><a href="#parsed-payment-method-manifest">parsed payment method manifest</a><span>, in §2.3</span>
+   <li><a href="#payment-method-manifest">payment method manifest</a><span>, in §Unnumbered section</span>
    <li><a href="#parsed-payment-method-manifest-supported-origins">supported origins</a><span>, in §2.3</span>
    <li><a href="#validate-and-parse-the-payment-method-manifest">validate and parse the payment method manifest</a><span>, in §2.3</span>
   </ul>
@@ -2118,6 +2117,14 @@ and registration with IANA.</p>
    <dt id="biblio-payment-handler">[PAYMENT-HANDLER]
    <dd>Adrian Hope-Bailie; et al. <a href="https://w3c.github.io/webpayments-payment-apps-api/">Payment Handler API</a>. ED. URL: <a href="https://w3c.github.io/webpayments-payment-apps-api/">https://w3c.github.io/webpayments-payment-apps-api/</a>
   </dl>
+  <aside class="dfn-panel" data-for="payment-method-manifest">
+   <b><a href="#payment-method-manifest">#payment-method-manifest</a></b><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-payment-method-manifest-1">1.1. Use cases</a>
+    <li><a href="#ref-for-payment-method-manifest-2">1.2. Accessing the manifest</a> <a href="#ref-for-payment-method-manifest-3">(2)</a>
+    <li><a href="#ref-for-payment-method-manifest-4">1.3. Example manifest file</a>
+   </ul>
+  </aside>
   <aside class="dfn-panel" data-for="fetch-payment-method-manifests">
    <b><a href="#fetch-payment-method-manifests">#fetch-payment-method-manifests</a></b><b>Referenced in:</b>
    <ul>
