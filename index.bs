@@ -169,6 +169,48 @@ support the payment method.
 
 </div>
 
+<h2 id="format">Manifest format</h2>
+
+A <dfn export local-lt="valid|validity">valid payment method manifest</dfn> file is a [=UTF-8=]
+encoded file containing contents parseable as a JSON object. The resulting JSON object must contain
+at most two items, with the possible keys "<code>default_applications</code>" and
+"<code>supported_origins</code>".
+
+The value of the <code>default_applications</code> key, if present, must be a non-empty JSON array.
+Each item in the array must be an [=absolute-URL string=] such that the resulting parsed [=URL=]'s
+[=url/scheme=] is "<code>https</code>".
+
+The value of the <code>supported_origins</code> key, if present, must be either the string
+"<code>*</code>", or a non-empty JSON array. In the latter case, each item in the array must be an
+[=absolute-URL string=] that represents an HTTPS [=origin=]. Formally, the string must be equal to
+either the [=Unicode serialization of an origin|Unicode serialization=] or
+[=ASCII serialization of an origin|ASCII serialization=] of the resulting parsed [=URL=]'s
+[=url/origin=].
+
+Web developers must ensure that all of their [=payment method manifests=] are [=valid=].
+
+<p class="note">As with all conformance requirements, these are web-developer facing, and not
+implementer-facing. The exact processing model (given in [[#processing-model]]) governs how
+implementers process all [=payment method manifest=] files, including invalid ones.</p>
+
+<div class="example" id="example-invalid-manifest">
+  The following [=payment method manifest=] is not [=valid=], but the currently-specified processing
+  model algorithms will still accept it:
+
+  <pre highlight="json">
+    {
+      "default_applications": ["https://alicepay.com/pay/app/webappmanifest.json"],
+      "created_by": "Alice",
+      "created_in": "Wonderland"
+    }
+  </pre>
+
+  This could change in the future, for example if the processing model later expands to define a
+  meaning for a new standard "<code>created_by</code>" key that requires it to be an object instead
+  of a string. To avoid situations like this, web developers are best served by ensuring
+  [=validity=] of their [=payment method manifests=], and thus avoiding any unpleasant surprises.
+</div>
+
 <h2 id="processing-model">Processing model</h2>
 
 <h3 id="ingest">Ingesting payment method manifests</h3>
@@ -329,7 +371,8 @@ steps. The result will either be a [=parsed payment method manifest=], or failur
 
 <div class="note">
   Empty arrays for "<code>default_applications</code>" or "<code>supported_origins</code>"
-  will cause parsing to fail. That is, this is not a valid manifest:
+  will cause parsing to fail. That is, this is not a [=valid payment method manifest=], and will
+  be rejected by the above algorithm:
 
   <pre highlight="json">
   {
