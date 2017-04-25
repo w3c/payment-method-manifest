@@ -1176,7 +1176,7 @@ Possible extra rowspan handling
 		}
 	}
 </style>
-  <meta content="Bikeshed version 5b822dd2cae2f0240f48e0045ff5e3cf26af1eac" name="generator">
+  <meta content="Bikeshed version f585bc61ca4b271944cd978b64d50b0939de2188" name="generator">
 <style>/* style-md-lists */
 
             /* This is a weird hack for me not yet following the commonmark spec
@@ -1423,7 +1423,7 @@ Possible extra rowspan handling
   <div class="head">
    <p data-fill-with="logo"></p>
    <h1 class="p-name no-ref" id="title">Payment Method Manifest</h1>
-   <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">Living Document, <time class="dt-updated" datetime="2017-04-12">12 April 2017</time></span></h2>
+   <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">Living Document, <time class="dt-updated" datetime="2017-04-25">25 April 2017</time></span></h2>
    <div data-fill-with="spec-metadata">
     <dl>
      <dt>Issue Tracking:
@@ -1439,8 +1439,8 @@ Possible extra rowspan handling
 Commons Attribution 3.0 License</a>. </p>
    <hr title="Separator for header">
   </div>
-  <h2 class="no-num no-toc no-ref heading settled" id="abstract"><span class="content">Abstract</span></h2>
   <div class="p-summary" data-fill-with="abstract">
+   <h2 class="no-num no-toc no-ref heading settled" id="abstract"><span class="content">Abstract</span></h2>
    <p>This specification defines the machine-readable manifest file, known as a <dfn class="dfn-paneled" data-dfn-type="dfn" data-export="" id="payment-method-manifest">payment method manifest</dfn>, describing how a <a data-link-type="dfn" href="https://w3c.github.io/browser-payment-api/#dfn-payment-method">payment method</a> participates in the Web Payments ecosystem, and how such files are to be used.</p>
   </div>
   <div data-fill-with="at-risk"></div>
@@ -1503,7 +1503,7 @@ parties authorized by the owner of the payment method.</p>
 particular payment app (e.g., via a digital signature for that app).</p>
      <li data-md="">
       <p>When the user has not yet installed a <a data-link-type="dfn" href="https://w3c.github.io/browser-payment-api/#dfn-payment-apps">payment app</a> for a <a data-link-type="dfn" href="https://w3c.github.io/browser-payment-api/#dfn-payment-method">payment method</a>, the user agent
-can provide an improved user experience for procuring a payment app.</p>
+can provide an improved user experience for procuring one.</p>
     </ul>
     <p>This is accomplished via the requirement that every <a data-link-type="dfn" href="https://w3c.github.io/browser-payment-api/#dfn-payment-method">payment method</a> whose <a data-link-type="dfn" href="https://w3c.github.io/webpayments-method-identifiers/#">identifier</a> is a URL will provide a <a data-link-type="dfn" href="#payment-method-manifest" id="ref-for-payment-method-manifest-1">payment method manifest</a> file in JSON
 format containing two key pieces of information:</p>
@@ -1511,13 +1511,14 @@ format containing two key pieces of information:</p>
      <li data-md="">
       <p>any default <a data-link-type="dfn" href="https://w3c.github.io/browser-payment-api/#dfn-payment-apps">payment apps</a> that are associated with this <a data-link-type="dfn" href="https://w3c.github.io/browser-payment-api/#dfn-payment-method">payment method</a>, referenced as <a data-link-type="dfn" href="https://url.spec.whatwg.org/#absolute-url-string">absolute-URL strings</a> giving the <a data-link-type="dfn" href="https://www.w3.org/TR/appmanifest/#dfn-manifest-url">URL</a> of their <a data-link-type="dfn" href="https://www.w3.org/TR/appmanifest/#dfn-manifest">web app manifests</a>; and</p>
      <li data-md="">
-      <p>any other <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/browsers.html#concept-origin">origins</a> that are permitted to return back payment credentials for this <a data-link-type="dfn" href="https://w3c.github.io/browser-payment-api/#dfn-payment-method">payment method</a>.</p>
+      <p>any other <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/browsers.html#concept-origin">origins</a> that are permitted to return payment credentials for this <a data-link-type="dfn" href="https://w3c.github.io/browser-payment-api/#dfn-payment-method">payment method</a>.</p>
     </ul>
     <h3 class="heading settled" data-level="1.2" id="accessing"><span class="secno">1.2. </span><span class="content">Accessing the manifest</span><a class="self-link" href="#accessing"></a></h3>
     <p>The resource identified by the <a data-link-type="dfn" href="https://w3c.github.io/webpayments-method-identifiers/#">payment method identifier</a> URL does not directly contain the
 machine-readable <a data-link-type="dfn" href="#payment-method-manifest" id="ref-for-payment-method-manifest-2">payment method manifest</a>. It is often a generic URL (such as
-"<code>https://alicepay.com/</code>") which is more suitable for containing other content such as
-a splash page. Instead, a HTTP Link header is used to direct user agents seeking out the <a data-link-type="dfn" href="#payment-method-manifest" id="ref-for-payment-method-manifest-3">payment method manifest</a> toward another location. <a data-link-type="biblio" href="#biblio-rfc5988">[RFC5988]</a></p>
+"<code>https://alicepay.com/</code>") which is more suitable for human-readable content. Instead, a
+HTTP Link header is used to direct user agents seeking out the <a data-link-type="dfn" href="#payment-method-manifest" id="ref-for-payment-method-manifest-3">payment method manifest</a> toward
+another location. <a data-link-type="biblio" href="#biblio-rfc5988">[RFC5988]</a></p>
     <p>For an example <a data-link-type="dfn" href="https://w3c.github.io/browser-payment-api/#dfn-payment-method">payment method</a> AlicePay, with <a data-link-type="dfn" href="https://w3c.github.io/webpayments-method-identifiers/#">payment method identifier</a> "<code>https://alicepay.com/</code>", a user agent might issue a request to that <a data-link-type="dfn" href="https://w3c.github.io/webpayments-method-identifiers/#">payment method identifier</a> URL as follows:</p>
 <pre>HEAD / HTTP/2
 Host: alicepay.com
@@ -1539,7 +1540,7 @@ following <a data-link-type="dfn" href="#payment-method-manifest" id="ref-for-pa
 <span class="p">}</span>
 </pre>
     <p>This indicates that, if the user agent does not have a <a data-link-type="dfn" href="https://w3c.github.io/browser-payment-api/#dfn-payment-apps">payment app</a> for AlicePay installed, it
-can get one by consulting the <a data-link-type="dfn" href="https://www.w3.org/TR/appmanifest/#dfn-manifest">web app manifest</a> at
+can locate one by consulting the <a data-link-type="dfn" href="https://www.w3.org/TR/appmanifest/#dfn-manifest">web app manifest</a> at
 "<code>https://alicepay.com/pay/app/webappmanifest.json</code>".</p>
     <p>It also indicates that, apart from this default payment app, AlicePay also allows <a data-link-type="dfn" href="https://w3c.github.io/browser-payment-api/#dfn-payment-apps">payment apps</a> hosted at the two indicated <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/browsers.html#concept-origin">origins</a> to be used for AlicePay. This means that if the user agent
 ever encounters payment apps hosted at those origins claiming support for AlicePay, it can allow
@@ -1580,7 +1581,7 @@ implementers process all <a data-link-type="dfn" href="#payment-method-manifest"
 A notable source is as the first parameter to the <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/browser-payment-api/#paymentrequest-methoddata-details-options">PaymentRequest(methodData, details, options)</a></code> constructor, but other sources are
 possible, in a user-agent specific manner.</p>
    <p class="example" id="example-local-scanning"><a class="self-link" href="#example-local-scanning"></a>A user agent could scan locally-installed <a data-link-type="dfn" href="https://w3c.github.io/browser-payment-api/#dfn-payment-apps">payment apps</a> on the device to see which <a data-link-type="dfn" href="https://w3c.github.io/browser-payment-api/#dfn-payment-method">payment methods</a> they support.</p>
-   <p class="example" id="example-business-deals"><a class="self-link" href="#example-business-deals"></a>A user agent could have built-in support for certain <a data-link-type="dfn" href="https://w3c.github.io/browser-payment-api/#dfn-payment-method">payment methods</a> as a result of business deals.</p>
+   <p class="example" id="example-out-of-band"><a class="self-link" href="#example-out-of-band"></a>A user agent could have built-in support for certain <a data-link-type="dfn" href="https://w3c.github.io/browser-payment-api/#dfn-payment-method">payment methods</a> as a result of out-of-band arrangements.</p>
    <p>Given such a list of <a data-link-type="dfn" href="https://w3c.github.io/webpayments-method-identifiers/#">payment method identifiers</a> <var>identifiers</var>, the user agent may at any time
 run the following steps, to <dfn data-dfn-type="dfn" data-export="" id="ingest-payment-method-manifests">ingest payment method manifests<a class="self-link" href="#ingest-payment-method-manifests"></a></dfn>:</p>
    <ol>
@@ -1857,7 +1858,7 @@ and registration with IANA.</p>
             except sections explicitly marked as non-normative, examples, and notes. <a data-link-type="biblio" href="#biblio-rfc2119">[RFC2119]</a> </p>
    <p> Examples in this specification are introduced with the words “for example”
             or are set apart from the normative text with <code>class="example"</code>, like this: </p>
-   <div class="example" id="example-ae2b6bc0"><a class="self-link" href="#example-ae2b6bc0"></a> This is an example of an informative example. </div>
+   <div class="example" id="example-example"><a class="self-link" href="#example-example"></a> This is an example of an informative example. </div>
    <p> Informative notes begin with the word “Note”
             and are set apart from the normative text with <code>class="note"</code>, like this: </p>
    <p class="note" role="note"> Note, this is an informative note. </p>

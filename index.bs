@@ -99,7 +99,7 @@ This specification intends to address the following use cases:
   particular payment app (e.g., via a digital signature for that app).
 
 * When the user has not yet installed a [=payment app=] for a [=payment method=], the user agent
-  can provide an improved user experience for procuring a payment app.
+  can provide an improved user experience for procuring one.
 
 This is accomplished via the requirement that every [=payment method=] whose
 [=payment method/identifier=] is a URL will provide a [=payment method manifest=] file in JSON
@@ -108,16 +108,16 @@ format containing two key pieces of information:
 * any default [=payment apps=] that are associated with this [=payment method=], referenced as
   [=absolute-URL strings=] giving the [=web app manifest/URL=] of their [=web app manifests=]; and
 
-* any other [=origins=] that are permitted to return back payment credentials for this
+* any other [=origins=] that are permitted to return payment credentials for this
   [=payment method=].
 
 <h3 id="accessing">Accessing the manifest</h3>
 
 The resource identified by the [=payment method identifier=] URL does not directly contain the
 machine-readable [=payment method manifest=]. It is often a generic URL (such as
-"<code>https://alicepay.com/</code>") which is more suitable for containing other content such as
-a splash page. Instead, a HTTP Link header is used to direct user agents seeking out the
-[=payment method manifest=] toward another location. [[RFC5988]]
+"<code>https://alicepay.com/</code>") which is more suitable for human-readable content. Instead, a
+HTTP Link header is used to direct user agents seeking out the [=payment method manifest=] toward
+another location. [[RFC5988]]
 
 For an example [=payment method=] AlicePay, with [=payment method identifier=]
 "<code>https://alicepay.com/</code>", a user agent might issue a request to that
@@ -153,7 +153,7 @@ following [=payment method manifest=] file at
 </pre>
 
 This indicates that, if the user agent does not have a [=payment app=] for AlicePay installed, it
-can get one by consulting the [=web app manifest=] at
+can locate one by consulting the [=web app manifest=] at
 "<code>https://alicepay.com/pay/app/webappmanifest.json</code>".
 
 It also indicates that, apart from this default payment app, AlicePay also allows [=payment apps=]
@@ -222,8 +222,8 @@ possible, in a user-agent specific manner.
 <p class="example" id="example-local-scanning">A user agent could scan locally-installed
 [=payment apps=] on the device to see which [=payment methods=] they support.</p>
 
-<p class="example" id="example-business-deals">A user agent could have built-in support for certain
-[=payment methods=] as a result of business deals.</p>
+<p class="example" id="example-out-of-band">A user agent could have built-in support for certain
+[=payment methods=] as a result of out-of-band arrangements.</p>
 
 Given such a list of [=payment method identifiers=] |identifiers|, the user agent may at any time
 run the following steps, to <dfn export>ingest payment method manifests</dfn>:
