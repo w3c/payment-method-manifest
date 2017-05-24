@@ -1176,7 +1176,7 @@ Possible extra rowspan handling
 		}
 	}
 </style>
-  <meta content="Bikeshed version f585bc61ca4b271944cd978b64d50b0939de2188" name="generator">
+  <meta content="Bikeshed version 5eac41affc3976771f238ed8f80db1c877b65b40" name="generator">
 <style>/* style-md-lists */
 
             /* This is a weird hack for me not yet following the commonmark spec
@@ -1427,7 +1427,7 @@ Possible extra rowspan handling
    <div data-fill-with="spec-metadata">
     <dl>
      <dt>Issue Tracking:
-     <dd><a href="https://github.com/domenic/payment-method-manifest/issues/">GitHub</a>
+     <dd><a href="https://github.com/w3c/payment-method-manifest/issues/">GitHub</a>
      <dt class="editor">Editors:
      <dd class="editor p-author h-card vcard"><span class="p-name fn">Dapeng Liu</span> (<span class="p-org org">Alibaba</span>)
      <dd class="editor p-author h-card vcard" data-editor-id="52873"><a class="p-name fn u-url url" href="https://domenic.me/">Domenic Denicola</a> (<a class="p-org org" href="https://www.google.com/">Google</a>) <a class="u-email email" href="mailto:d@domenic.me">d@domenic.me</a>
@@ -1557,7 +1557,7 @@ at most two items, with the possible keys "<code>default_applications</code>" an
 Each item in the array must be an <a data-link-type="dfn" href="https://url.spec.whatwg.org/#absolute-url-string">absolute-URL string</a> such that the resulting parsed <a data-link-type="dfn" href="https://url.spec.whatwg.org/#concept-url">URL</a>'s <a data-link-type="dfn" href="https://url.spec.whatwg.org/#concept-url-scheme">scheme</a> is "<code>https</code>".</p>
    <p>The value of the <code>supported_origins</code> key, if present, must be either the string
 "<code>*</code>", or a non-empty JSON array. In the latter case, each item in the array must be an <a data-link-type="dfn" href="https://url.spec.whatwg.org/#absolute-url-string">absolute-URL string</a> that represents an HTTPS <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/browsers.html#concept-origin">origin</a>. Formally, the string must be equal to
-either the <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/browsers.html#unicode-serialisation-of-an-origin">Unicode serialization</a> or <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/browsers.html#ascii-serialisation-of-an-origin">ASCII serialization</a> of the resulting parsed <a data-link-type="dfn" href="https://url.spec.whatwg.org/#concept-url">URL</a>'s <a data-link-type="dfn" href="https://url.spec.whatwg.org/#concept-url-origin">origin</a>.</p>
+either the <a data-link-type="dfn">Unicode serialization</a> or <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/browsers.html#ascii-serialisation-of-an-origin">ASCII serialization</a> of the resulting parsed <a data-link-type="dfn" href="https://url.spec.whatwg.org/#concept-url">URL</a>'s <a data-link-type="dfn" href="https://url.spec.whatwg.org/#concept-url-origin">origin</a>.</p>
    <p>Web developers must ensure that all of their <a data-link-type="dfn" href="#payment-method-manifest" id="ref-for-payment-method-manifest-5">payment method manifests</a> are <a data-link-type="dfn" href="#valid-payment-method-manifest" id="ref-for-valid-payment-method-manifest-1">valid</a>.</p>
    <p class="note" role="note">As with all conformance requirements, these are web-developer facing, and not
 implementer-facing. The exact processing model (given in <a href="#processing-model">§3 Processing model</a>) governs how
@@ -2063,7 +2063,6 @@ and registration with IANA.</p>
     <ul>
      <li><a href="https://html.spec.whatwg.org/multipage/browsers.html#ascii-serialisation-of-an-origin">ascii serialization of an origin</a>
      <li><a href="https://html.spec.whatwg.org/multipage/browsers.html#concept-origin">origin</a>
-     <li><a href="https://html.spec.whatwg.org/multipage/browsers.html#unicode-serialisation-of-an-origin">unicode serialization of an origin</a>
     </ul>
    <li>
     <a data-link-type="biblio">[INFRA]</a> defines the following terms:
@@ -2122,7 +2121,7 @@ and registration with IANA.</p>
   <h3 class="no-num no-ref heading settled" id="normative"><span class="content">Normative References</span><a class="self-link" href="#normative"></a></h3>
   <dl>
    <dt id="biblio-appmanifest">[APPMANIFEST]
-   <dd>Marcos Caceres; et al. <a href="https://www.w3.org/TR/appmanifest/">Web App Manifest</a>. URL: <a href="https://www.w3.org/TR/appmanifest/">https://www.w3.org/TR/appmanifest/</a>
+   <dd>Marcos Caceres; et al. <a href="https://w3c.github.io/manifest/">Web App Manifest</a>. URL: <a href="https://w3c.github.io/manifest/">https://w3c.github.io/manifest/</a>
    <dt id="biblio-ecmascript">[ECMASCRIPT]
    <dd><a href="https://tc39.github.io/ecma262/">ECMAScript Language Specification</a>. URL: <a href="https://tc39.github.io/ecma262/">https://tc39.github.io/ecma262/</a>
    <dt id="biblio-encoding">[ENCODING]
@@ -2134,9 +2133,9 @@ and registration with IANA.</p>
    <dt id="biblio-infra">[INFRA]
    <dd>Anne van Kesteren; Domenic Denicola. <a href="https://infra.spec.whatwg.org/">Infra Standard</a>. Living Standard. URL: <a href="https://infra.spec.whatwg.org/">https://infra.spec.whatwg.org/</a>
    <dt id="biblio-payment-method-id">[PAYMENT-METHOD-ID]
-   <dd>Adrian Bateman; Zach Koch; Roy McElmurry. <a href="https://www.w3.org/TR/payment-method-id/">Payment Method Identifiers</a>. URL: <a href="https://www.w3.org/TR/payment-method-id/">https://www.w3.org/TR/payment-method-id/</a>
+   <dd>Adrian Bateman; Zach Koch; Roy McElmurry. <a href="https://w3c.github.io/webpayments-method-identifiers/">Payment Method Identifiers</a>. URL: <a href="https://w3c.github.io/webpayments-method-identifiers/">https://w3c.github.io/webpayments-method-identifiers/</a>
    <dt id="biblio-payment-request">[PAYMENT-REQUEST]
-   <dd>Adrian Bateman; et al. <a href="https://www.w3.org/TR/payment-request/">Payment Request API</a>. URL: <a href="https://www.w3.org/TR/payment-request/">https://www.w3.org/TR/payment-request/</a>
+   <dd>Adrian Bateman; et al. <a href="https://w3c.github.io/browser-payment-api/">Payment Request API</a>. URL: <a href="https://w3c.github.io/browser-payment-api/">https://w3c.github.io/browser-payment-api/</a>
    <dt id="biblio-promises-guide">[PROMISES-GUIDE]
    <dd>Domenic Denicola. <a href="https://www.w3.org/2001/tag/doc/promises-guide">Writing Promise-Using Specifications</a>. 16 February 2016. Finding of the W3C TAG. URL: <a href="https://www.w3.org/2001/tag/doc/promises-guide">https://www.w3.org/2001/tag/doc/promises-guide</a>
    <dt id="biblio-rfc2119">[RFC2119]
