@@ -2,7 +2,7 @@
 Title: Payment Method Manifest
 Group: W3C
 Shortname: payment-method-manifest
-Repository: domenic/payment-method-manifest
+Repository: w3c/payment-method-manifest
 Status: LD
 Editor: Dapeng Liu, Alibaba
 Editor: Domenic Denicola, w3cid 52873, Google https://www.google.com/, d@domenic.me, https://domenic.me/
