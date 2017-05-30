@@ -182,9 +182,7 @@ Each item in the array must be an [=absolute-URL string=] such that the resultin
 The value of the <code>supported_origins</code> key, if present, must be either the string
 "<code>*</code>", or a non-empty JSON array. In the latter case, each item in the array must be an
 [=absolute-URL string=] that represents an HTTPS [=origin=]. Formally, the string must be equal to
-either the [=Unicode serialization of an origin|Unicode serialization=] or
-[=ASCII serialization of an origin|ASCII serialization=] of the resulting parsed [=URL=]'s
-[=url/origin=].
+the [=serialization of an origin|serialization=] of the resulting parsed [=URL=]'s [=url/origin=].
 
 Web developers must ensure that all of their [=payment method manifests=] are [=valid=].
 
