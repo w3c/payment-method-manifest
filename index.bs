@@ -17,7 +17,7 @@ Indent: 2
 </pre>
 
 <pre class="anchors">
-urlPrefix: https://w3c.github.io/browser-payment-api/; spec: PAYMENT-REQUEST
+urlPrefix: https://w3c.github.io/payment-request/; spec: PAYMENT-REQUEST
   type: dfn
     text: payment method; url: #dfn-payment-method
     text: payment app; url: #dfn-payment-apps
@@ -28,7 +28,7 @@ urlPrefix: https://www.w3.org/TR/appmanifest/; spec: APPMANIFEST; type: dfn
   text: steps for obtaining a web app manifest; url: #dfn-steps-for-obtaining-a-manifest
   text: steps for processing a web app manifest; url: #dfn-steps-for-processing-a-manifest
   text: processed web app manifest; url: #dfn-processed-manifest
-url: https://w3c.github.io/webpayments-method-identifiers/#; spec: PAYMENT-METHOD-ID; type: dfn
+url: https://w3c.github.io/payment-method-id/#; spec: PAYMENT-METHOD-ID; type: dfn
   text: identifier; for: payment method
   text: payment method identifier
 urlPrefix: https://tc39.github.io/ecma262/; spec: ECMASCRIPT
@@ -49,12 +49,14 @@ urlPrefix: https://tc39.github.io/ecma262/; spec: ECMASCRIPT
       "Adrian Hope-Bailie",
       "Tommy Thorsen",
       "Adam Roach",
-      "Jason Normore",
-      "Ian Jacobs"
+      "Andre Lyver",
+      "Ian Jacobs",
+      "Rouslan Solomakhin",
+      "Jinho Bang"
     ],
-    "href": "https://w3c.github.io/webpayments-payment-apps-api/",
+    "href": "https://w3c.github.io/payment-handler/",
     "title": "Payment Handler API",
-    "status": "ED",
+    "status": "FPWD",
     "publisher": "W3C",
     "deliveredBy": [
       "https://www.w3.org/Payments/WG/"
@@ -91,25 +93,18 @@ standing of any kind and does not represent the support or consensus of any stan
 This specification intends to address the following use cases:
 
 * The owner of a [=payment method=] wishes to authorize only certain parties to distribute
-  [=payment apps=] that are capable of implementing the payment method. In this use case, the
-  browser helps to ensure that for that payment method, the user can only invoke payment apps from
-  parties authorized by the owner of the payment method.
-
-* In addition, the owner of a [=payment method=] wishes to confirm the authenticity of a
+  [=payment apps=] that are capable of implementing the payment method. The
+  user agent helps to ensure that for that payment method, the user can only invoke payment apps from
+  parties authorized by the owner of the payment method. In addition, the owner of a [=payment method=] wishes to confirm the authenticity of a
   particular payment app (e.g., via a digital signature for that app).
 
 * When the user has not yet installed a [=payment app=] for a [=payment method=], the user agent
   can provide an improved user experience for procuring one.
 
-This is accomplished via the requirement that every [=payment method=] whose
-[=payment method/identifier=] is a URL will provide a [=payment method manifest=] file in JSON
-format containing two key pieces of information:
+This is accomplished via a [=payment method manifest=]. That file provides two pieces that figure into the user agent determination of whether a [=payment app=] matches for a given [=payment method=]:
 
-* any default [=payment apps=] that are associated with this [=payment method=], referenced as
-  [=absolute-URL strings=] giving the [=web app manifest/URL=] of their [=web app manifests=]; and
-
-* any other [=origins=] that are permitted to return payment credentials for this
-  [=payment method=].
+* any [=payment apps=] from the current [=origin=] authorized to fulfill the [=payment method=]; and
+* any other [=origins=] authorized to distribute payment apps for the [=payment method=].
 
 <h3 id="accessing">Accessing the manifest</h3>
 
@@ -138,7 +133,7 @@ The server would then respond:
 
 <h3 id="manifest-example">Example manifest file</h3>
 
-Continuing our example from [[#accessing]], the AlicePay [=payment method=] could provide the
+Continuing our example from [[#accessing]], the AlicePay [=payment method=] provides the
 following [=payment method manifest=] file at
 <code>https://alicepay.com/pay/payment-manifest.json</code>:
 
@@ -184,11 +179,10 @@ The value of the <code>supported_origins</code> key, if present, must be either 
 [=absolute-URL string=] that represents an HTTPS [=origin=]. Formally, the string must be equal to
 the [=serialization of an origin|serialization=] of the resulting parsed [=URL=]'s [=url/origin=].
 
-Web developers must ensure that all of their [=payment method manifests=] are [=valid=].
-
-<p class="note">As with all conformance requirements, these are web-developer facing, and not
-implementer-facing. The exact processing model (given in [[#processing-model]]) governs how
+<p>The exact processing model (given in [[#processing-model]]) governs how
 implementers process all [=payment method manifest=] files, including invalid ones.</p>
+
+<p class="note">Web developers are responsible for ensuring that all of their [=payment method manifests=] are [=valid=].</p>
 
 <div class="example" id="example-invalid-manifest">
   The following [=payment method manifest=] is not [=valid=], but the currently-specified processing
@@ -212,18 +206,19 @@ implementers process all [=payment method manifest=] files, including invalid on
 
 <h3 id="ingest">Ingesting payment method manifests</h3>
 
-A user agent is expected to receive, from various sources, a list of [=payment method identifiers=].
-A notable source is as the first parameter to the
-{{PaymentRequest/PaymentRequest(methodData, details, options)}} constructor, but other sources are
-possible, in a user-agent specific manner.
+<p>This specification describes how to locate a [=payment method manifest=]
+given a [=payment method identifier=].</p>
 
-<p class="example" id="example-local-scanning">A user agent could scan locally-installed
-[=payment apps=] on the device to see which [=payment methods=] they support.</p>
+<div class="note">
+<p>This specification does not restrict how a user agent procures a [=payment method identifier=]. Sources might include, for example:</p>
 
-<p class="example" id="example-out-of-band">A user agent could have built-in support for certain
-[=payment methods=] as a result of out-of-band arrangements.</p>
+* A list of [=payment method identifiers=] passed as the first parameter
+of the {{PaymentRequest/PaymentRequest(methodData, details, options)}} constructor.
+* [=payment apps=] installed locally on a device.
+* built-in user agent support for [=payment methods=] as a result of out-of-band arrangements.
+</div>
 
-Given such a list of [=payment method identifiers=] |identifiers|, the user agent may at any time
+Given a list of [=payment method identifiers=] |identifiers|, the user agent may at any time
 run the following steps, to <dfn export>ingest payment method manifests</dfn>:
 
 1. [=Fetch payment method manifests=], given |identifiers|, and wait for this to asynchronously
@@ -240,8 +235,7 @@ run the following steps, to <dfn export>ingest payment method manifests</dfn>:
        given |webAppManifestString|.
 
        <p class="note">The [=steps for processing a web app manifest=] are very forgiving and will
-       return empty objects or objects missing crucial fields instead of failing. User agents will
-       need to separately validate the [=processed web app manifest=] to ensure it contains enough
+       return empty objects or objects missing crucial fields instead of failing. User agents separately validate the [=processed web app manifest=] to ensure it contains enough
        data for their purposes in the next step.</p>
 
     1. In a user-agent-specific way, use the resulting [=processed web app manifest=]
@@ -404,6 +398,10 @@ perform the following steps. This algorithm will asynchronously complete with ei
    1. [=Upon fulfillment=] of |promise| with a [=byte sequence=] |bytes|, asynchronously complete
       this algorithm with the result of [=UTF-8 decode|UTF-8 decoding=] |bytes|.
    1. [=Upon rejection=] of |promise|, asynchronously complete this algorithm with failure.
+
+<h2 id="security">Security and privacy considerations</h2>
+
+<p class="issue"><a href="https://github.com/w3c/payment-method-manifest/issues/11">Issue 11</a>: How will matching work in the absence of a manifest or in case of error?</p>
 
 <h2 id="iana">IANA considerations</h2>
 
