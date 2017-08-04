@@ -408,7 +408,7 @@ and registration with IANA.
    Payments ecosystem.
 
 : Reference
-:: <a href="https://domenic.github.io/payment-method-manifest/">https://domenic.github.io/payment-method-manifest/</a>
+:: <a href="https://w3c.github.io/payment-method-manifest/">https://w3c.github.io/payment-method-manifest/</a>
 
 : Notes
 :: See [[#fetch-pmm]] for the specific manner in which such links are expected to be fetched, and
