@@ -13,11 +13,12 @@ Abstract: participates in the Web Payments ecosystem, and how such files are to 
 Default Ref Status: current
 Complain About: accidental-2119 true, missing-example-ids true
 Assume Explicit For: true
+Inline GitHub Issues: title
 Indent: 2
 </pre>
 
 <pre class="anchors">
-urlPrefix: https://w3c.github.io/browser-payment-api/; spec: PAYMENT-REQUEST
+urlPrefix: https://w3c.github.io/payment-request/; spec: PAYMENT-REQUEST
   type: dfn
     text: payment method; url: #dfn-payment-method
     text: payment app; url: #dfn-payment-apps
@@ -28,7 +29,7 @@ urlPrefix: https://www.w3.org/TR/appmanifest/; spec: APPMANIFEST; type: dfn
   text: steps for obtaining a web app manifest; url: #dfn-steps-for-obtaining-a-manifest
   text: steps for processing a web app manifest; url: #dfn-steps-for-processing-a-manifest
   text: processed web app manifest; url: #dfn-processed-manifest
-url: https://w3c.github.io/webpayments-method-identifiers/#; spec: PAYMENT-METHOD-ID; type: dfn
+url: https://w3c.github.io/payment-method-id/#; spec: PAYMENT-METHOD-ID; type: dfn
   text: identifier; for: payment method
   text: payment method identifier
 urlPrefix: https://tc39.github.io/ecma262/; spec: ECMASCRIPT
@@ -40,27 +41,6 @@ urlPrefix: https://tc39.github.io/ecma262/; spec: ECMASCRIPT
     text: Get; url: #sec-get-o-p
     text: IsArray; url: #sec-isarray
     text: Type; url: #sec-ecmascript-data-types-and-values
-</pre>
-
-<pre class="biblio">
-{
-  "PAYMENT-HANDLER": {
-    "authors": [
-      "Adrian Hope-Bailie",
-      "Tommy Thorsen",
-      "Adam Roach",
-      "Jason Normore",
-      "Ian Jacobs"
-    ],
-    "href": "https://w3c.github.io/webpayments-payment-apps-api/",
-    "title": "Payment Handler API",
-    "status": "ED",
-    "publisher": "W3C",
-    "deliveredBy": [
-      "https://www.w3.org/Payments/WG/"
-    ]
-  }
-}
 </pre>
 
 <!-- TODO: move all this to appropriate working group files in the Bikeshed repo if/when we become
@@ -404,6 +384,14 @@ perform the following steps. This algorithm will asynchronously complete with ei
    1. [=Upon fulfillment=] of |promise| with a [=byte sequence=] |bytes|, asynchronously complete
       this algorithm with the result of [=UTF-8 decode|UTF-8 decoding=] |bytes|.
    1. [=Upon rejection=] of |promise|, asynchronously complete this algorithm with failure.
+
+<h2 id="security">Security and privacy considerations</h2>
+
+Issue(1):
+
+Issue(7):
+
+Issue(11):
 
 <h2 id="iana">IANA considerations</h2>
 
