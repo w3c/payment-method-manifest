@@ -33,8 +33,6 @@ url: https://w3c.github.io/payment-method-id/#; spec: PAYMENT-METHOD-ID; type: d
   text: identifier; for: payment method
   text: payment method identifier
 urlPrefix: https://tc39.github.io/ecma262/; spec: ECMASCRIPT
-  text: %JSON%; type: interface; url: #sec-json-object
-  text: parse(); type: method; for: %JSON%; url: #sec-json.parse
   text: JavaScript realm; type: dfn; url: #realm
   type: abstract-op;
     text: CreateListFromArrayLike; url: #sec-createlistfromarraylike
@@ -307,10 +305,8 @@ To <dfn export lt="validate and parse the payment method manifest">validate and 
 [=byte sequence=] |bytes| purporting to contain a payment method manifest, perform the following
 steps. The result will either be a [=parsed payment method manifest=], or failure.
 
-1. Let |string| be the result of [=UTF-8 decode|UTF-8 decoding=] |bytes|.
-1. Let |parsed| be the result of invoking the initial value of the {{%JSON%/parse()}} method of
-   the {{%JSON%}} object on |string|, in a user-agent defined [=JavaScript realm=]. If this throws
-   an exception, return failure.
+1. Let |parsed| be the result of [=parse JSON from bytes|parsing JSON from bytes=] given |bytes|, in
+   a user-agent defined [=JavaScript realm=]. If this throws an exception, return failure.
 1. If <a abstract-op>Type</a>(|parsed|) is not Object, return failure.
 1. Let |defaultApps| be an empty [=ordered set=].
 1. Let |defaultAppsValue| be <a abstract-op>Get</a>(|parsed|, "default_applications").
