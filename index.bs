@@ -153,9 +153,10 @@ the [=serialization of an origin|serialization=] of the resulting parsed [=URL=]
 
 Web developers must ensure that all of their [=payment method manifests=] are [=valid=].
 
-<p class="note">As with all conformance requirements, these are web-developer facing, and not
-implementer-facing. The exact processing model (given in [[#processing-model]]) governs how
-implementers process all [=payment method manifest=] files, including invalid ones.</p>
+<p class="note">As with all conformance requirements on the contents of files, these are
+web-developer facing, and not implementer-facing. The exact processing model (given in
+[[#processing-model]]) governs how implementers process all [=payment method manifest=] files,
+including invalid ones.</p>
 
 <div class="example" id="example-invalid-manifest">
   The following [=payment method manifest=] is not [=valid=], but the currently-specified processing
