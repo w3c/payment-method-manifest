@@ -1,6 +1,6 @@
 <pre class="metadata">
 Title: Payment Method Manifest
-Group: W3C
+Group: web-payments
 Shortname: payment-method-manifest
 Repository: w3c/payment-method-manifest
 Status: LD
@@ -14,6 +14,7 @@ Default Ref Status: current
 Complain About: accidental-2119 true, missing-example-ids true
 Assume Explicit For: true
 Inline GitHub Issues: title
+Boilerplate: omit issues-index
 Indent: 2
 </pre>
 
@@ -41,22 +42,10 @@ urlPrefix: https://tc39.github.io/ecma262/; spec: ECMASCRIPT
     text: Type; url: #sec-ecmascript-data-types-and-values
 </pre>
 
-<!-- TODO: move all this to appropriate working group files in the Bikeshed repo if/when we become
-     official. -->
-<div boilerplate="copyright">
-This document is licensed under a <a href="https://creativecommons.org/licenses/by/3.0/">Creative
-Commons Attribution 3.0 License</a>.
-</div>
-
 <div boilerplate="status">
 This document is merely a public working draft of a potential specification. It has no official
 standing of any kind and does not represent the support or consensus of any standards organisation.
 </div>
-
-<h2 class="no-num no-toc no-ref" id="status">Status of this document</h2>
-<div data-fill-with="status"></div>
-
-<!-- END TODO -->
 
 <div class="non-normative">
 

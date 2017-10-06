@@ -1,8 +1,8 @@
 <!doctype html><html lang="en">
  <head>
   <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
-  <title>Payment Method Manifest</title>
   <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport">
+  <title>Payment Method Manifest</title>
 <style data-fill-with="stylesheet">/******************************************************************************
  *                   Style sheet for the W3C specifications                   *
  *
@@ -1176,8 +1176,9 @@ Possible extra rowspan handling
 		}
 	}
 </style>
+  <link href="https://www.w3.org/StyleSheets/TR/2016/W3C-LD" rel="stylesheet" type="text/css">
   <meta content="Bikeshed version 3ee78e75729309d4dfc4793df74c38e4ae785832" name="generator">
-  <meta content="27a7f4ace7c5d98a1ad5fe91b6a1563f253a9762" name="document-revision">
+  <meta content="4ec6c4064a9403237adeafeac1291fb5777f2ba7" name="document-revision">
 <style>/* style-md-lists */
 
 /* This is a weird hack for me not yet following the commonmark spec
@@ -1422,14 +1423,13 @@ pre.highlight, pre > code.highlight { display: block; padding: 1em; margin: .5em
 </style>
  <body class="h-entry">
   <div class="head">
-   <p data-fill-with="logo"></p>
+   <p data-fill-with="logo"><a class="logo" href="https://www.w3.org/"> <img alt="W3C" height="48" src="https://www.w3.org/StyleSheets/TR/2016/logos/W3C" width="72"> </a> </p>
    <h1 class="p-name no-ref" id="title">Payment Method Manifest</h1>
    <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">Living Document, <time class="dt-updated" datetime="2017-10-06">6 October 2017</time></span></h2>
    <div data-fill-with="spec-metadata">
     <dl>
      <dt>Issue Tracking:
      <dd><a href="https://github.com/w3c/payment-method-manifest/issues/">GitHub</a>
-     <dd><a href="#issues-index">Inline In Spec</a>
      <dt class="editor">Editors:
      <dd class="editor p-author h-card vcard"><span class="p-name fn">Dapeng Liu</span> (<span class="p-org org">Alibaba</span>)
      <dd class="editor p-author h-card vcard" data-editor-id="52873"><a class="p-name fn u-url url" href="https://domenic.me/">Domenic Denicola</a> (<a class="p-org org" href="https://www.google.com/">Google</a>) <a class="u-email email" href="mailto:d@domenic.me">d@domenic.me</a>
@@ -1437,14 +1437,16 @@ pre.highlight, pre > code.highlight { display: block; padding: 1em; margin: .5em
     </dl>
    </div>
    <div data-fill-with="warning"></div>
-   <p class="copyright" data-fill-with="copyright"> This document is licensed under a <a href="https://creativecommons.org/licenses/by/3.0/">Creative
-Commons Attribution 3.0 License</a>. </p>
+   <p class="copyright" data-fill-with="copyright"><a href="http://www.w3.org/Consortium/Legal/ipr-notice#Copyright">Copyright</a> © 2017 <a href="http://www.w3.org/"><abbr title="World Wide Web Consortium">W3C</abbr></a><sup>®</sup> (<a href="http://www.csail.mit.edu/"><abbr title="Massachusetts Institute of Technology">MIT</abbr></a>, <a href="http://www.ercim.eu/"><abbr title="European Research Consortium for Informatics and Mathematics">ERCIM</abbr></a>, <a href="http://www.keio.ac.jp/">Keio</a>, <a href="http://ev.buaa.edu.cn/">Beihang</a>). W3C <a href="http://www.w3.org/Consortium/Legal/ipr-notice#Legal_Disclaimer">liability</a>, <a href="http://www.w3.org/Consortium/Legal/ipr-notice#W3C_Trademarks">trademark</a> and <a href="http://www.w3.org/Consortium/Legal/2015/copyright-software-and-document" rel="license">permissive document license</a> rules apply. </p>
    <hr title="Separator for header">
   </div>
   <div class="p-summary" data-fill-with="abstract">
    <h2 class="no-num no-toc no-ref heading settled" id="abstract"><span class="content">Abstract</span></h2>
    <p>This specification defines the machine-readable manifest file, known as a <dfn class="dfn-paneled" data-dfn-type="dfn" data-export="" id="payment-method-manifest">payment method manifest</dfn>, describing how a <a data-link-type="dfn" href="https://w3c.github.io/payment-request/#dfn-payment-method" id="ref-for-dfn-payment-method">payment method</a> participates in the Web Payments ecosystem, and how such files are to be used.</p>
   </div>
+  <h2 class="no-num no-toc no-ref heading settled" id="status"><span class="content">Status of this document</span></h2>
+  <div data-fill-with="status"> This document is merely a public working draft of a potential specification. It has no official
+standing of any kind and does not represent the support or consensus of any standards organisation. </div>
   <div data-fill-with="at-risk"></div>
   <nav data-fill-with="table-of-contents" id="toc">
    <h2 class="no-num no-toc no-ref" id="contents">Table of Contents</h2>
@@ -1472,7 +1474,6 @@ Commons Attribution 3.0 License</a>. </p>
       <li><a href="#payment-method-manifest-link"><span class="secno">5.1</span> <span class="content">The <code>payment-method-manifest</code> link relation</span></a>
      </ol>
     <li><a href="#acknowledgments"><span class="secno"></span> <span class="content">Acknowledgments</span></a>
-    <li><a href="#conformance"><span class="secno"></span> <span class="content"> Conformance</span></a>
     <li>
      <a href="#index"><span class="secno"></span> <span class="content">Index</span></a>
      <ol class="toc">
@@ -1485,13 +1486,9 @@ Commons Attribution 3.0 License</a>. </p>
       <li><a href="#normative"><span class="secno"></span> <span class="content">Normative References</span></a>
       <li><a href="#informative"><span class="secno"></span> <span class="content">Informative References</span></a>
      </ol>
-    <li><a href="#issues-index"><span class="secno"></span> <span class="content">Issues Index</span></a>
    </ol>
   </nav>
   <main>
-   <h2 class="no-num no-toc no-ref heading settled" id="status"><span class="content">Status of this document</span></h2>
-   <div data-fill-with="status"> This document is merely a public working draft of a potential specification. It has no official
-standing of any kind and does not represent the support or consensus of any standards organisation. </div>
    <div class="non-normative">
     <h2 class="heading settled" data-level="1" id="introduction"><span class="secno">1. </span><span class="content">Introduction</span><a class="self-link" href="#introduction"></a></h2>
     <p><em>This section and its sub-sections are non-normative.</em></p>
@@ -1850,153 +1847,9 @@ and registration with IANA.</p>
    </dl>
    <h2 class="no-num heading settled" id="acknowledgments"><span class="content">Acknowledgments</span><a class="self-link" href="#acknowledgments"></a></h2>
    <p><a href="#processing-model">§3 Processing model</a> is based heavily on algorithms originally outlined by Rouslan Solomakhin.</p>
+   <p id="back-to-top" role="navigation"><a href="#toc"><abbr title="Back to Top">↑</abbr></a></p>
+<script src="https://www.w3.org/scripts/TR/2016/fixup.js"></script>
   </main>
-  <div data-fill-with="conformance">
-   <h2 class="no-ref no-num heading settled" id="conformance"><span class="content"> Conformance</span><a class="self-link" href="#conformance"></a></h2>
-   <p> Conformance requirements are expressed with a combination of descriptive assertions and RFC 2119 terminology.
-            The key words “MUST”, “MUST NOT”, “REQUIRED”, “SHALL”, “SHALL NOT”, “SHOULD”, “SHOULD NOT”, “RECOMMENDED”, “MAY”, and “OPTIONAL”
-            in the normative parts of this document
-            are to be interpreted as described in RFC 2119.
-            However, for readability,
-            these words do not appear in all uppercase letters in this specification. </p>
-   <p> All of the text of this specification is normative
-            except sections explicitly marked as non-normative, examples, and notes. <a data-link-type="biblio" href="#biblio-rfc2119">[RFC2119]</a> </p>
-   <p> Examples in this specification are introduced with the words “for example”
-            or are set apart from the normative text with <code>class="example"</code>, like this: </p>
-   <div class="example" id="example-example"><a class="self-link" href="#example-example"></a> This is an example of an informative example. </div>
-   <p> Informative notes begin with the word “Note”
-            and are set apart from the normative text with <code>class="note"</code>, like this: </p>
-   <p class="note" role="note"> Note, this is an informative note. </p>
-  </div>
-<script>
-(function() {
-  "use strict";
-  var collapseSidebarText = '<span aria-hidden="true">←</span> '
-                          + '<span>Collapse Sidebar</span>';
-  var expandSidebarText   = '<span aria-hidden="true">→</span> '
-                          + '<span>Pop Out Sidebar</span>';
-  var tocJumpText         = '<span aria-hidden="true">↑</span> '
-                          + '<span>Jump to Table of Contents</span>';
-
-  var sidebarMedia = window.matchMedia('screen and (min-width: 78em)');
-  var autoToggle   = function(e){ toggleSidebar(e.matches) };
-  if(sidebarMedia.addListener) {
-    sidebarMedia.addListener(autoToggle);
-  }
-
-  function toggleSidebar(on) {
-    if (on == undefined) {
-      on = !document.body.classList.contains('toc-sidebar');
-    }
-
-    /* Don’t scroll to compensate for the ToC if we’re above it already. */
-    var headY = 0;
-    var head = document.querySelector('.head');
-    if (head) {
-      // terrible approx of "top of ToC"
-      headY += head.offsetTop + head.offsetHeight;
-    }
-    var skipScroll = window.scrollY < headY;
-
-    var toggle = document.getElementById('toc-toggle');
-    var tocNav = document.getElementById('toc');
-    if (on) {
-      var tocHeight = tocNav.offsetHeight;
-      document.body.classList.add('toc-sidebar');
-      document.body.classList.remove('toc-inline');
-      toggle.innerHTML = collapseSidebarText;
-      if (!skipScroll) {
-        window.scrollBy(0, 0 - tocHeight);
-      }
-      tocNav.focus();
-      sidebarMedia.addListener(autoToggle); // auto-collapse when out of room
-    }
-    else {
-      document.body.classList.add('toc-inline');
-      document.body.classList.remove('toc-sidebar');
-      toggle.innerHTML = expandSidebarText;
-      if (!skipScroll) {
-        window.scrollBy(0, tocNav.offsetHeight);
-      }
-      if (toggle.matches(':hover')) {
-        /* Unfocus button when not using keyboard navigation,
-           because I don’t know where else to send the focus. */
-        toggle.blur();
-      }
-    }
-  }
-
-  function createSidebarToggle() {
-    /* Create the sidebar toggle in JS; it shouldn’t exist when JS is off. */
-    var toggle = document.createElement('a');
-      /* This should probably be a button, but appearance isn’t standards-track.*/
-    toggle.id = 'toc-toggle';
-    toggle.class = 'toc-toggle';
-    toggle.href = '#toc';
-    toggle.innerHTML = collapseSidebarText;
-
-    sidebarMedia.addListener(autoToggle);
-    var toggler = function(e) {
-      e.preventDefault();
-      sidebarMedia.removeListener(autoToggle); // persist explicit off states
-      toggleSidebar();
-      return false;
-    }
-    toggle.addEventListener('click', toggler, false);
-
-
-    /* Get <nav id=toc-nav>, or make it if we don’t have one. */
-    var tocNav = document.getElementById('toc-nav');
-    if (!tocNav) {
-      tocNav = document.createElement('p');
-      tocNav.id = 'toc-nav';
-      /* Prepend for better keyboard navigation */
-      document.body.insertBefore(tocNav, document.body.firstChild);
-    }
-    /* While we’re at it, make sure we have a Jump to Toc link. */
-    var tocJump = document.getElementById('toc-jump');
-    if (!tocJump) {
-      tocJump = document.createElement('a');
-      tocJump.id = 'toc-jump';
-      tocJump.href = '#toc';
-      tocJump.innerHTML = tocJumpText;
-      tocNav.appendChild(tocJump);
-    }
-
-    tocNav.appendChild(toggle);
-  }
-
-  var toc = document.getElementById('toc');
-  if (toc) {
-    createSidebarToggle();
-    toggleSidebar(sidebarMedia.matches);
-
-    /* If the sidebar has been manually opened and is currently overlaying the text
-       (window too small for the MQ to add the margin to body),
-       then auto-close the sidebar once you click on something in there. */
-    toc.addEventListener('click', function(e) {
-      if(e.target.tagName.toLowerCase() == "a" && document.body.classList.contains('toc-sidebar') && !sidebarMedia.matches) {
-        toggleSidebar(false);
-      }
-    }, false);
-  }
-  else {
-    console.warn("Can’t find Table of Contents. Please use <nav id='toc'> around the ToC.");
-  }
-
-  /* Wrap tables in case they overflow */
-  var tables = document.querySelectorAll(':not(.overlarge) > table.data, :not(.overlarge) > table.index');
-  var numTables = tables.length;
-  for (var i = 0; i < numTables; i++) {
-    var table = tables[i];
-    var wrapper = document.createElement('div');
-    wrapper.className = 'overlarge';
-    table.parentNode.insertBefore(wrapper, table);
-    wrapper.appendChild(table);
-  }
-
-})();
-</script>
   <h2 class="no-num no-ref heading settled" id="index"><span class="content">Index</span><a class="self-link" href="#index"></a></h2>
   <h3 class="no-num no-ref heading settled" id="index-defined-here"><span class="content">Terms defined by this specification</span><a class="self-link" href="#index-defined-here"></a></h3>
   <ul class="index">
@@ -2142,8 +1995,6 @@ and registration with IANA.</p>
    <dd>Adrian Bateman; et al. <a href="https://w3c.github.io/payment-request/">Payment Request API</a>. URL: <a href="https://w3c.github.io/payment-request/">https://w3c.github.io/payment-request/</a>
    <dt id="biblio-promises-guide">[PROMISES-GUIDE]
    <dd>Domenic Denicola. <a href="https://www.w3.org/2001/tag/doc/promises-guide">Writing Promise-Using Specifications</a>. 16 February 2016. Finding of the W3C TAG. URL: <a href="https://www.w3.org/2001/tag/doc/promises-guide">https://www.w3.org/2001/tag/doc/promises-guide</a>
-   <dt id="biblio-rfc2119">[RFC2119]
-   <dd>S. Bradner. <a href="https://tools.ietf.org/html/rfc2119">Key words for use in RFCs to Indicate Requirement Levels</a>. March 1997. Best Current Practice. URL: <a href="https://tools.ietf.org/html/rfc2119">https://tools.ietf.org/html/rfc2119</a>
    <dt id="biblio-rfc5988">[RFC5988]
    <dd>M. Nottingham. <a href="https://tools.ietf.org/html/rfc5988">Web Linking</a>. October 2010. Proposed Standard. URL: <a href="https://tools.ietf.org/html/rfc5988">https://tools.ietf.org/html/rfc5988</a>
    <dt id="biblio-url">[URL]
@@ -2154,12 +2005,6 @@ and registration with IANA.</p>
    <dt id="biblio-payment-handler">[PAYMENT-HANDLER]
    <dd>Adrian Hope-Bailie; et al. <a href="https://w3c.github.io/payment-handler/">Payment Handler API</a>. URL: <a href="https://w3c.github.io/payment-handler/">https://w3c.github.io/payment-handler/</a>
   </dl>
-  <h2 class="no-num no-ref heading settled" id="issues-index"><span class="content">Issues Index</span><a class="self-link" href="#issues-index"></a></h2>
-  <div style="counter-reset:issue">
-   <div class="issue no-marker"><a class="marker" href="https://github.com/w3c/payment-method-manifest/issues/1" style="text-transform:none">w3c/payment-method-manifest/1</a><a href="https://github.com/w3c/payment-method-manifest/issues/1">Should these fetches have a client? (impacts CSP, CORS, ...)</a><a href="#issue-d41d8cd9"> ↵ </a></div>
-   <div class="issue no-marker"><a class="marker" href="https://github.com/w3c/payment-method-manifest/issues/7" style="text-transform:none">w3c/payment-method-manifest/7</a><a href="https://github.com/w3c/payment-method-manifest/issues/7">Privacy considerations of retrieving a payment method manifest</a><a href="#issue-d41d8cd9①"> ↵ </a></div>
-   <div class="issue no-marker"><a class="marker" href="https://github.com/w3c/payment-method-manifest/issues/11" style="text-transform:none">w3c/payment-method-manifest/11</a><a href="https://github.com/w3c/payment-method-manifest/issues/11">Matching payment apps and security in a world of payment method manifests</a><a href="#issue-d41d8cd9②"> ↵ </a></div>
-  </div>
   <aside class="dfn-panel" data-for="payment-method-manifest">
    <b><a href="#payment-method-manifest">#payment-method-manifest</a></b><b>Referenced in:</b>
    <ul>
