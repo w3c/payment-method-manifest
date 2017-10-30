@@ -1177,8 +1177,8 @@ Possible extra rowspan handling
 	}
 </style>
   <link href="https://www.w3.org/StyleSheets/TR/2016/W3C-LD" rel="stylesheet" type="text/css">
-  <meta content="Bikeshed version 3ee78e75729309d4dfc4793df74c38e4ae785832" name="generator">
-  <meta content="564917f5616b6e2deacb8ab4b9312e8da5114a6f" name="document-revision">
+  <meta content="Bikeshed version 4679d5ca787d737883d9c905dd138257fc2cec85" name="generator">
+  <meta content="a488ce31a2c99e5cd67fb9a32b3e006aa2bb091f" name="document-revision">
 <style>/* style-md-lists */
 
 /* This is a weird hack for me not yet following the commonmark spec
@@ -1425,7 +1425,7 @@ pre.highlight, pre > code.highlight { display: block; padding: 1em; margin: .5em
   <div class="head">
    <p data-fill-with="logo"><a class="logo" href="https://www.w3.org/"> <img alt="W3C" height="48" src="https://www.w3.org/StyleSheets/TR/2016/logos/W3C" width="72"> </a> </p>
    <h1 class="p-name no-ref" id="title">Payment Method Manifest</h1>
-   <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">Living Document, <time class="dt-updated" datetime="2017-10-06">6 October 2017</time></span></h2>
+   <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">Living Document, <time class="dt-updated" datetime="2017-10-30">30 October 2017</time></span></h2>
    <div data-fill-with="spec-metadata">
     <dl>
      <dt>Issue Tracking:
@@ -1519,7 +1519,7 @@ format containing two key pieces of information:</p>
 machine-readable <a data-link-type="dfn" href="#payment-method-manifest" id="ref-for-payment-method-manifest①">payment method manifest</a>. It is often a generic URL (such as
 "<code>https://alicepay.com/</code>") which is more suitable for human-readable content. Instead, a
 HTTP Link header is used to direct user agents seeking out the <a data-link-type="dfn" href="#payment-method-manifest" id="ref-for-payment-method-manifest②">payment method manifest</a> toward
-another location. <a data-link-type="biblio" href="#biblio-rfc5988">[RFC5988]</a></p>
+another location. <a data-link-type="biblio" href="#biblio-rfc8288">[RFC8288]</a></p>
     <p>For an example <a data-link-type="dfn" href="https://w3c.github.io/payment-request/#dfn-payment-method" id="ref-for-dfn-payment-method⑦">payment method</a> AlicePay, with <a data-link-type="dfn" href="https://w3c.github.io/payment-method-id/#">payment method identifier</a> "<code>https://alicepay.com/</code>", a user agent might issue a request to that <a data-link-type="dfn" href="https://w3c.github.io/payment-method-id/#">payment method identifier</a> URL as follows:</p>
 <pre>HEAD / HTTP/2
 Host: alicepay.com
@@ -1555,10 +1555,12 @@ support the payment method.</p>
 at most two items, with the possible keys "<code>default_applications</code>" and
 "<code>supported_origins</code>".</p>
    <p>The value of the <code>default_applications</code> key, if present, must be a non-empty JSON array.
-Each item in the array must be an <a data-link-type="dfn" href="https://url.spec.whatwg.org/#absolute-url-string" id="ref-for-absolute-url-string①">absolute-URL string</a> such that the resulting parsed <a data-link-type="dfn" href="https://url.spec.whatwg.org/#concept-url" id="ref-for-concept-url">URL</a>'s <a data-link-type="dfn" href="https://url.spec.whatwg.org/#concept-url-scheme" id="ref-for-concept-url-scheme">scheme</a> is "<code>https</code>".</p>
+Each item in the array must be an <a data-link-type="dfn" href="https://url.spec.whatwg.org/#absolute-url-string" id="ref-for-absolute-url-string①">absolute-URL string</a> such that the resulting parsed <a data-link-type="dfn" href="https://url.spec.whatwg.org/#concept-url" id="ref-for-concept-url">URL</a>'s <a data-link-type="dfn" href="https://url.spec.whatwg.org/#concept-url-scheme" id="ref-for-concept-url-scheme">scheme</a> is "<code>https</code>" or <a data-link-type="dfn" href="https://url.spec.whatwg.org/#concept-url-scheme" id="ref-for-concept-url-scheme①">scheme</a> and <a data-link-type="dfn" href="https://url.spec.whatwg.org/#concept-url-host" id="ref-for-concept-url-host">host</a> are
+"<code>http://localhost</code>", "<code>http://127.0.0.1</code>", or "<code>http://[::1]</code>".</p>
    <p>The value of the <code>supported_origins</code> key, if present, must be either the string
-"<code>*</code>", or a non-empty JSON array. In the latter case, each item in the array must be an <a data-link-type="dfn" href="https://url.spec.whatwg.org/#absolute-url-string" id="ref-for-absolute-url-string②">absolute-URL string</a> that represents an HTTPS <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/origin.html#concept-origin" id="ref-for-concept-origin③">origin</a>. Formally, the string must be equal to
-the <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/origin.html#ascii-serialisation-of-an-origin" id="ref-for-ascii-serialisation-of-an-origin">serialization</a> of the resulting parsed <a data-link-type="dfn" href="https://url.spec.whatwg.org/#concept-url" id="ref-for-concept-url①">URL</a>'s <a data-link-type="dfn" href="https://url.spec.whatwg.org/#concept-url-origin" id="ref-for-concept-url-origin">origin</a>.</p>
+"<code>*</code>", or a non-empty JSON array. In the latter case, each item in the array must be an <a data-link-type="dfn" href="https://url.spec.whatwg.org/#absolute-url-string" id="ref-for-absolute-url-string②">absolute-URL string</a> that represents an HTTPS <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/origin.html#concept-origin" id="ref-for-concept-origin③">origin</a> or HTTP <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/origin.html#concept-origin" id="ref-for-concept-origin④">origin</a> for localhost.
+Formally, the string must be equal to the <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/origin.html#ascii-serialisation-of-an-origin" id="ref-for-ascii-serialisation-of-an-origin">serialization</a> of the
+resulting parsed <a data-link-type="dfn" href="https://url.spec.whatwg.org/#concept-url" id="ref-for-concept-url①">URL</a>'s <a data-link-type="dfn" href="https://url.spec.whatwg.org/#concept-url-origin" id="ref-for-concept-url-origin">origin</a>.</p>
    <p>Web developers must ensure that all of their <a data-link-type="dfn" href="#payment-method-manifest" id="ref-for-payment-method-manifest④">payment method manifests</a> are <a data-link-type="dfn" href="#valid-payment-method-manifest" id="ref-for-valid-payment-method-manifest">valid</a>.</p>
    <p class="note" role="note">As with all conformance requirements on the contents of files, these are
 web-developer facing, and not implementer-facing. The exact processing model (given in <a href="#processing-model">§3 Processing model</a>) governs how implementers process all <a data-link-type="dfn" href="#payment-method-manifest" id="ref-for-payment-method-manifest⑤">payment method manifest</a> files,
@@ -1632,7 +1634,8 @@ a <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#ordered-map" id="
        <p>Let <var>identifierURL</var> be the result of <a data-link-type="dfn" href="https://url.spec.whatwg.org/#concept-basic-url-parser" id="ref-for-concept-basic-url-parser">basic URL parsing</a> <var>string</var>. If the
  result is failure, <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#iteration-continue" id="ref-for-iteration-continue②">continue</a>.</p>
       <li data-md="">
-       <p>If <var>identifierURL</var>’s <a data-link-type="dfn" href="https://url.spec.whatwg.org/#concept-url-scheme" id="ref-for-concept-url-scheme①">scheme</a> is not "<code>https</code>", <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#iteration-continue" id="ref-for-iteration-continue③">continue</a>.</p>
+       <p>If <var>identifierURL</var>’s <a data-link-type="dfn" href="https://url.spec.whatwg.org/#concept-url-scheme" id="ref-for-concept-url-scheme②">scheme</a> is not "<code>https</code>" and <var>manifestURL</var>’s <a data-link-type="dfn" href="https://url.spec.whatwg.org/#concept-url-scheme" id="ref-for-concept-url-scheme③">scheme</a> and <a data-link-type="dfn" href="https://url.spec.whatwg.org/#concept-url-host" id="ref-for-concept-url-host①">host</a> are not "<code>http://localhost</code>",
+ "<code>http://127.0.0.1</code>", or "<code>http://[::1]</code>", <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#iteration-continue" id="ref-for-iteration-continue③">continue</a>.</p>
       <li data-md="">
        <p><a data-link-type="dfn" href="https://infra.spec.whatwg.org/#list-append" id="ref-for-list-append">Append</a> <var>identifierURL</var> to <var>identifierURLs</var>.</p>
      </ol>
@@ -1658,7 +1661,7 @@ a <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#ordered-map" id="
          <ol>
           <li data-md="">
            <p>Parse <var>linkHeader</var> according to the <code>link-value</code> production. If it cannot be
- parsed, <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#iteration-continue" id="ref-for-iteration-continue⑤">continue</a>. <a data-link-type="biblio" href="#biblio-rfc5988">[RFC5988]</a></p>
+ parsed, <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#iteration-continue" id="ref-for-iteration-continue⑤">continue</a>. <a data-link-type="biblio" href="#biblio-rfc8288">[RFC8288]</a></p>
           <li data-md="">
            <p>If the parsed header contains a parameter whose name is an <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#ascii-case-insensitive" id="ref-for-ascii-case-insensitive">ASCII case-insensitive</a> match
  for the string "<code>rel</code>" and whose value is an <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#ascii-case-insensitive" id="ref-for-ascii-case-insensitive①">ASCII case-insensitive</a> match
@@ -1672,7 +1675,8 @@ a <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#ordered-map" id="
            <p>Let <var>manifestURL</var> be the result of <a data-link-type="dfn" href="https://url.spec.whatwg.org/#concept-basic-url-parser" id="ref-for-concept-basic-url-parser①">basic URL parsing</a> <var>manifestURLString</var> with base URL given by <var>identifierResponse</var>’s <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#concept-response-url" id="ref-for-concept-response-url">url</a>. If the
  result is failure, <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#iteration-continue" id="ref-for-iteration-continue⑥">continue</a>.</p>
           <li data-md="">
-           <p>If <var>manifestURL</var>’s <a data-link-type="dfn" href="https://url.spec.whatwg.org/#concept-url-scheme" id="ref-for-concept-url-scheme②">scheme</a> is not "<code>https</code>", <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#iteration-continue" id="ref-for-iteration-continue⑦">continue</a>.</p>
+           <p>If <var>manifestURL</var>’s <a data-link-type="dfn" href="https://url.spec.whatwg.org/#concept-url-scheme" id="ref-for-concept-url-scheme④">scheme</a> is not "<code>https</code>" and <var>manifestURL</var>’s <a data-link-type="dfn" href="https://url.spec.whatwg.org/#concept-url-scheme" id="ref-for-concept-url-scheme⑤">scheme</a> and <a data-link-type="dfn" href="https://url.spec.whatwg.org/#concept-url-host" id="ref-for-concept-url-host②">host</a> are not "<code>http://localhost</code>",
+ "<code>http://127.0.0.1</code>", or "<code>http://[::1]</code>", <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#iteration-continue" id="ref-for-iteration-continue⑦">continue</a>.</p>
           <li data-md="">
            <p>Let <var>manifestRequest</var> be a new <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#concept-request" id="ref-for-concept-request①">request</a> whose <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#concept-request-url" id="ref-for-concept-request-url①">url</a> is <var>manifestURL</var>, <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#concept-request-client" id="ref-for-concept-request-client①">client</a> is null, <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#concept-request-credentials-mode" id="ref-for-concept-request-credentials-mode①">credentials mode</a> is
  "<code>omit</code>", and <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#concept-request-redirect-mode" id="ref-for-concept-request-redirect-mode①">redirect mode</a> is "<code>error</code>".</p>
@@ -1708,7 +1712,7 @@ a <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#ordered-map" id="
      <p>An <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#ordered-set" id="ref-for-ordered-set">ordered set</a> of <a data-link-type="dfn" href="https://url.spec.whatwg.org/#concept-url" id="ref-for-concept-url③">URLs</a>, possibly empty</p>
     <dt data-md=""><dfn class="dfn-paneled" data-dfn-for="parsed payment method manifest" data-dfn-type="dfn" data-export="" id="parsed-payment-method-manifest-supported-origins">supported origins</dfn>
     <dd data-md="">
-     <p>Either the string "<code>*</code>", or an <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#ordered-set" id="ref-for-ordered-set①">ordered set</a> of <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/origin.html#concept-origin" id="ref-for-concept-origin④">origins</a></p>
+     <p>Either the string "<code>*</code>", or an <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#ordered-set" id="ref-for-ordered-set①">ordered set</a> of <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/origin.html#concept-origin" id="ref-for-concept-origin⑤">origins</a></p>
    </dl>
    <p>To <dfn class="dfn-paneled" data-dfn-type="dfn" data-export="" data-lt="validate and parse the payment method manifest" id="validate-and-parse-the-payment-method-manifest">validate and parse</dfn> a <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#byte-sequence" id="ref-for-byte-sequence②">byte sequence</a> <var>bytes</var> purporting to contain a payment method manifest, perform the following
 steps. The result will either be a <a data-link-type="dfn" href="#parsed-payment-method-manifest" id="ref-for-parsed-payment-method-manifest">parsed payment method manifest</a>, or failure.</p>
@@ -1738,7 +1742,8 @@ steps. The result will either be a <a data-link-type="dfn" href="#parsed-payment
         <li data-md="">
          <p>Let <var>defaultAppURL</var> be the result of <a data-link-type="dfn" href="https://url.spec.whatwg.org/#concept-basic-url-parser" id="ref-for-concept-basic-url-parser②">basic URL parsing</a> <var>defaultAppString</var>. If the result is failure, return failure.</p>
         <li data-md="">
-         <p>If <var>defaultAppURL</var>’s <a data-link-type="dfn" href="https://url.spec.whatwg.org/#concept-url-scheme" id="ref-for-concept-url-scheme③">scheme</a> is not "<code>https</code>", return failure.</p>
+         <p>If <var>defaultAppURL</var>’s <a data-link-type="dfn" href="https://url.spec.whatwg.org/#concept-url-scheme" id="ref-for-concept-url-scheme⑥">scheme</a> is not "<code>https</code>" and <var>manifestURL</var>’s <a data-link-type="dfn" href="https://url.spec.whatwg.org/#concept-url-scheme" id="ref-for-concept-url-scheme⑦">scheme</a> and <a data-link-type="dfn" href="https://url.spec.whatwg.org/#concept-url-host" id="ref-for-concept-url-host③">host</a> are not "<code>http://localhost</code>",
+ "<code>http://127.0.0.1</code>", or "<code>http://[::1]</code>", return failure.</p>
         <li data-md="">
          <p><a data-link-type="dfn" href="https://infra.spec.whatwg.org/#set-append" id="ref-for-set-append">Append</a> <var>defaultAppURL</var> to <var>defaultApps</var>.</p>
        </ol>
@@ -1765,7 +1770,8 @@ steps. The result will either be a <a data-link-type="dfn" href="#parsed-payment
         <li data-md="">
          <p>Let <var>supportedOriginURL</var> be the result of <a data-link-type="dfn" href="https://url.spec.whatwg.org/#concept-basic-url-parser" id="ref-for-concept-basic-url-parser③">basic URL parsing</a> <var>supportedOriginString</var>. If the result is failure, return failure.</p>
         <li data-md="">
-         <p>If <var>supportedOriginURL</var>’s <a data-link-type="dfn" href="https://url.spec.whatwg.org/#concept-url-scheme" id="ref-for-concept-url-scheme④">scheme</a> is not "<code>https</code>", return failure.</p>
+         <p>If <var>supportedOriginURL</var>’s <a data-link-type="dfn" href="https://url.spec.whatwg.org/#concept-url-scheme" id="ref-for-concept-url-scheme⑧">scheme</a> is not "<code>https</code>" and <var>manifestURL</var>’s <a data-link-type="dfn" href="https://url.spec.whatwg.org/#concept-url-scheme" id="ref-for-concept-url-scheme⑨">scheme</a> and <a data-link-type="dfn" href="https://url.spec.whatwg.org/#concept-url-host" id="ref-for-concept-url-host④">host</a> are not "<code>http://localhost</code>",
+ "<code>http://127.0.0.1</code>", or "<code>http://[::1]</code>", return failure.</p>
         <li data-md="">
          <p>If <var>supportedOriginURL</var>’s <a data-link-type="dfn" href="https://url.spec.whatwg.org/#concept-url-username" id="ref-for-concept-url-username">username</a> or <a data-link-type="dfn" href="https://url.spec.whatwg.org/#concept-url-password" id="ref-for-concept-url-password">password</a> are not the empty string,
  return failure.</p>
@@ -1965,6 +1971,7 @@ and registration with IANA.</p>
      <li><a href="https://url.spec.whatwg.org/#absolute-url-string">absolute-url string</a>
      <li><a href="https://url.spec.whatwg.org/#concept-basic-url-parser">basic url parser</a>
      <li><a href="https://url.spec.whatwg.org/#concept-url-fragment">fragment</a>
+     <li><a href="https://url.spec.whatwg.org/#concept-url-host">host</a>
      <li><a href="https://url.spec.whatwg.org/#concept-url-origin">origin</a>
      <li><a href="https://url.spec.whatwg.org/#concept-url-password">password</a>
      <li><a href="https://url.spec.whatwg.org/#concept-url-path">path</a>
@@ -1995,8 +2002,8 @@ and registration with IANA.</p>
    <dd>Adrian Bateman; et al. <a href="https://w3c.github.io/payment-request/">Payment Request API</a>. URL: <a href="https://w3c.github.io/payment-request/">https://w3c.github.io/payment-request/</a>
    <dt id="biblio-promises-guide">[PROMISES-GUIDE]
    <dd>Domenic Denicola. <a href="https://www.w3.org/2001/tag/doc/promises-guide">Writing Promise-Using Specifications</a>. 16 February 2016. Finding of the W3C TAG. URL: <a href="https://www.w3.org/2001/tag/doc/promises-guide">https://www.w3.org/2001/tag/doc/promises-guide</a>
-   <dt id="biblio-rfc5988">[RFC5988]
-   <dd>M. Nottingham. <a href="https://tools.ietf.org/html/rfc5988">Web Linking</a>. October 2010. Proposed Standard. URL: <a href="https://tools.ietf.org/html/rfc5988">https://tools.ietf.org/html/rfc5988</a>
+   <dt id="biblio-rfc8288">[RFC8288]
+   <dd>M. Nottingham. <a href="https://tools.ietf.org/html/rfc8288">Web Linking</a>. October 2017. Proposed Standard. URL: <a href="https://tools.ietf.org/html/rfc8288">https://tools.ietf.org/html/rfc8288</a>
    <dt id="biblio-url">[URL]
    <dd>Anne van Kesteren. <a href="https://url.spec.whatwg.org/">URL Standard</a>. Living Standard. URL: <a href="https://url.spec.whatwg.org/">https://url.spec.whatwg.org/</a>
   </dl>
