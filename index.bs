@@ -84,7 +84,7 @@ The resource identified by the [=payment method identifier=] URL does not direct
 machine-readable [=payment method manifest=]. It is often a generic URL (such as
 "<code>https://alicepay.com/</code>") which is more suitable for human-readable content. Instead, a
 HTTP Link header is used to direct user agents seeking out the [=payment method manifest=] toward
-another location. [[RFC5988]]
+another location. [[RFC8288]]
 
 For an example [=payment method=] AlicePay, with [=payment method identifier=]
 "<code>https://alicepay.com/</code>", a user agent might issue a request to that
@@ -144,12 +144,14 @@ at most two items, with the possible keys "<code>default_applications</code>" an
 
 The value of the <code>default_applications</code> key, if present, must be a non-empty JSON array.
 Each item in the array must be an [=absolute-URL string=] such that the resulting parsed [=URL=]'s
-[=url/scheme=] is "<code>https</code>".
+[=url/scheme=] is "<code>https</code>" or [=url/scheme=] and [=url/host=] are
+"<code>http://localhost</code>", "<code>http://127.0.0.1</code>", or "<code>http://[::1]</code>".
 
 The value of the <code>supported_origins</code> key, if present, must be either the string
 "<code>*</code>", or a non-empty JSON array. In the latter case, each item in the array must be an
-[=absolute-URL string=] that represents an HTTPS [=origin=]. Formally, the string must be equal to
-the [=serialization of an origin|serialization=] of the resulting parsed [=URL=]'s [=url/origin=].
+[=absolute-URL string=] that represents an HTTPS [=origin=] or HTTP [=origin=] for localhost.
+Formally, the string must be equal to the [=serialization of an origin|serialization=] of the
+resulting parsed [=URL=]'s [=url/origin=].
 
 Web developers must ensure that all of their [=payment method manifests=] are [=valid=].
 
@@ -235,7 +237,9 @@ a [=map=] (possibly empty) from [=URLs=] to [=byte sequences=], mapping
 1. [=list/For each=] |string| of |supportedMethods|:
   1. Let |identifierURL| be the result of [=basic URL parser|basic URL parsing=] |string|. If the
      result is failure, [=iteration/continue=].
-  1. If |identifierURL|'s [=url/scheme=] is not "<code>https</code>", [=iteration/continue=].
+  1. If |identifierURL|'s [=url/scheme=] is not "<code>https</code>" and |manifestURL|'s
+     [=url/scheme=] and [=url/host=] are not "<code>http://localhost</code>",
+     "<code>http://127.0.0.1</code>", or "<code>http://[::1]</code>", [=iteration/continue=].
   1. [=list/Append=] |identifierURL| to |identifierURLs|.
 1. Let |manifestsMap| be an empty [=map=].
 1. [=list/For each=] |identifierURL| of |identifierURLs|:
@@ -252,7 +256,7 @@ a [=map=] (possibly empty) from [=URLs=] to [=byte sequences=], mapping
     1. Let |manifestURLString| be null.
     1. [=list/For each=] |linkHeader| of |linkHeaders|:
       1. Parse |linkHeader| according to the <code>link-value</code> production. If it cannot be
-         parsed, [=iteration/continue=]. [[!RFC5988]]
+         parsed, [=iteration/continue=]. [[!RFC8288]]
       1. If the parsed header contains a parameter whose name is an [=ASCII case-insensitive=] match
          for the string "<code>rel</code>" and whose value is an [=ASCII case-insensitive=] match
          for the string "<code>payment-method-manifest</code>", then set |manifestURLString| to the
@@ -262,7 +266,9 @@ a [=map=] (possibly empty) from [=URLs=] to [=byte sequences=], mapping
       1. Let |manifestURL| be the result of [=basic URL parser|basic URL parsing=]
          |manifestURLString| with base URL given by |identifierResponse|'s [=response/url=]. If the
          result is failure, [=iteration/continue=].
-      1. If |manifestURL|'s [=url/scheme=] is not "<code>https</code>", [=iteration/continue=].
+      1. If |manifestURL|'s [=url/scheme=] is not "<code>https</code>" and |manifestURL|'s
+         [=url/scheme=] and [=url/host=] are not "<code>http://localhost</code>",
+         "<code>http://127.0.0.1</code>", or "<code>http://[::1]</code>", [=iteration/continue=].
       1. Let |manifestRequest| be a new [=request=] whose [=request/url=] is |manifestURL|,
          [=request/client=] is null, [=request/credentials mode=] is
          "<code>omit</code>", and [=request/redirect mode=] is "<code>error</code>".
@@ -308,7 +314,9 @@ steps. The result will either be a [=parsed payment method manifest=], or failur
   1. [=list/For each=] |defaultAppString| in |defaultAppsList|:
     1. Let |defaultAppURL| be the result of [=basic URL parser|basic URL parsing=]
        |defaultAppString|. If the result is failure, return failure.
-    1. If |defaultAppURL|'s [=url/scheme=] is not "<code>https</code>", return failure.
+    1. If |defaultAppURL|'s [=url/scheme=] is not "<code>https</code>" and |manifestURL|'s
+       [=url/scheme=] and [=url/host=] are not "<code>http://localhost</code>",
+       "<code>http://127.0.0.1</code>", or "<code>http://[::1]</code>", return failure.
     1. [=set/Append=] |defaultAppURL| to |defaultApps|.
 1. Let |supportedOrigins| be an empty [=ordered set=].
 1. Let |supportedOriginsValue| be <a abstract-op>Get</a>(|parsed|, "supported_origins").
@@ -322,7 +330,9 @@ steps. The result will either be a [=parsed payment method manifest=], or failur
   1. [=list/For each=] |supportedOriginString| in |supportedOriginsList|:
     1. Let |supportedOriginURL| be the result of [=basic URL parser|basic URL parsing=]
        |supportedOriginString|. If the result is failure, return failure.
-    1. If |supportedOriginURL|'s [=url/scheme=] is not "<code>https</code>", return failure.
+    1. If |supportedOriginURL|'s [=url/scheme=] is not "<code>https</code>" and |manifestURL|'s
+       [=url/scheme=] and [=url/host=] are not "<code>http://localhost</code>",
+       "<code>http://127.0.0.1</code>", or "<code>http://[::1]</code>", return failure.
     1. If |supportedOriginURL|'s [=url/username=] or [=url/password=] are not the empty string,
        return failure.
     1. If |supportedOriginURL|'s [=url/path=]'s [=list/size=] is not 0, return failure.
