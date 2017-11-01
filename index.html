@@ -1177,7 +1177,7 @@ Possible extra rowspan handling
 	}
 </style>
   <link href="https://www.w3.org/StyleSheets/TR/2016/W3C-LD" rel="stylesheet" type="text/css">
-  <meta content="Bikeshed version 4679d5ca787d737883d9c905dd138257fc2cec85" name="generator">
+  <meta content="Bikeshed version 67155cabad72a8ab669a7d4421c90e2999a29b68" name="generator">
 <style>/* style-md-lists */
 
 /* This is a weird hack for me not yet following the commonmark spec
@@ -1424,7 +1424,7 @@ pre.highlight, pre > code.highlight { display: block; padding: 1em; margin: .5em
   <div class="head">
    <p data-fill-with="logo"><a class="logo" href="https://www.w3.org/"> <img alt="W3C" height="48" src="https://www.w3.org/StyleSheets/TR/2016/logos/W3C" width="72"> </a> </p>
    <h1 class="p-name no-ref" id="title">Payment Method Manifest</h1>
-   <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">Living Document, <time class="dt-updated" datetime="2017-11-01">1 November 2017</time></span></h2>
+   <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">Living Document, <time class="dt-updated" datetime="2017-11-03">3 November 2017</time></span></h2>
    <div data-fill-with="spec-metadata">
     <dl>
      <dt>Issue Tracking:
@@ -1583,7 +1583,7 @@ possible, in a user-agent specific manner.</p>
    <p class="example" id="example-local-scanning"><a class="self-link" href="#example-local-scanning"></a>A user agent could scan locally-installed <a data-link-type="dfn" href="https://w3c.github.io/payment-request/#dfn-payment-apps" id="ref-for-dfn-payment-apps⑥">payment apps</a> on the device to see which <a data-link-type="dfn" href="https://w3c.github.io/payment-request/#dfn-payment-method" id="ref-for-dfn-payment-method①①">payment methods</a> they support.</p>
    <p class="example" id="example-out-of-band"><a class="self-link" href="#example-out-of-band"></a>A user agent could have built-in support for certain <a data-link-type="dfn" href="https://w3c.github.io/payment-request/#dfn-payment-method" id="ref-for-dfn-payment-method①②">payment methods</a> as a result of out-of-band arrangements.</p>
    <p>Given such a list of <a data-link-type="dfn" href="https://w3c.github.io/payment-method-id/#">payment method identifiers</a> <var>identifiers</var>, the user agent may at any time
-run the following steps, to <dfn data-dfn-type="dfn" data-export="" id="ingest-payment-method-manifests">ingest payment method manifests<a class="self-link" href="#ingest-payment-method-manifests"></a></dfn>:</p>
+run the following steps, to <dfn class="dfn-paneled" data-dfn-type="dfn" data-export="" id="ingest-payment-method-manifests">ingest payment method manifests</dfn>:</p>
    <ol>
     <li data-md="">
      <p><a data-link-type="dfn" href="#fetch-payment-method-manifests" id="ref-for-fetch-payment-method-manifests">Fetch payment method manifests</a>, given <var>identifiers</var>, and wait for this to asynchronously
@@ -1823,8 +1823,13 @@ perform the following steps. This algorithm will asynchronously complete with ei
    </ol>
    <h2 class="heading settled" data-level="4" id="security"><span class="secno">4. </span><span class="content">Security and privacy considerations</span><a class="self-link" href="#security"></a></h2>
    <div class="issue no-marker" id="issue-d41d8cd9"><a class="self-link" href="#issue-d41d8cd9"></a><a class="marker" href="https://github.com/w3c/payment-method-manifest/issues/1" style="text-transform:none">w3c/payment-method-manifest/1</a><a href="https://github.com/w3c/payment-method-manifest/issues/1">Should these fetches have a client? (impacts CSP, CORS, ...)</a></div>
-   <div class="issue no-marker" id="issue-d41d8cd9①"><a class="self-link" href="#issue-d41d8cd9①"></a><a class="marker" href="https://github.com/w3c/payment-method-manifest/issues/7" style="text-transform:none">w3c/payment-method-manifest/7</a><a href="https://github.com/w3c/payment-method-manifest/issues/7">Privacy considerations of retrieving a payment method manifest</a></div>
-   <div class="issue no-marker" id="issue-d41d8cd9②"><a class="self-link" href="#issue-d41d8cd9②"></a><a class="marker" href="https://github.com/w3c/payment-method-manifest/issues/11" style="text-transform:none">w3c/payment-method-manifest/11</a><a href="https://github.com/w3c/payment-method-manifest/issues/11">Matching payment apps and security in a world of payment method manifests</a></div>
+   <p><a data-link-type="dfn" href="#ingest-payment-method-manifests" id="ref-for-ingest-payment-method-manifests">Ingesting payment method manifests</a> might reveal information
+to a payment service about the activity of an end user. For example, a <a data-link-type="dfn" href="https://w3c.github.io/payment-request/#dfn-payment-method" id="ref-for-dfn-payment-method①⑤">payment method</a> that is
+only supported on one website might allow that payment provider to discover the IP addresses of
+users who visit that website.</p>
+   <p>One way to mitigate this is to <a data-link-type="dfn" href="#fetch-payment-method-manifests" id="ref-for-fetch-payment-method-manifests①">fetch the manifests</a> only for the <a data-link-type="dfn" href="https://w3c.github.io/payment-request/#dfn-payment-apps" id="ref-for-dfn-payment-apps①①">payment apps</a> that the user has installed or has explicitly expressed interest in. This confines
+the risk to only sharing the user’s IP address with those parties.</p>
+   <div class="issue no-marker" id="issue-d41d8cd9①"><a class="self-link" href="#issue-d41d8cd9①"></a><a class="marker" href="https://github.com/w3c/payment-method-manifest/issues/11" style="text-transform:none">w3c/payment-method-manifest/11</a><a href="https://github.com/w3c/payment-method-manifest/issues/11">Matching payment apps and security in a world of payment method manifests</a></div>
    <h2 class="heading settled" data-level="5" id="iana"><span class="secno">5. </span><span class="content">IANA considerations</span><a class="self-link" href="#iana"></a></h2>
    <h3 class="heading settled" data-level="5.1" id="payment-method-manifest-link"><span class="secno">5.1. </span><span class="content">The <code>payment-method-manifest</code> link relation</span><a class="self-link" href="#payment-method-manifest-link"></a></h3>
    <p>This registration is for community review and will be submitted to the IESG for review, approval,
@@ -1835,7 +1840,7 @@ and registration with IANA.</p>
      <p>payment-method-manifest</p>
     <dt data-md="">Description
     <dd data-md="">
-     <p>Links to a payment method manifest, which describes a specific <a data-link-type="dfn" href="https://w3c.github.io/payment-request/#dfn-payment-method" id="ref-for-dfn-payment-method①⑤">payment method</a> within the Web
+     <p>Links to a payment method manifest, which describes a specific <a data-link-type="dfn" href="https://w3c.github.io/payment-request/#dfn-payment-method" id="ref-for-dfn-payment-method①⑥">payment method</a> within the Web
  Payments ecosystem.</p>
     <dt data-md="">Reference
     <dd data-md="">
@@ -2020,10 +2025,17 @@ and registration with IANA.</p>
     <li><a href="#ref-for-valid-payment-method-manifest③">3.3. Validating and parsing payment method manifests</a>
    </ul>
   </aside>
+  <aside class="dfn-panel" data-for="ingest-payment-method-manifests">
+   <b><a href="#ingest-payment-method-manifests">#ingest-payment-method-manifests</a></b><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-ingest-payment-method-manifests">4. Security and privacy considerations</a>
+   </ul>
+  </aside>
   <aside class="dfn-panel" data-for="fetch-payment-method-manifests">
    <b><a href="#fetch-payment-method-manifests">#fetch-payment-method-manifests</a></b><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-fetch-payment-method-manifests">3.1. Ingesting payment method manifests</a>
+    <li><a href="#ref-for-fetch-payment-method-manifests①">4. Security and privacy considerations</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="parsed-payment-method-manifest">

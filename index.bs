@@ -375,7 +375,14 @@ perform the following steps. This algorithm will asynchronously complete with ei
 
 Issue(1):
 
-Issue(7):
+[=ingest payment method manifests|Ingesting payment method manifests=] might reveal information
+to a payment service about the activity of an end user. For example, a [=payment method=] that is
+only supported on one website might allow that payment provider to discover the IP addresses of
+users who visit that website.
+
+One way to mitigate this is to [=fetch payment method manifests|fetch the manifests=] only for the
+[=payment apps=] that the user has installed or has explicitly expressed interest in. This confines
+the risk to only sharing the user's IP address with those parties.
 
 Issue(11):
 
