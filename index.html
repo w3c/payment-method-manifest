@@ -1461,10 +1461,11 @@ standing of any kind and does not represent the support or consensus of any stan
     <li>
      <a href="#processing-model"><span class="secno">3</span> <span class="content">Processing model</span></a>
      <ol class="toc">
-      <li><a href="#ingest"><span class="secno">3.1</span> <span class="content">Ingesting payment method manifests</span></a>
-      <li><a href="#fetch-pmm"><span class="secno">3.2</span> <span class="content">Fetching payment method manifests</span></a>
-      <li><a href="#validate-and-parse"><span class="secno">3.3</span> <span class="content">Validating and parsing payment method manifests</span></a>
-      <li><a href="#fetch-wam"><span class="secno">3.4</span> <span class="content">Fetching web app manifests</span></a>
+      <li><a href="#monkeypatch"><span class="secno">3.1</span> <span class="content">Modifications to <cite>Payment Request API</cite></span></a>
+      <li><a href="#ingest"><span class="secno">3.2</span> <span class="content">Ingesting payment method manifests</span></a>
+      <li><a href="#fetch-pmm"><span class="secno">3.3</span> <span class="content">Fetching payment method manifests</span></a>
+      <li><a href="#validate-and-parse"><span class="secno">3.4</span> <span class="content">Validating and parsing payment method manifests</span></a>
+      <li><a href="#fetch-wam"><span class="secno">3.5</span> <span class="content">Fetching web app manifests</span></a>
      </ol>
     <li><a href="#security"><span class="secno">4</span> <span class="content">Security and privacy considerations</span></a>
     <li>
@@ -1505,8 +1506,8 @@ particular payment app (e.g., via a digital signature for that app).</p>
       <p>When the user has not yet installed a <a data-link-type="dfn" href="https://w3c.github.io/payment-request/#dfn-payment-apps" id="ref-for-dfn-payment-apps①">payment app</a> for a <a data-link-type="dfn" href="https://w3c.github.io/payment-request/#dfn-payment-method" id="ref-for-dfn-payment-method③">payment method</a>, the user agent
 can provide an improved user experience for procuring one.</p>
     </ul>
-    <p>This is accomplished via the requirement that every <a data-link-type="dfn" href="https://w3c.github.io/payment-request/#dfn-payment-method" id="ref-for-dfn-payment-method④">payment method</a> whose <a data-link-type="dfn" href="https://w3c.github.io/payment-method-id/#">identifier</a> is a URL will provide a <a data-link-type="dfn" href="#payment-method-manifest" id="ref-for-payment-method-manifest">payment method manifest</a> file in JSON
-format containing two key pieces of information:</p>
+    <p>This is accomplished via the requirement that every <a data-link-type="dfn" href="https://w3c.github.io/payment-request/#dfn-payment-method" id="ref-for-dfn-payment-method④">payment method</a> whose <a data-link-type="dfn" href="https://w3c.github.io/payment-method-id/#dfn-payment-method-identifiers" id="ref-for-dfn-payment-method-identifiers">identifier</a> is <a data-link-type="dfn" href="https://w3c.github.io/payment-method-id/#dfn-url-based-payment-method-identifiers" id="ref-for-dfn-url-based-payment-method-identifiers">URL-based</a> will
+provide a <a data-link-type="dfn" href="#payment-method-manifest" id="ref-for-payment-method-manifest">payment method manifest</a> file in JSON format containing two key pieces of information:</p>
     <ul>
      <li data-md="">
       <p>any default <a data-link-type="dfn" href="https://w3c.github.io/payment-request/#dfn-payment-apps" id="ref-for-dfn-payment-apps②">payment apps</a> that are associated with this <a data-link-type="dfn" href="https://w3c.github.io/payment-request/#dfn-payment-method" id="ref-for-dfn-payment-method⑤">payment method</a>, referenced as <a data-link-type="dfn" href="https://url.spec.whatwg.org/#absolute-url-string" id="ref-for-absolute-url-string">absolute-URL strings</a> giving the <a data-link-type="dfn" href="https://www.w3.org/TR/appmanifest/#dfn-manifest-url" id="ref-for-dfn-manifest-url">URL</a> of their <a data-link-type="dfn" href="https://www.w3.org/TR/appmanifest/#dfn-manifest" id="ref-for-dfn-manifest">web app manifests</a>; and</p>
@@ -1514,12 +1515,12 @@ format containing two key pieces of information:</p>
       <p>any other <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/origin.html#concept-origin" id="ref-for-concept-origin">origins</a> that are permitted to return payment credentials for this <a data-link-type="dfn" href="https://w3c.github.io/payment-request/#dfn-payment-method" id="ref-for-dfn-payment-method⑥">payment method</a>.</p>
     </ul>
     <h3 class="heading settled" data-level="1.2" id="accessing"><span class="secno">1.2. </span><span class="content">Accessing the manifest</span><a class="self-link" href="#accessing"></a></h3>
-    <p>The resource identified by the <a data-link-type="dfn" href="https://w3c.github.io/payment-method-id/#">payment method identifier</a> URL does not directly contain the
+    <p>The resource identified by the <a data-link-type="dfn" href="https://w3c.github.io/payment-method-id/#dfn-payment-method-identifiers" id="ref-for-dfn-payment-method-identifiers①">payment method identifier</a> URL does not directly contain the
 machine-readable <a data-link-type="dfn" href="#payment-method-manifest" id="ref-for-payment-method-manifest①">payment method manifest</a>. It is often a generic URL (such as
 "<code>https://alicepay.com/</code>") which is more suitable for human-readable content. Instead, a
 HTTP Link header is used to direct user agents seeking out the <a data-link-type="dfn" href="#payment-method-manifest" id="ref-for-payment-method-manifest②">payment method manifest</a> toward
 another location. <a data-link-type="biblio" href="#biblio-rfc8288">[RFC8288]</a></p>
-    <p>For an example <a data-link-type="dfn" href="https://w3c.github.io/payment-request/#dfn-payment-method" id="ref-for-dfn-payment-method⑦">payment method</a> AlicePay, with <a data-link-type="dfn" href="https://w3c.github.io/payment-method-id/#">payment method identifier</a> "<code>https://alicepay.com/</code>", a user agent might issue a request to that <a data-link-type="dfn" href="https://w3c.github.io/payment-method-id/#">payment method identifier</a> URL as follows:</p>
+    <p>For an example <a data-link-type="dfn" href="https://w3c.github.io/payment-request/#dfn-payment-method" id="ref-for-dfn-payment-method⑦">payment method</a> AlicePay, with <a data-link-type="dfn" href="https://w3c.github.io/payment-method-id/#dfn-payment-method-identifiers" id="ref-for-dfn-payment-method-identifiers②">payment method identifier</a> "<code>https://alicepay.com/</code>", a user agent might issue a request to that <a data-link-type="dfn" href="https://w3c.github.io/payment-method-id/#dfn-payment-method-identifiers" id="ref-for-dfn-payment-method-identifiers③">payment method identifier</a> URL as follows:</p>
 <pre>HEAD / HTTP/2
 Host: alicepay.com
 User-Agent: Mellblomenator/9000
@@ -1576,18 +1577,30 @@ including invalid ones.</p>
   of a string. To avoid situations like this, web developers are best served by ensuring <a data-link-type="dfn" href="#valid-payment-method-manifest" id="ref-for-valid-payment-method-manifest②">validity</a> of their <a data-link-type="dfn" href="#payment-method-manifest" id="ref-for-payment-method-manifest⑦">payment method manifests</a>, and thus avoiding any unpleasant surprises.</p>
    </div>
    <h2 class="heading settled" data-level="3" id="processing-model"><span class="secno">3. </span><span class="content">Processing model</span><a class="self-link" href="#processing-model"></a></h2>
-   <h3 class="heading settled" data-level="3.1" id="ingest"><span class="secno">3.1. </span><span class="content">Ingesting payment method manifests</span><a class="self-link" href="#ingest"></a></h3>
-   <p>A user agent is expected to receive, from various sources, a list of <a data-link-type="dfn" href="https://w3c.github.io/payment-method-id/#">payment method identifiers</a>.
-A notable source is as the first parameter to the <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/payment-request/#paymentrequest-methoddata-details-options" id="ref-for-paymentrequest-methoddata-details-options">PaymentRequest(methodData, details, options)</a></code> constructor, but other sources are
-possible, in a user-agent specific manner.</p>
-   <p class="example" id="example-local-scanning"><a class="self-link" href="#example-local-scanning"></a>A user agent could scan locally-installed <a data-link-type="dfn" href="https://w3c.github.io/payment-request/#dfn-payment-apps" id="ref-for-dfn-payment-apps⑥">payment apps</a> on the device to see which <a data-link-type="dfn" href="https://w3c.github.io/payment-request/#dfn-payment-method" id="ref-for-dfn-payment-method①①">payment methods</a> they support.</p>
-   <p class="example" id="example-out-of-band"><a class="self-link" href="#example-out-of-band"></a>A user agent could have built-in support for certain <a data-link-type="dfn" href="https://w3c.github.io/payment-request/#dfn-payment-method" id="ref-for-dfn-payment-method①②">payment methods</a> as a result of out-of-band arrangements.</p>
-   <p>Given such a list of <a data-link-type="dfn" href="https://w3c.github.io/payment-method-id/#">payment method identifiers</a> <var>identifiers</var>, the user agent may at any time
-run the following steps, to <dfn class="dfn-paneled" data-dfn-type="dfn" data-export="" id="ingest-payment-method-manifests">ingest payment method manifests</dfn>:</p>
+   <h3 class="heading settled" data-level="3.1" id="monkeypatch"><span class="secno">3.1. </span><span class="content">Modifications to <cite>Payment Request API</cite></span><a class="self-link" href="#monkeypatch"></a></h3>
+   <p>This specification integrates with the rest of the Payment Request ecosystem by modifying the <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/payment-request/#dfn-paymentrequest-paymentrequest" id="ref-for-dfn-paymentrequest-paymentrequest">PaymentRequest(methodData, details, options)</a></code> constructor. It adds the following
+steps, before the algorithm completes and returns the newly-constructed <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/payment-request/#dom-paymentrequest" id="ref-for-dom-paymentrequest">PaymentRequest</a></code> object.
+In what follows, let <var>request</var> be the <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/payment-request/#dom-paymentrequest" id="ref-for-dom-paymentrequest①">PaymentRequest</a></code> instance being constructed. <a data-link-type="biblio" href="#biblio-payment-request">[PAYMENT-REQUEST]</a></p>
    <ol>
     <li data-md="">
-     <p><a data-link-type="dfn" href="#fetch-payment-method-manifests" id="ref-for-fetch-payment-method-manifests">Fetch payment method manifests</a>, given <var>identifiers</var>, and wait for this to asynchronously
- complete with <var>manifestsMap</var>. If the result is failure, return.</p>
+     <p>Let <var>identifiers</var> be a list consisting of the first <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#struct-item" id="ref-for-struct-item">item</a> of each pair in <var>request</var>.<a data-link-type="dfn" href="https://w3c.github.io/payment-request/#dfn-serializedmethoddata" id="ref-for-dfn-serializedmethoddata">[[serializedMethodData]]</a>.</p>
+    <li data-md="">
+     <p>Let <var>client</var> be the <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#current-settings-object" id="ref-for-current-settings-object">current settings object</a>.</p>
+    <li data-md="">
+     <p><a data-link-type="dfn" href="#ingest-payment-method-manifests" id="ref-for-ingest-payment-method-manifests">Ingest payment method manifests</a> given <var>identifiers</var> and <var>client</var>.</p>
+   </ol>
+   <p>These steps are what kicks off the whole process. The rest of <a href="#processing-model">§3 Processing model</a> is concerned
+with defining how this process eventually leads to new <a data-link-type="dfn" href="https://w3c.github.io/payment-request/#dfn-payment-apps" id="ref-for-dfn-payment-apps⑥">payment apps</a> being available for the
+user.</p>
+   <p class="issue" id="issue-53918c67"><a class="self-link" href="#issue-53918c67"></a> As this specification gains multi-implementer interest, we anticipate moving this section
+into the <cite>Payment Request API</cite> specification itself, instead of maintaining a monkeypatch
+here.</p>
+   <h3 class="heading settled" data-level="3.2" id="ingest"><span class="secno">3.2. </span><span class="content">Ingesting payment method manifests</span><a class="self-link" href="#ingest"></a></h3>
+   <p>Given a list of <a data-link-type="dfn" href="https://w3c.github.io/payment-method-id/#dfn-payment-method-identifiers" id="ref-for-dfn-payment-method-identifiers④">payment method identifiers</a> <var>identifiers</var>, as well as an <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#environment-settings-object" id="ref-for-environment-settings-object">environment settings object</a> <var>client</var>, the user agent may run the following steps, to <dfn class="dfn-paneled" data-dfn-type="dfn" data-export="" id="ingest-payment-method-manifests">ingest payment method manifests</dfn>:</p>
+   <ol>
+    <li data-md="">
+     <p><a data-link-type="dfn" href="#fetch-payment-method-manifests" id="ref-for-fetch-payment-method-manifests">Fetch payment method manifests</a>, given <var>identifiers</var> and <var>client</var>, and wait for this to
+ asynchronously complete with <var>manifestsMap</var>. If the result is failure, return.</p>
     <li data-md="">
      <p><a data-link-type="dfn" href="https://infra.spec.whatwg.org/#list-iterate" id="ref-for-list-iterate">For each</a> <var>identifier</var> → <var>manifest</var> of <var>manifestsMap</var>:</p>
      <ol>
@@ -1598,9 +1611,8 @@ run the following steps, to <dfn class="dfn-paneled" data-dfn-type="dfn" data-ex
        <p><a data-link-type="dfn" href="https://infra.spec.whatwg.org/#list-iterate" id="ref-for-list-iterate①">For each</a> <var>url</var> in <var>parsed</var>’s <a data-link-type="dfn" href="#parsed-payment-method-manifest-default-applications" id="ref-for-parsed-payment-method-manifest-default-applications">default applications</a>:</p>
        <ol>
         <li data-md="">
-         <p><a data-link-type="dfn" href="#fetch-the-web-app-manifest-for-a-default-payment-app" id="ref-for-fetch-the-web-app-manifest-for-a-default-payment-app">Fetch the web app manifest</a> at <var>url</var>,
- and wait for it to asynchronously complete with <var>webAppManifestString</var>. If the result is
- failure, <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#iteration-continue" id="ref-for-iteration-continue①">continue</a>.</p>
+         <p><a data-link-type="dfn" href="#fetch-the-web-app-manifest-for-a-default-payment-app" id="ref-for-fetch-the-web-app-manifest-for-a-default-payment-app">Fetch the web app manifest</a> at <var>url</var> given <var>client</var>, and wait for it to asynchronously complete with <var>webAppManifestString</var>. If
+ the result is failure, <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#iteration-continue" id="ref-for-iteration-continue①">continue</a>.</p>
         <li data-md="">
          <p>Let <var>webAppManifest</var> be the result of running the <a data-link-type="dfn" href="https://www.w3.org/TR/appmanifest/#dfn-steps-for-processing-a-manifest" id="ref-for-dfn-steps-for-processing-a-manifest">steps for processing a web app manifest</a> given <var>webAppManifestString</var>.</p>
          <p class="note" role="note">The <a data-link-type="dfn" href="https://www.w3.org/TR/appmanifest/#dfn-steps-for-processing-a-manifest" id="ref-for-dfn-steps-for-processing-a-manifest①">steps for processing a web app manifest</a> are very forgiving and will
@@ -1608,19 +1620,20 @@ run the following steps, to <dfn class="dfn-paneled" data-dfn-type="dfn" data-ex
  need to separately validate the <a data-link-type="dfn" href="https://www.w3.org/TR/appmanifest/#dfn-processed-manifest" id="ref-for-dfn-processed-manifest">processed web app manifest</a> to ensure it contains enough
  data for their purposes in the next step.</p>
         <li data-md="">
-         <p>In a user-agent-specific way, use the resulting <a data-link-type="dfn" href="https://www.w3.org/TR/appmanifest/#dfn-processed-manifest" id="ref-for-dfn-processed-manifest①">processed web app manifest</a> <var>webAppManifest</var> to install any applicable <a data-link-type="dfn" href="https://w3c.github.io/payment-request/#dfn-payment-apps" id="ref-for-dfn-payment-apps⑦">payment apps</a> for the <a data-link-type="dfn" href="https://w3c.github.io/payment-request/#dfn-payment-method" id="ref-for-dfn-payment-method①③">payment method</a> identified by <var>identifier</var>.</p>
+         <p>In a user-agent-specific way, use the resulting <a data-link-type="dfn" href="https://www.w3.org/TR/appmanifest/#dfn-processed-manifest" id="ref-for-dfn-processed-manifest①">processed web app manifest</a> <var>webAppManifest</var> to install any applicable <a data-link-type="dfn" href="https://w3c.github.io/payment-request/#dfn-payment-apps" id="ref-for-dfn-payment-apps⑦">payment apps</a> for the <a data-link-type="dfn" href="https://w3c.github.io/payment-request/#dfn-payment-method" id="ref-for-dfn-payment-method①①">payment method</a> identified by <var>identifier</var>.</p>
          <p class="note" role="note">In the future, the plan is for there to be a user-agent-independent way to
  use the resulting <a data-link-type="dfn" href="https://www.w3.org/TR/appmanifest/#dfn-processed-manifest" id="ref-for-dfn-processed-manifest②">processed web app manifest</a>, by consulting its <code>serviceworker</code> field and using that to install a web-based <a data-link-type="dfn" href="https://w3c.github.io/payment-request/#dfn-payment-apps" id="ref-for-dfn-payment-apps⑧">payment app</a> conforming to the <cite>Payment Handler API</cite> specification. <a data-link-type="biblio" href="#biblio-payment-handler">[PAYMENT-HANDLER]</a></p>
        </ol>
       <li data-md="">
        <p>Associate the <a data-link-type="dfn" href="#parsed-payment-method-manifest-supported-origins" id="ref-for-parsed-payment-method-manifest-supported-origins">supported origins</a> to <var>identifier</var> so that the
  user agent can use it in the future to determine what third-party <a data-link-type="dfn" href="https://w3c.github.io/payment-request/#dfn-payment-apps" id="ref-for-dfn-payment-apps⑨">payment apps</a> can be
- displayed for the <a data-link-type="dfn" href="https://w3c.github.io/payment-request/#dfn-payment-method" id="ref-for-dfn-payment-method①④">payment method</a> identified by <var>identifier</var>.</p>
+ displayed for the <a data-link-type="dfn" href="https://w3c.github.io/payment-request/#dfn-payment-method" id="ref-for-dfn-payment-method①②">payment method</a> identified by <var>identifier</var>.</p>
      </ol>
    </ol>
-   <h3 class="heading settled" data-level="3.2" id="fetch-pmm"><span class="secno">3.2. </span><span class="content">Fetching payment method manifests</span><a class="self-link" href="#fetch-pmm"></a></h3>
-   <p>To <dfn class="dfn-paneled" data-dfn-type="dfn" data-export="" id="fetch-payment-method-manifests">fetch payment method manifests</dfn>, given a <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#list" id="ref-for-list">list</a> of <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#javascript-string" id="ref-for-javascript-string">JavaScript strings</a> <var>supportedMethods</var>, perform the following steps. This algorithm will asynchronously complete with
-a <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#ordered-map" id="ref-for-ordered-map">map</a> (possibly empty) from <a data-link-type="dfn" href="https://url.spec.whatwg.org/#concept-url" id="ref-for-concept-url②">URLs</a> to <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#byte-sequence" id="ref-for-byte-sequence">byte sequences</a>, mapping <a data-link-type="dfn" href="https://w3c.github.io/payment-method-id/#">payment method identifiers</a> to the contents of the corresponding manifest.</p>
+   <h3 class="heading settled" data-level="3.3" id="fetch-pmm"><span class="secno">3.3. </span><span class="content">Fetching payment method manifests</span><a class="self-link" href="#fetch-pmm"></a></h3>
+   <p>To <dfn class="dfn-paneled" data-dfn-type="dfn" data-export="" id="fetch-payment-method-manifests">fetch payment method manifests</dfn>, given a <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#list" id="ref-for-list">list</a> of <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#javascript-string" id="ref-for-javascript-string">JavaScript strings</a> <var>supportedMethods</var> and an <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#environment-settings-object" id="ref-for-environment-settings-object①">environment settings object</a> <var>client</var>, perform the following steps.
+This algorithm will asynchronously complete with a <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#ordered-map" id="ref-for-ordered-map">map</a> (possibly empty) from <a data-link-type="dfn" href="https://url.spec.whatwg.org/#concept-url" id="ref-for-concept-url②">URLs</a> to <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#byte-sequence" id="ref-for-byte-sequence">byte sequences</a>, mapping <a data-link-type="dfn" href="https://w3c.github.io/payment-method-id/#dfn-payment-method-identifiers" id="ref-for-dfn-payment-method-identifiers⑤">payment method identifiers</a> to the contents of the corresponding
+manifest.</p>
    <ol>
     <li data-md="">
      <p>Let <var>identifierURLs</var> be an empty <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#list" id="ref-for-list①">list</a>.</p>
@@ -1630,8 +1643,14 @@ a <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#ordered-map" id="
       <li data-md="">
        <p>Let <var>identifierURL</var> be the result of <a data-link-type="dfn" href="https://url.spec.whatwg.org/#concept-basic-url-parser" id="ref-for-concept-basic-url-parser">basic URL parsing</a> <var>string</var>. If the
  result is failure, <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#iteration-continue" id="ref-for-iteration-continue②">continue</a>.</p>
+       <p class="note" role="note">The result will be failure for any <a data-link-type="dfn" href="https://w3c.github.io/payment-method-id/#dfn-payment-method-identifiers" id="ref-for-dfn-payment-method-identifiers⑥">payment method identifier</a> that is not a <a data-link-type="dfn" href="https://w3c.github.io/payment-method-id/#dfn-url-based-payment-method-identifiers" id="ref-for-dfn-url-based-payment-method-identifiers①">URL-based payment method identifier</a>, i.e. for a <a data-link-type="dfn" href="https://w3c.github.io/payment-method-id/#dfn-standardized-payment-method-identifiers" id="ref-for-dfn-standardized-payment-method-identifiers">standardized payment method identifier</a>.</p>
       <li data-md="">
-       <p>If <var>identifierURL</var>’s <a data-link-type="dfn" href="https://url.spec.whatwg.org/#concept-url-scheme" id="ref-for-concept-url-scheme①">scheme</a> is not "<code>https</code>", <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#iteration-continue" id="ref-for-iteration-continue③">continue</a>.</p>
+       <p>If <a data-link-type="dfn" href="https://w3c.github.io/payment-method-id/#dfn-validate-a-url-based-payment-method-identifier" id="ref-for-dfn-validate-a-url-based-payment-method-identifier">validating</a> <var>identifierURL</var> returns false, <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#iteration-continue" id="ref-for-iteration-continue③">continue</a>.</p>
+      <li data-md="">
+       <p>Optionally, <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#iteration-continue" id="ref-for-iteration-continue④">continue</a>.</p>
+       <p class="note" role="note">This step allows implementations to skip any of the provided <a data-link-type="dfn" href="https://w3c.github.io/payment-method-id/#dfn-payment-method-identifiers" id="ref-for-dfn-payment-method-identifiers⑦">payment method
+ identifiers</a> for user-agent-specific reasons. <a href="#security">§4 Security and privacy considerations</a> discusses some reasons why user
+ agents may prefer to only ingest certain identifiers.</p>
       <li data-md="">
        <p><a data-link-type="dfn" href="https://infra.spec.whatwg.org/#list-append" id="ref-for-list-append">Append</a> <var>identifierURL</var> to <var>identifierURLs</var>.</p>
      </ol>
@@ -1641,13 +1660,13 @@ a <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#ordered-map" id="
      <p><a data-link-type="dfn" href="https://infra.spec.whatwg.org/#list-iterate" id="ref-for-list-iterate③">For each</a> <var>identifierURL</var> of <var>identifierURLs</var>:</p>
      <ol>
       <li data-md="">
-       <p>Let <var>identifierRequest</var> be a new <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#concept-request" id="ref-for-concept-request">request</a> whose <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#concept-request-method" id="ref-for-concept-request-method">method</a> is `<code>HEAD</code>`, <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#concept-request-url" id="ref-for-concept-request-url">url</a> is <var>identifierURL</var>, <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#concept-request-client" id="ref-for-concept-request-client">client</a> is null, <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#concept-request-credentials-mode" id="ref-for-concept-request-credentials-mode">credentials mode</a> is
- "<code>omit</code>", and <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#concept-request-redirect-mode" id="ref-for-concept-request-redirect-mode">redirect mode</a> is "<code>error</code>".</p>
+       <p>Let <var>identifierRequest</var> be a new <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#concept-request" id="ref-for-concept-request">request</a> whose <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#concept-request-method" id="ref-for-concept-request-method">method</a> is `<code>HEAD</code>`, <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#concept-request-url" id="ref-for-concept-request-url">url</a> is <var>identifierURL</var>, <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#concept-request-client" id="ref-for-concept-request-client">client</a> is <var>client</var>, <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#concept-request-credentials-mode" id="ref-for-concept-request-credentials-mode">credentials mode</a> is "<code>omit</code>", and <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#concept-request-redirect-mode" id="ref-for-concept-request-redirect-mode">redirect mode</a> is
+ "<code>error</code>".</p>
       <li data-md="">
        <p><a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#concept-fetch" id="ref-for-concept-fetch">Fetch</a> <var>identifierRequest</var>. To <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#process-response" id="ref-for-process-response">process response</a> with the <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#concept-response" id="ref-for-concept-response">response</a> <var>identifierResponse</var>:</p>
        <ol>
         <li data-md="">
-         <p>If <var>identifierResponse</var> is a <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#concept-network-error" id="ref-for-concept-network-error">network error</a> or <var>identifierResponse</var>’s <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#concept-response-status" id="ref-for-concept-response-status">status</a> is not an <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#ok-status" id="ref-for-ok-status">ok status</a>, <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#iteration-continue" id="ref-for-iteration-continue④">continue</a>.</p>
+         <p>If <var>identifierResponse</var> is a <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#concept-network-error" id="ref-for-concept-network-error">network error</a> or <var>identifierResponse</var>’s <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#concept-response-status" id="ref-for-concept-response-status">status</a> is not an <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#ok-status" id="ref-for-ok-status">ok status</a>, <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#iteration-continue" id="ref-for-iteration-continue⑤">continue</a>.</p>
         <li data-md="">
          <p>Let <var>linkHeaders</var> be the result of <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#extract-header-list-values" id="ref-for-extract-header-list-values">extracting header list values</a> given `<code>Link</code>` and <var>identifierResponse</var>’s <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#concept-response-header-list" id="ref-for-concept-response-header-list">header list</a>.</p>
         <li data-md="">
@@ -1657,7 +1676,7 @@ a <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#ordered-map" id="
          <ol>
           <li data-md="">
            <p>Parse <var>linkHeader</var> according to the <code>link-value</code> production. If it cannot be
- parsed, <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#iteration-continue" id="ref-for-iteration-continue⑤">continue</a>. <a data-link-type="biblio" href="#biblio-rfc8288">[RFC8288]</a></p>
+ parsed, <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#iteration-continue" id="ref-for-iteration-continue⑥">continue</a>. <a data-link-type="biblio" href="#biblio-rfc8288">[RFC8288]</a></p>
           <li data-md="">
            <p>If the parsed header contains a parameter whose name is an <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#ascii-case-insensitive" id="ref-for-ascii-case-insensitive">ASCII case-insensitive</a> match
  for the string "<code>rel</code>" and whose value is an <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#ascii-case-insensitive" id="ref-for-ascii-case-insensitive①">ASCII case-insensitive</a> match
@@ -1669,21 +1688,21 @@ a <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#ordered-map" id="
          <ol>
           <li data-md="">
            <p>Let <var>manifestURL</var> be the result of <a data-link-type="dfn" href="https://url.spec.whatwg.org/#concept-basic-url-parser" id="ref-for-concept-basic-url-parser①">basic URL parsing</a> <var>manifestURLString</var> with base URL given by <var>identifierResponse</var>’s <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#concept-response-url" id="ref-for-concept-response-url">url</a>. If the
- result is failure, <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#iteration-continue" id="ref-for-iteration-continue⑥">continue</a>.</p>
+ result is failure, <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#iteration-continue" id="ref-for-iteration-continue⑦">continue</a>.</p>
           <li data-md="">
-           <p>If <var>manifestURL</var>’s <a data-link-type="dfn" href="https://url.spec.whatwg.org/#concept-url-scheme" id="ref-for-concept-url-scheme②">scheme</a> is not "<code>https</code>", <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#iteration-continue" id="ref-for-iteration-continue⑦">continue</a>.</p>
+           <p>If <var>manifestURL</var>’s <a data-link-type="dfn" href="https://url.spec.whatwg.org/#concept-url-scheme" id="ref-for-concept-url-scheme①">scheme</a> is not "<code>https</code>", <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#iteration-continue" id="ref-for-iteration-continue⑧">continue</a>.</p>
           <li data-md="">
-           <p>Let <var>manifestRequest</var> be a new <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#concept-request" id="ref-for-concept-request①">request</a> whose <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#concept-request-url" id="ref-for-concept-request-url①">url</a> is <var>manifestURL</var>, <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#concept-request-client" id="ref-for-concept-request-client①">client</a> is null, <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#concept-request-credentials-mode" id="ref-for-concept-request-credentials-mode①">credentials mode</a> is
+           <p>Let <var>manifestRequest</var> be a new <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#concept-request" id="ref-for-concept-request①">request</a> whose <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#concept-request-url" id="ref-for-concept-request-url①">url</a> is <var>manifestURL</var>, <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#concept-request-client" id="ref-for-concept-request-client①">client</a> is <var>client</var>, <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#concept-request-credentials-mode" id="ref-for-concept-request-credentials-mode①">credentials mode</a> is
  "<code>omit</code>", and <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#concept-request-redirect-mode" id="ref-for-concept-request-redirect-mode①">redirect mode</a> is "<code>error</code>".</p>
           <li data-md="">
            <p><a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#concept-fetch" id="ref-for-concept-fetch①">Fetch</a> <var>manifestRequest</var>. To <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#process-response-end-of-body" id="ref-for-process-response-end-of-body">process response end-of-body</a> with the <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#concept-response" id="ref-for-concept-response①">response</a> <var>manifestResponse</var>:</p>
            <ol>
             <li data-md="">
-             <p>If <var>manifestResponse</var> is a <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#concept-network-error" id="ref-for-concept-network-error①">network error</a> or <var>manifestResponse</var>’s <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#concept-response-status" id="ref-for-concept-response-status①">status</a> is not an <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#ok-status" id="ref-for-ok-status①">ok status</a>, <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#iteration-continue" id="ref-for-iteration-continue⑧">continue</a>.</p>
+             <p>If <var>manifestResponse</var> is a <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#concept-network-error" id="ref-for-concept-network-error①">network error</a> or <var>manifestResponse</var>’s <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#concept-response-status" id="ref-for-concept-response-status①">status</a> is not an <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#ok-status" id="ref-for-ok-status①">ok status</a>, <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#iteration-continue" id="ref-for-iteration-continue⑨">continue</a>.</p>
             <li data-md="">
              <p>Let <var>body</var> be <var>manifestResponse</var>’s <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#concept-response-body" id="ref-for-concept-response-body">body</a>.</p>
             <li data-md="">
-             <p>If <var>body</var> is null, <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#iteration-continue" id="ref-for-iteration-continue⑨">continue</a>.</p>
+             <p>If <var>body</var> is null, <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#iteration-continue" id="ref-for-iteration-continue①⓪">continue</a>.</p>
             <li data-md="">
              <p>Let <var>reader</var> be the result of <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#concept-get-reader" id="ref-for-concept-get-reader">getting a reader</a> from <var>body</var>.</p>
             <li data-md="">
@@ -1699,7 +1718,7 @@ a <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#ordered-map" id="
  specified <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#process-response" id="ref-for-process-response①">process response</a> and <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#process-response-end-of-body" id="ref-for-process-response-end-of-body①">process response end-of-body</a> steps, asynchronously
  complete this algorithm with <var>manifestsMap</var>.</p>
    </ol>
-   <h3 class="heading settled" data-level="3.3" id="validate-and-parse"><span class="secno">3.3. </span><span class="content">Validating and parsing payment method manifests</span><a class="self-link" href="#validate-and-parse"></a></h3>
+   <h3 class="heading settled" data-level="3.4" id="validate-and-parse"><span class="secno">3.4. </span><span class="content">Validating and parsing payment method manifests</span><a class="self-link" href="#validate-and-parse"></a></h3>
    <p>A <dfn class="dfn-paneled" data-dfn-type="dfn" data-export="" id="parsed-payment-method-manifest">parsed payment method manifest</dfn> is a <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#struct" id="ref-for-struct">struct</a> containing two fields:</p>
    <dl>
     <dt data-md=""><dfn class="dfn-paneled" data-dfn-for="parsed payment method manifest" data-dfn-type="dfn" data-export="" id="parsed-payment-method-manifest-default-applications">default applications</dfn>
@@ -1737,7 +1756,7 @@ steps. The result will either be a <a data-link-type="dfn" href="#parsed-payment
         <li data-md="">
          <p>Let <var>defaultAppURL</var> be the result of <a data-link-type="dfn" href="https://url.spec.whatwg.org/#concept-basic-url-parser" id="ref-for-concept-basic-url-parser②">basic URL parsing</a> <var>defaultAppString</var>. If the result is failure, return failure.</p>
         <li data-md="">
-         <p>If <var>defaultAppURL</var>’s <a data-link-type="dfn" href="https://url.spec.whatwg.org/#concept-url-scheme" id="ref-for-concept-url-scheme③">scheme</a> is not "<code>https</code>", return failure.</p>
+         <p>If <var>defaultAppURL</var>’s <a data-link-type="dfn" href="https://url.spec.whatwg.org/#concept-url-scheme" id="ref-for-concept-url-scheme②">scheme</a> is not "<code>https</code>", return failure.</p>
         <li data-md="">
          <p><a data-link-type="dfn" href="https://infra.spec.whatwg.org/#set-append" id="ref-for-set-append">Append</a> <var>defaultAppURL</var> to <var>defaultApps</var>.</p>
        </ol>
@@ -1764,7 +1783,7 @@ steps. The result will either be a <a data-link-type="dfn" href="#parsed-payment
         <li data-md="">
          <p>Let <var>supportedOriginURL</var> be the result of <a data-link-type="dfn" href="https://url.spec.whatwg.org/#concept-basic-url-parser" id="ref-for-concept-basic-url-parser③">basic URL parsing</a> <var>supportedOriginString</var>. If the result is failure, return failure.</p>
         <li data-md="">
-         <p>If <var>supportedOriginURL</var>’s <a data-link-type="dfn" href="https://url.spec.whatwg.org/#concept-url-scheme" id="ref-for-concept-url-scheme④">scheme</a> is not "<code>https</code>", return failure.</p>
+         <p>If <var>supportedOriginURL</var>’s <a data-link-type="dfn" href="https://url.spec.whatwg.org/#concept-url-scheme" id="ref-for-concept-url-scheme③">scheme</a> is not "<code>https</code>", return failure.</p>
         <li data-md="">
          <p>If <var>supportedOriginURL</var>’s <a data-link-type="dfn" href="https://url.spec.whatwg.org/#concept-url-username" id="ref-for-concept-url-username">username</a> or <a data-link-type="dfn" href="https://url.spec.whatwg.org/#concept-url-password" id="ref-for-concept-url-password">password</a> are not the empty string,
  return failure.</p>
@@ -1789,23 +1808,22 @@ steps. The result will either be a <a data-link-type="dfn" href="#parsed-payment
 <span class="p">}</span>
 </pre>
    </div>
-   <h3 class="heading settled" data-level="3.4" id="fetch-wam"><span class="secno">3.4. </span><span class="content">Fetching web app manifests</span><a class="self-link" href="#fetch-wam"></a></h3>
+   <h3 class="heading settled" data-level="3.5" id="fetch-wam"><span class="secno">3.5. </span><span class="content">Fetching web app manifests</span><a class="self-link" href="#fetch-wam"></a></h3>
    <p>Because the determination of <a data-link-type="dfn" href="https://w3c.github.io/payment-request/#dfn-payment-apps" id="ref-for-dfn-payment-apps①⓪">payment apps</a> happens independent of any embedding HTML document,
 the procedure for obtaining a <a data-link-type="dfn" href="https://www.w3.org/TR/appmanifest/#dfn-manifest" id="ref-for-dfn-manifest②">web app manifest</a> that gives information about a default payment
 app is different from the usual <a data-link-type="dfn" href="https://www.w3.org/TR/appmanifest/#dfn-steps-for-obtaining-a-manifest" id="ref-for-dfn-steps-for-obtaining-a-manifest">steps for obtaining a web app manifest</a>.</p>
-   <p>To <dfn class="dfn-paneled" data-dfn-type="dfn" data-export="" id="fetch-the-web-app-manifest-for-a-default-payment-app">fetch the web app manifest for a default payment app</dfn>, given a <a data-link-type="dfn" href="https://url.spec.whatwg.org/#concept-url" id="ref-for-concept-url④">URL</a> <var>url</var>,
-perform the following steps. This algorithm will asynchronously complete with either a <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#scalar-value-string" id="ref-for-scalar-value-string">scalar value string</a> or failure.</p>
+   <p>To <dfn class="dfn-paneled" data-dfn-type="dfn" data-export="" id="fetch-the-web-app-manifest-for-a-default-payment-app">fetch the web app manifest for a default payment app</dfn>, given a <a data-link-type="dfn" href="https://url.spec.whatwg.org/#concept-url" id="ref-for-concept-url④">URL</a> <var>url</var> and
+an <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#environment-settings-object" id="ref-for-environment-settings-object②">environment settings object</a> <var>client</var>, perform the following steps. This algorithm will
+asynchronously complete with either a <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#scalar-value-string" id="ref-for-scalar-value-string">scalar value string</a> or failure.</p>
    <ol>
     <li data-md="">
-     <p>Let <var>request</var> be a new <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#concept-request" id="ref-for-concept-request②">request</a> whose <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#concept-request-url" id="ref-for-concept-request-url②">url</a> is <var>url</var>, <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#concept-request-client" id="ref-for-concept-request-client②">client</a> is null, <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#concept-request-credentials-mode" id="ref-for-concept-request-credentials-mode②">credentials mode</a> is "<code>omit</code>", and <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#concept-request-redirect-mode" id="ref-for-concept-request-redirect-mode②">redirect mode</a> is
+     <p>Let <var>request</var> be a new <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#concept-request" id="ref-for-concept-request②">request</a> whose <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#concept-request-url" id="ref-for-concept-request-url②">url</a> is <var>url</var>, <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#concept-request-client" id="ref-for-concept-request-client②">client</a> is <var>client</var>, <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#concept-request-credentials-mode" id="ref-for-concept-request-credentials-mode②">credentials mode</a> is "<code>omit</code>", and <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#concept-request-redirect-mode" id="ref-for-concept-request-redirect-mode②">redirect mode</a> is
  "<code>error</code>".</p>
     <li data-md="">
      <p><a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#concept-fetch" id="ref-for-concept-fetch③">Fetch</a> <var>request</var>. To <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#process-response-end-of-body" id="ref-for-process-response-end-of-body②">process response end-of-body</a> with the <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#concept-response" id="ref-for-concept-response②">response</a> <var>response</var>:</p>
      <ol>
       <li data-md="">
        <p>If <var>response</var> is a <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#concept-network-error" id="ref-for-concept-network-error②">network error</a> or <var>response</var>’s <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#concept-response-status" id="ref-for-concept-response-status②">status</a> is not an <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#ok-status" id="ref-for-ok-status②">ok status</a>, asynchronously complete this algorithm with failure.</p>
-     </ol>
-     <ol>
       <li data-md="">
        <p>Let <var>body</var> be <var>response</var>’s <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#concept-response-body" id="ref-for-concept-response-body①">body</a>.</p>
       <li data-md="">
@@ -1822,14 +1840,13 @@ perform the following steps. This algorithm will asynchronously complete with ei
      </ol>
    </ol>
    <h2 class="heading settled" data-level="4" id="security"><span class="secno">4. </span><span class="content">Security and privacy considerations</span><a class="self-link" href="#security"></a></h2>
-   <div class="issue no-marker" id="issue-d41d8cd9"><a class="self-link" href="#issue-d41d8cd9"></a><a class="marker" href="https://github.com/w3c/payment-method-manifest/issues/1" style="text-transform:none">w3c/payment-method-manifest/1</a><a href="https://github.com/w3c/payment-method-manifest/issues/1">Should these fetches have a client? (impacts CSP, CORS, ...)</a></div>
-   <p><a data-link-type="dfn" href="#ingest-payment-method-manifests" id="ref-for-ingest-payment-method-manifests">Ingesting payment method manifests</a> might reveal information
-to a payment service about the activity of an end user. For example, a <a data-link-type="dfn" href="https://w3c.github.io/payment-request/#dfn-payment-method" id="ref-for-dfn-payment-method①⑤">payment method</a> that is
+   <p><a data-link-type="dfn" href="#ingest-payment-method-manifests" id="ref-for-ingest-payment-method-manifests①">Ingesting payment method manifests</a> might reveal information
+to a payment service about the activity of an end user. For example, a <a data-link-type="dfn" href="https://w3c.github.io/payment-request/#dfn-payment-method" id="ref-for-dfn-payment-method①③">payment method</a> that is
 only supported on one website might allow that payment provider to discover the IP addresses of
 users who visit that website.</p>
    <p>One way to mitigate this is to <a data-link-type="dfn" href="#fetch-payment-method-manifests" id="ref-for-fetch-payment-method-manifests①">fetch the manifests</a> only for the <a data-link-type="dfn" href="https://w3c.github.io/payment-request/#dfn-payment-apps" id="ref-for-dfn-payment-apps①①">payment apps</a> that the user has installed or has explicitly expressed interest in. This confines
 the risk to only sharing the user’s IP address with those parties.</p>
-   <div class="issue no-marker" id="issue-d41d8cd9①"><a class="self-link" href="#issue-d41d8cd9①"></a><a class="marker" href="https://github.com/w3c/payment-method-manifest/issues/11" style="text-transform:none">w3c/payment-method-manifest/11</a><a href="https://github.com/w3c/payment-method-manifest/issues/11">Matching payment apps and security in a world of payment method manifests</a></div>
+   <div class="issue no-marker" id="issue-d41d8cd9"><a class="self-link" href="#issue-d41d8cd9"></a><a class="marker" href="https://github.com/w3c/payment-method-manifest/issues/11" style="text-transform:none">w3c/payment-method-manifest/11</a><a href="https://github.com/w3c/payment-method-manifest/issues/11">Matching payment apps and security in a world of payment method manifests</a></div>
    <h2 class="heading settled" data-level="5" id="iana"><span class="secno">5. </span><span class="content">IANA considerations</span><a class="self-link" href="#iana"></a></h2>
    <h3 class="heading settled" data-level="5.1" id="payment-method-manifest-link"><span class="secno">5.1. </span><span class="content">The <code>payment-method-manifest</code> link relation</span><a class="self-link" href="#payment-method-manifest-link"></a></h3>
    <p>This registration is for community review and will be submitted to the IESG for review, approval,
@@ -1840,14 +1857,14 @@ and registration with IANA.</p>
      <p>payment-method-manifest</p>
     <dt data-md="">Description
     <dd data-md="">
-     <p>Links to a payment method manifest, which describes a specific <a data-link-type="dfn" href="https://w3c.github.io/payment-request/#dfn-payment-method" id="ref-for-dfn-payment-method①⑥">payment method</a> within the Web
+     <p>Links to a payment method manifest, which describes a specific <a data-link-type="dfn" href="https://w3c.github.io/payment-request/#dfn-payment-method" id="ref-for-dfn-payment-method①④">payment method</a> within the Web
  Payments ecosystem.</p>
     <dt data-md="">Reference
     <dd data-md="">
      <p><a href="https://w3c.github.io/payment-method-manifest/">https://w3c.github.io/payment-method-manifest/</a></p>
     <dt data-md="">Notes
     <dd data-md="">
-     <p>See <a href="#fetch-pmm">§3.2 Fetching payment method manifests</a> for the specific manner in which such links are expected to be fetched, and <a href="#ingest">§3.1 Ingesting payment method manifests</a> for the larger context in which they are used.</p>
+     <p>See <a href="#fetch-pmm">§3.3 Fetching payment method manifests</a> for the specific manner in which such links are expected to be fetched, and <a href="#ingest">§3.2 Ingesting payment method manifests</a> for the larger context in which they are used.</p>
    </dl>
    <h2 class="no-num heading settled" id="acknowledgments"><span class="content">Acknowledgments</span><a class="self-link" href="#acknowledgments"></a></h2>
    <p><a href="#processing-model">§3 Processing model</a> is based heavily on algorithms originally outlined by Rouslan Solomakhin.</p>
@@ -1857,15 +1874,15 @@ and registration with IANA.</p>
   <h2 class="no-num no-ref heading settled" id="index"><span class="content">Index</span><a class="self-link" href="#index"></a></h2>
   <h3 class="no-num no-ref heading settled" id="index-defined-here"><span class="content">Terms defined by this specification</span><a class="self-link" href="#index-defined-here"></a></h3>
   <ul class="index">
-   <li><a href="#parsed-payment-method-manifest-default-applications">default applications</a><span>, in §3.3</span>
-   <li><a href="#fetch-payment-method-manifests">fetch payment method manifests</a><span>, in §3.2</span>
-   <li><a href="#fetch-the-web-app-manifest-for-a-default-payment-app">fetch the web app manifest for a default payment app</a><span>, in §3.4</span>
-   <li><a href="#ingest-payment-method-manifests">ingest payment method manifests</a><span>, in §3.1</span>
-   <li><a href="#parsed-payment-method-manifest">parsed payment method manifest</a><span>, in §3.3</span>
+   <li><a href="#parsed-payment-method-manifest-default-applications">default applications</a><span>, in §3.4</span>
+   <li><a href="#fetch-payment-method-manifests">fetch payment method manifests</a><span>, in §3.3</span>
+   <li><a href="#fetch-the-web-app-manifest-for-a-default-payment-app">fetch the web app manifest for a default payment app</a><span>, in §3.5</span>
+   <li><a href="#ingest-payment-method-manifests">ingest payment method manifests</a><span>, in §3.2</span>
+   <li><a href="#parsed-payment-method-manifest">parsed payment method manifest</a><span>, in §3.4</span>
    <li><a href="#payment-method-manifest">payment method manifest</a><span>, in §Unnumbered section</span>
-   <li><a href="#parsed-payment-method-manifest-supported-origins">supported origins</a><span>, in §3.3</span>
+   <li><a href="#parsed-payment-method-manifest-supported-origins">supported origins</a><span>, in §3.4</span>
    <li><a href="#valid-payment-method-manifest">valid</a><span>, in §2</span>
-   <li><a href="#validate-and-parse-the-payment-method-manifest">validate and parse the payment method manifest</a><span>, in §3.3</span>
+   <li><a href="#validate-and-parse-the-payment-method-manifest">validate and parse the payment method manifest</a><span>, in §3.4</span>
    <li><a href="#valid-payment-method-manifest">validity</a><span>, in §2</span>
    <li><a href="#valid-payment-method-manifest">valid payment method manifest</a><span>, in §2</span>
   </ul>
@@ -1921,6 +1938,8 @@ and registration with IANA.</p>
    <li>
     <a data-link-type="biblio">[HTML]</a> defines the following terms:
     <ul>
+     <li><a href="https://html.spec.whatwg.org/multipage/webappapis.html#current-settings-object">current settings object</a>
+     <li><a href="https://html.spec.whatwg.org/multipage/webappapis.html#environment-settings-object">environment settings object</a>
      <li><a href="https://html.spec.whatwg.org/multipage/origin.html#concept-origin">origin</a>
      <li><a href="https://html.spec.whatwg.org/multipage/origin.html#ascii-serialisation-of-an-origin">serialization of an origin</a>
     </ul>
@@ -1934,6 +1953,7 @@ and registration with IANA.</p>
      <li><a href="https://infra.spec.whatwg.org/#byte-sequence">byte sequence</a>
      <li><a href="https://infra.spec.whatwg.org/#iteration-continue">continue</a>
      <li><a href="https://infra.spec.whatwg.org/#list-iterate">for each</a>
+     <li><a href="https://infra.spec.whatwg.org/#struct-item">item</a>
      <li><a href="https://infra.spec.whatwg.org/#javascript-string">javascript string</a>
      <li><a href="https://infra.spec.whatwg.org/#list">list</a>
      <li><a href="https://infra.spec.whatwg.org/#ordered-map">map</a>
@@ -1947,13 +1967,17 @@ and registration with IANA.</p>
    <li>
     <a data-link-type="biblio">[payment-method-id]</a> defines the following terms:
     <ul>
-     <li><a href="https://w3c.github.io/payment-method-id/#">identifier</a>
-     <li><a href="https://w3c.github.io/payment-method-id/#">payment method identifier</a>
+     <li><a href="https://w3c.github.io/payment-method-id/#dfn-payment-method-identifiers">payment method identifier</a>
+     <li><a href="https://w3c.github.io/payment-method-id/#dfn-standardized-payment-method-identifiers">standardized payment method identifier</a>
+     <li><a href="https://w3c.github.io/payment-method-id/#dfn-url-based-payment-method-identifiers">url-based payment method identifier</a>
+     <li><a href="https://w3c.github.io/payment-method-id/#dfn-validate-a-url-based-payment-method-identifier">validate a url-based payment method identifier</a>
     </ul>
    <li>
-    <a data-link-type="biblio">[payment-request]</a> defines the following terms:
+    <a data-link-type="biblio">[PAYMENT-REQUEST]</a> defines the following terms:
     <ul>
-     <li><a href="https://w3c.github.io/payment-request/#paymentrequest-methoddata-details-options">PaymentRequest(methodData, details, options)</a>
+     <li><a href="https://w3c.github.io/payment-request/#dom-paymentrequest">PaymentRequest</a>
+     <li><a href="https://w3c.github.io/payment-request/#dfn-paymentrequest-paymentrequest">PaymentRequest(methodData, details, options)</a>
+     <li><a href="https://w3c.github.io/payment-request/#dfn-serializedmethoddata">[[serializedmethoddata]]</a>
      <li><a href="https://w3c.github.io/payment-request/#dfn-payment-apps">payment app</a>
      <li><a href="https://w3c.github.io/payment-request/#dfn-payment-method">payment method</a>
     </ul>
@@ -2022,52 +2046,53 @@ and registration with IANA.</p>
    <b><a href="#valid-payment-method-manifest">#valid-payment-method-manifest</a></b><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-valid-payment-method-manifest">2. Manifest format</a> <a href="#ref-for-valid-payment-method-manifest①">(2)</a> <a href="#ref-for-valid-payment-method-manifest②">(3)</a>
-    <li><a href="#ref-for-valid-payment-method-manifest③">3.3. Validating and parsing payment method manifests</a>
+    <li><a href="#ref-for-valid-payment-method-manifest③">3.4. Validating and parsing payment method manifests</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="ingest-payment-method-manifests">
    <b><a href="#ingest-payment-method-manifests">#ingest-payment-method-manifests</a></b><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-ingest-payment-method-manifests">4. Security and privacy considerations</a>
+    <li><a href="#ref-for-ingest-payment-method-manifests">3.1. Modifications to Payment Request API</a>
+    <li><a href="#ref-for-ingest-payment-method-manifests①">4. Security and privacy considerations</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="fetch-payment-method-manifests">
    <b><a href="#fetch-payment-method-manifests">#fetch-payment-method-manifests</a></b><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-fetch-payment-method-manifests">3.1. Ingesting payment method manifests</a>
+    <li><a href="#ref-for-fetch-payment-method-manifests">3.2. Ingesting payment method manifests</a>
     <li><a href="#ref-for-fetch-payment-method-manifests①">4. Security and privacy considerations</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="parsed-payment-method-manifest">
    <b><a href="#parsed-payment-method-manifest">#parsed-payment-method-manifest</a></b><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-parsed-payment-method-manifest">3.3. Validating and parsing payment method manifests</a> <a href="#ref-for-parsed-payment-method-manifest①">(2)</a>
+    <li><a href="#ref-for-parsed-payment-method-manifest">3.4. Validating and parsing payment method manifests</a> <a href="#ref-for-parsed-payment-method-manifest①">(2)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="parsed-payment-method-manifest-default-applications">
    <b><a href="#parsed-payment-method-manifest-default-applications">#parsed-payment-method-manifest-default-applications</a></b><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-parsed-payment-method-manifest-default-applications">3.1. Ingesting payment method manifests</a>
-    <li><a href="#ref-for-parsed-payment-method-manifest-default-applications①">3.3. Validating and parsing payment method manifests</a>
+    <li><a href="#ref-for-parsed-payment-method-manifest-default-applications">3.2. Ingesting payment method manifests</a>
+    <li><a href="#ref-for-parsed-payment-method-manifest-default-applications①">3.4. Validating and parsing payment method manifests</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="parsed-payment-method-manifest-supported-origins">
    <b><a href="#parsed-payment-method-manifest-supported-origins">#parsed-payment-method-manifest-supported-origins</a></b><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-parsed-payment-method-manifest-supported-origins">3.1. Ingesting payment method manifests</a>
-    <li><a href="#ref-for-parsed-payment-method-manifest-supported-origins①">3.3. Validating and parsing payment method manifests</a>
+    <li><a href="#ref-for-parsed-payment-method-manifest-supported-origins">3.2. Ingesting payment method manifests</a>
+    <li><a href="#ref-for-parsed-payment-method-manifest-supported-origins①">3.4. Validating and parsing payment method manifests</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="validate-and-parse-the-payment-method-manifest">
    <b><a href="#validate-and-parse-the-payment-method-manifest">#validate-and-parse-the-payment-method-manifest</a></b><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-validate-and-parse-the-payment-method-manifest">3.1. Ingesting payment method manifests</a>
+    <li><a href="#ref-for-validate-and-parse-the-payment-method-manifest">3.2. Ingesting payment method manifests</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="fetch-the-web-app-manifest-for-a-default-payment-app">
    <b><a href="#fetch-the-web-app-manifest-for-a-default-payment-app">#fetch-the-web-app-manifest-for-a-default-payment-app</a></b><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-fetch-the-web-app-manifest-for-a-default-payment-app">3.1. Ingesting payment method manifests</a>
+    <li><a href="#ref-for-fetch-the-web-app-manifest-for-a-default-payment-app">3.2. Ingesting payment method manifests</a>
    </ul>
   </aside>
 <script>/* script-dfn-panel */
