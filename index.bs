@@ -84,7 +84,7 @@ The resource identified by the [=payment method identifier=] URL does not direct
 machine-readable [=payment method manifest=]. It is often a generic URL (such as
 "<code>https://alicepay.com/</code>") which is more suitable for human-readable content. Instead, a
 HTTP Link header is used to direct user agents seeking out the [=payment method manifest=] toward
-another location. [[RFC5988]]
+another location. [[RFC8288]]
 
 For an example [=payment method=] AlicePay, with [=payment method identifier=]
 "<code>https://alicepay.com/</code>", a user agent might issue a request to that
@@ -252,7 +252,7 @@ a [=map=] (possibly empty) from [=URLs=] to [=byte sequences=], mapping
     1. Let |manifestURLString| be null.
     1. [=list/For each=] |linkHeader| of |linkHeaders|:
       1. Parse |linkHeader| according to the <code>link-value</code> production. If it cannot be
-         parsed, [=iteration/continue=]. [[!RFC5988]]
+         parsed, [=iteration/continue=]. [[!RFC8288]]
       1. If the parsed header contains a parameter whose name is an [=ASCII case-insensitive=] match
          for the string "<code>rel</code>" and whose value is an [=ASCII case-insensitive=] match
          for the string "<code>payment-method-manifest</code>", then set |manifestURLString| to the
