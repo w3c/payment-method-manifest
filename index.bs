@@ -264,9 +264,9 @@ manifest.
 1. Let |manifestsMap| be an empty [=map=].
 1. [=list/For each=] |identifierURL| of |identifierURLs|:
   1. Let |identifierRequest| be a new [=request=] whose [=request/method=] is `<code>HEAD</code>`,
-     [=request/url=] is |identifierURL|, [=request/client=] is |client|,
-     [=request/credentials mode=] is "<code>omit</code>", and [=request/redirect mode=] is
-     "<code>error</code>".
+     [=request/url=] is |identifierURL|, [=request/client=] is |client|, [=request/mode=] is
+     "<code>cors</code>", [=request/credentials mode=] is "<code>omit</code>", and
+     [=request/redirect mode=] is "<code>error</code>".
   1. [=Fetch=] |identifierRequest|. To [=process response=] with the [=response=]
      |identifierResponse|:
     1. If |identifierResponse| is a [=network error=] or |identifierResponse|'s [=response/status=]
@@ -289,8 +289,9 @@ manifest.
          result is failure, [=iteration/continue=].
       1. If |manifestURL|'s [=url/scheme=] is not "<code>https</code>", [=iteration/continue=].
       1. Let |manifestRequest| be a new [=request=] whose [=request/url=] is |manifestURL|,
-         [=request/client=] is |client|, [=request/credentials mode=] is
-         "<code>omit</code>", and [=request/redirect mode=] is "<code>error</code>".
+         [=request/client=] is |client|, [=request/mode=] is "<code>cors</code>",
+         [=request/credentials mode=] is "<code>omit</code>", and [=request/redirect mode=] is
+         "<code>error</code>".
       1. [=Fetch=] |manifestRequest|. To [=process response end-of-body=] with the [=response=]
          |manifestResponse|:
          1. If |manifestResponse| is a [=network error=] or |manifestResponse|'s [=response/status=]
@@ -381,8 +382,8 @@ an [=environment settings object=] |client|, perform the following steps. This a
 asynchronously complete with either a [=scalar value string=] or failure.
 
 1. Let |request| be a new [=request=] whose [=request/url=] is |url|, [=request/client=] is
-   |client|, [=request/credentials mode=] is "<code>omit</code>", and [=request/redirect mode=] is
-   "<code>error</code>".
+   |client|, [=request/mode=] is "<code>cors</code>", [=request/credentials mode=] is
+   "<code>omit</code>", and [=request/redirect mode=] is "<code>error</code>".
 1. [=Fetch=] |request|. To [=process response end-of-body=] with the [=response=] |response|:
    1. If |response| is a [=network error=] or |response|'s [=response/status=] is not an
       [=ok status=], asynchronously complete this algorithm with failure.
