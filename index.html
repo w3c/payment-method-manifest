@@ -1176,8 +1176,10 @@ Possible extra rowspan handling
 		}
 	}
 </style>
-  <link href="https://www.w3.org/StyleSheets/TR/2016/W3C-LD" rel="stylesheet" type="text/css">
-  <meta content="Bikeshed version 67155cabad72a8ab669a7d4421c90e2999a29b68" name="generator">
+  <link href="https://www.w3.org/StyleSheets/TR/2016/W3C-WD" rel="stylesheet" type="text/css">
+  <meta content="Bikeshed version eeaa009c31ac13852bf86c1553d994e53f48f852" name="generator">
+  <link href="https://www.w3.org/TR/payment-method-manifest" rel="canonical">
+  <meta content="bfd6f45d1daeced2cd894827d9542d497722ebde" name="document-revision">
 <style>/* style-md-lists */
 
 /* This is a weird hack for me not yet following the commonmark spec
@@ -1424,9 +1426,15 @@ pre.highlight, pre > code.highlight { display: block; padding: 1em; margin: .5em
   <div class="head">
    <p data-fill-with="logo"><a class="logo" href="https://www.w3.org/"> <img alt="W3C" height="48" src="https://www.w3.org/StyleSheets/TR/2016/logos/W3C" width="72"> </a> </p>
    <h1 class="p-name no-ref" id="title">Payment Method Manifest</h1>
-   <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">Living Document, <time class="dt-updated" datetime="2017-11-07">7 November 2017</time></span></h2>
+   <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">W3C First Public Working Draft, <time class="dt-updated" datetime="2017-12-22">22 December 2017</time></span></h2>
    <div data-fill-with="spec-metadata">
     <dl>
+     <dt>This version:
+     <dd><a class="u-url" href="https://www.w3.org/TR/2017/WD-payment-method-manifest-20171222/">https://www.w3.org/TR/2017/WD-payment-method-manifest-20171222/</a>
+     <dt>Latest published version:
+     <dd><a href="https://www.w3.org/TR/payment-method-manifest">https://www.w3.org/TR/payment-method-manifest</a>
+     <dt>Editor's Draft:
+     <dd><a href="https://w3c.github.io/payment-method-manifest/">https://w3c.github.io/payment-method-manifest/</a>
      <dt>Issue Tracking:
      <dd><a href="https://github.com/w3c/payment-method-manifest/issues/">GitHub</a>
      <dt class="editor">Editors:
@@ -1444,8 +1452,7 @@ pre.highlight, pre > code.highlight { display: block; padding: 1em; margin: .5em
    <p>This specification defines the machine-readable manifest file, known as a <dfn class="dfn-paneled" data-dfn-type="dfn" data-export="" id="payment-method-manifest">payment method manifest</dfn>, describing how a <a data-link-type="dfn" href="https://w3c.github.io/payment-request/#dfn-payment-method" id="ref-for-dfn-payment-method">payment method</a> participates in the Web Payments ecosystem, and how such files are to be used.</p>
   </div>
   <h2 class="no-num no-toc no-ref heading settled" id="status"><span class="content">Status of this document</span></h2>
-  <div data-fill-with="status"> This document is merely a public working draft of a potential specification. It has no official
-standing of any kind and does not represent the support or consensus of any standards organisation. </div>
+  <div data-fill-with="status"></div>
   <div data-fill-with="at-risk"></div>
   <nav data-fill-with="table-of-contents" id="toc">
    <h2 class="no-num no-toc no-ref" id="contents">Table of Contents</h2>
@@ -1489,6 +1496,21 @@ standing of any kind and does not represent the support or consensus of any stan
    </ol>
   </nav>
   <main>
+   <div data-fill-with="status">
+    <p> <em>This section describes the status of this document at the time of its publication. Other documents may supersede this document. A list of current <abbr title="World Wide Web Consortium">W3C</abbr> publications and the latest revision of this technical report can be found in the <a href="https://www.w3.org/TR/"><abbr title="World Wide Web Consortium">W3C</abbr> technical reports index</a> at https://www.w3.org/TR/.</em> </p>
+    <p> The Web Payments Working Group maintains <a href="https://github.com/w3c/payment-method-manifest/issues">a list of all bug
+        reports that the group has not yet addressed</a>. This draft highlights some of the pending issues that are still to be discussed in the working group. No decision has been taken on the outcome of these issues including whether they are valid.
+            Pull requests with proposed specification text for outstanding issues are strongly encouraged. </p>
+    <p> This document was published by the <a href="https://www.w3.org/Payments/WG/">Web Payments Working Group</a> as a Working Draft. This document is intended to become a <abbr title="World Wide Web Consortium">W3C</abbr> Recommendation. </p>
+    <p> Publication as a Working Draft does not imply endorsement by the <abbr title="World Wide Web Consortium">W3C</abbr> Membership. This is a draft document and may be updated, replaced or obsoleted by other documents at any time. It is inappropriate
+            to cite this document as other than work in progress. </p>
+    <p> This document was produced by a group operating under the <a class="css" data-link-type="property" href="https://www.w3.org/Consortium/Patent-Policy-20040205/" id="sotd_patent">5 February 2004 <abbr title="World Wide Web Consortium">W3C</abbr> Patent
+            Policy</a>. <abbr title="World Wide Web Consortium">W3C</abbr> maintains a <a href="https://www.w3.org/2004/01/pp-impl/83744/status" rel="disclosure">public list of any patent
+              disclosures</a> made in connection with the deliverables of the group; that page also includes instructions for disclosing a patent. An individual who has actual knowledge of a patent which the individual believes contains <a href="https://www.w3.org/Consortium/Patent-Policy-20040205/#def-essential">Essential
+            Claim(s)</a> must disclose the information in accordance with <a href="https://www.w3.org/Consortium/Patent-Policy-20040205/#sec-Disclosure">section
+            6 of the <abbr title="World Wide Web Consortium">W3C</abbr> Patent Policy</a>. </p>
+    <p>This document is governed by the <a href="https://www.w3.org/2017/Process-20170301/" id="w3c_process_revision">1 March 2017 <abbr title="World Wide Web Consortium">W3C</abbr> Process Document</a>. </p>
+   </div>
    <div class="non-normative">
     <h2 class="heading settled" data-level="1" id="introduction"><span class="secno">1. </span><span class="content">Introduction</span><a class="self-link" href="#introduction"></a></h2>
     <p><em>This section and its sub-sections are non-normative.</em></p>
@@ -1650,7 +1672,7 @@ manifest.</p>
        <p>Optionally, <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#iteration-continue" id="ref-for-iteration-continue④">continue</a>.</p>
        <p class="note" role="note">This step allows implementations to skip any of the provided <a data-link-type="dfn" href="https://w3c.github.io/payment-method-id/#dfn-payment-method-identifiers" id="ref-for-dfn-payment-method-identifiers⑦">payment method
  identifiers</a> for user-agent-specific reasons. <a href="#security">§4 Security and privacy considerations</a> discusses some reasons why user
- agents may prefer to only ingest certain identifiers.</p>
+ agents might prefer to only ingest certain identifiers.</p>
       <li data-md="">
        <p><a data-link-type="dfn" href="https://infra.spec.whatwg.org/#list-append" id="ref-for-list-append">Append</a> <var>identifierURL</var> to <var>identifierURLs</var>.</p>
      </ol>
@@ -1910,6 +1932,10 @@ and registration with IANA.</p>
     <a data-link-type="biblio">[ENCODING]</a> defines the following terms:
     <ul>
      <li><a href="https://encoding.spec.whatwg.org/#utf-8">utf-8</a>
+    </ul>
+   <li>
+    <a data-link-type="biblio">[encoding-1]</a> defines the following terms:
+    <ul>
      <li><a href="https://encoding.spec.whatwg.org/#utf-8-decode">utf-8 decode</a>
     </ul>
    <li>
@@ -1984,6 +2010,11 @@ and registration with IANA.</p>
     </ul>
    <li>
     <a data-link-type="biblio">[promises-guide]</a> defines the following terms:
+    <ul>
+     <li><a href="https://www.w3.org/2001/tag/doc/promises-guide/#upon-fulfillment">upon fulfillment</a>
+    </ul>
+   <li>
+    <a data-link-type="biblio">[promises-guide-1]</a> defines the following terms:
     <ul>
      <li><a href="https://www.w3.org/2001/tag/doc/promises-guide/#upon-fulfillment">upon fulfillment</a>
      <li><a href="https://www.w3.org/2001/tag/doc/promises-guide/#upon-rejection">upon rejection</a>

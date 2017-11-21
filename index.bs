@@ -3,7 +3,11 @@ Title: Payment Method Manifest
 Group: web-payments
 Shortname: payment-method-manifest
 Repository: w3c/payment-method-manifest
-Status: LD
+Status: FPWD
+Date: 2017-12-22
+ED: https://w3c.github.io/payment-method-manifest/
+TR: https://www.w3.org/TR/payment-method-manifest
+Level: none
 Editor: Dapeng Liu, Alibaba
 Editor: Domenic Denicola, w3cid 52873, Google https://www.google.com/, d@domenic.me, https://domenic.me/
 Editor: Zach Koch, w3cid 76588, Google https://www.google.com/
@@ -46,10 +50,7 @@ urlPrefix: https://tc39.github.io/ecma262/; spec: ECMASCRIPT
     text: Type; url: #sec-ecmascript-data-types-and-values
 </pre>
 
-<div boilerplate="status">
-This document is merely a public working draft of a potential specification. It has no official
-standing of any kind and does not represent the support or consensus of any standards organisation.
-</div>
+<div data-fill-with="status"></div>
 
 <div class="non-normative">
 
@@ -259,7 +260,7 @@ manifest.
   1. Optionally, [=iteration/continue=].
      <p class="note">This step allows implementations to skip any of the provided [=payment method
      identifiers=] for user-agent-specific reasons. [[#security]] discusses some reasons why user
-     agents may prefer to only ingest certain identifiers.</p>
+     agents might prefer to only ingest certain identifiers.</p>
   1. [=list/Append=] |identifierURL| to |identifierURLs|.
 1. Let |manifestsMap| be an empty [=map=].
 1. [=list/For each=] |identifierURL| of |identifierURLs|:
