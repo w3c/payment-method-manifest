@@ -20,6 +20,7 @@ Assume Explicit For: true
 Inline GitHub Issues: title
 Boilerplate: omit issues-index
 Indent: 2
+Prepare For TR: True
 </pre>
 
 <pre class="anchors">
