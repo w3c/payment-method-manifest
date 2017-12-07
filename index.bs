@@ -4,9 +4,9 @@ Group: web-payments
 Shortname: payment-method-manifest
 Repository: w3c/payment-method-manifest
 Status: FPWD
-Date: 2017-12-22
+Date: 2017-12-12
 ED: https://w3c.github.io/payment-method-manifest/
-TR: https://www.w3.org/TR/payment-method-manifest
+TR: https://www.w3.org/TR/payment-method-manifest/
 Level: none
 Editor: Dapeng Liu, Alibaba
 Editor: Domenic Denicola, w3cid 52873, Google https://www.google.com/, d@domenic.me, https://domenic.me/
