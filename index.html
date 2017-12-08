@@ -1451,7 +1451,24 @@ pre.highlight, pre > code.highlight { display: block; padding: 1em; margin: .5em
    <h2 class="no-num no-toc no-ref heading settled" id="abstract"><span class="content">Abstract</span></h2>
    <p>This specification defines the machine-readable manifest file, known as a <dfn class="dfn-paneled" data-dfn-type="dfn" data-export="" id="payment-method-manifest">payment method manifest</dfn>, describing how a <a data-link-type="dfn" href="https://w3c.github.io/payment-request/#dfn-payment-method" id="ref-for-dfn-payment-method">payment method</a> participates in the Web Payments ecosystem, and how such files are to be used.</p>
   </div>
+  <main>
   <h2 class="no-num no-toc no-ref heading settled" id="status"><span class="content">Status of this document</span></h2>
+   <div data-fill-with="status">
+    <p> <em>This section describes the status of this document at the time of its publication. Other documents may supersede this document. A list of current <abbr title="World Wide Web Consortium">W3C</abbr> publications and the latest revision of this technical report can be found in the <a href="https://www.w3.org/TR/"><abbr title="World Wide Web Consortium">W3C</abbr> technical reports index</a> at https://www.w3.org/TR/.</em> </p>
+    <p> The Web Payments Working Group maintains <a href="https://github.com/w3c/payment-method-manifest/issues">a list of all bug
+        reports that the group has not yet addressed</a>. This draft highlights some of the pending issues that are still to be discussed in the working group. No decision has been taken on the outcome of these issues including whether they are valid.
+            Pull requests with proposed specification text for outstanding issues are strongly encouraged. </p>
+    <p> This document was published by the <a href="https://www.w3.org/Payments/WG/">Web Payments Working Group</a> as a Working Draft. This document is intended to become a <abbr title="World Wide Web Consortium">W3C</abbr> Recommendation. </p>
+    <p> Publication as a Working Draft does not imply endorsement by the <abbr title="World Wide Web Consortium">W3C</abbr> Membership. This is a draft document and may be updated, replaced or obsoleted by other documents at any time. It is inappropriate
+            to cite this document as other than work in progress. </p>
+    <p> This document was produced by a group operating under the <a class="css" data-link-type="property" href="https://www.w3.org/Consortium/Patent-Policy-20040205/" id="sotd_patent">5 February 2004 <abbr title="World Wide Web Consortium">W3C</abbr> Patent
+            Policy</a>. <abbr title="World Wide Web Consortium">W3C</abbr> maintains a <a href="https://www.w3.org/2004/01/pp-impl/83744/status" rel="disclosure">public list of any patent
+              disclosures</a> made in connection with the deliverables of the group; that page also includes instructions for disclosing a patent. An individual who has actual knowledge of a patent which the individual believes contains <a href="https://www.w3.org/Consortium/Patent-Policy-20040205/#def-essential">Essential
+            Claim(s)</a> must disclose the information in accordance with <a href="https://www.w3.org/Consortium/Patent-Policy-20040205/#sec-Disclosure">section
+            6 of the <abbr title="World Wide Web Consortium">W3C</abbr> Patent Policy</a>. </p>
+    <p> This document is governed by the <a href="https://www.w3.org/2017/Process-20170301/" id="w3c_process_revision">1 March 2017 <abbr title="World Wide Web Consortium">W3C</abbr> Process Document</a>. </p>
+    <p></p>
+   </div>
   <nav data-fill-with="table-of-contents" id="toc">
    <h2 class="no-num no-toc no-ref" id="contents">Table of Contents</h2>
    <ol class="toc" role="directory">
@@ -1493,23 +1510,6 @@ pre.highlight, pre > code.highlight { display: block; padding: 1em; margin: .5em
      </ol>
    </ol>
   </nav>
-  <main>
-   <div data-fill-with="status">
-    <p> <em>This section describes the status of this document at the time of its publication. Other documents may supersede this document. A list of current <abbr title="World Wide Web Consortium">W3C</abbr> publications and the latest revision of this technical report can be found in the <a href="https://www.w3.org/TR/"><abbr title="World Wide Web Consortium">W3C</abbr> technical reports index</a> at https://www.w3.org/TR/.</em> </p>
-    <p> The Web Payments Working Group maintains <a href="https://github.com/w3c/payment-method-manifest/issues">a list of all bug
-        reports that the group has not yet addressed</a>. This draft highlights some of the pending issues that are still to be discussed in the working group. No decision has been taken on the outcome of these issues including whether they are valid.
-            Pull requests with proposed specification text for outstanding issues are strongly encouraged. </p>
-    <p> This document was published by the <a href="https://www.w3.org/Payments/WG/">Web Payments Working Group</a> as a Working Draft. This document is intended to become a <abbr title="World Wide Web Consortium">W3C</abbr> Recommendation. </p>
-    <p> Publication as a Working Draft does not imply endorsement by the <abbr title="World Wide Web Consortium">W3C</abbr> Membership. This is a draft document and may be updated, replaced or obsoleted by other documents at any time. It is inappropriate
-            to cite this document as other than work in progress. </p>
-    <p> This document was produced by a group operating under the <a class="css" data-link-type="property" href="https://www.w3.org/Consortium/Patent-Policy-20040205/" id="sotd_patent">5 February 2004 <abbr title="World Wide Web Consortium">W3C</abbr> Patent
-            Policy</a>. <abbr title="World Wide Web Consortium">W3C</abbr> maintains a <a href="https://www.w3.org/2004/01/pp-impl/83744/status" rel="disclosure">public list of any patent
-              disclosures</a> made in connection with the deliverables of the group; that page also includes instructions for disclosing a patent. An individual who has actual knowledge of a patent which the individual believes contains <a href="https://www.w3.org/Consortium/Patent-Policy-20040205/#def-essential">Essential
-            Claim(s)</a> must disclose the information in accordance with <a href="https://www.w3.org/Consortium/Patent-Policy-20040205/#sec-Disclosure">section
-            6 of the <abbr title="World Wide Web Consortium">W3C</abbr> Patent Policy</a>. </p>
-    <p> This document is governed by the <a href="https://www.w3.org/2017/Process-20170301/" id="w3c_process_revision">1 March 2017 <abbr title="World Wide Web Consortium">W3C</abbr> Process Document</a>. </p>
-    <p></p>
-   </div>
    <div class="non-normative">
     <h2 class="heading settled" data-level="1" id="introduction"><span class="secno">1. </span><span class="content">Introduction</span><a class="self-link" href="#introduction"></a></h2>
     <p><em>This section and its sub-sections are non-normative.</em></p>
