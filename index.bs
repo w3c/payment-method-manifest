@@ -34,8 +34,8 @@ urlPrefix: https://w3c.github.io/payment-request/; spec: PAYMENT-REQUEST
 urlPrefix: https://www.w3.org/TR/appmanifest/; spec: APPMANIFEST; type: dfn
   text: web app manifest; url: #dfn-manifest
   text: URL; for: web app manifest; url: #dfn-manifest-url
-  text: steps for obtaining a web app manifest; url: #dfn-steps-for-obtaining-a-manifest
-  text: steps for processing a web app manifest; url: #dfn-steps-for-processing-a-manifest
+  text: steps for obtaining a web app manifest; url: #dfn-obtaining-the-manifest
+  text: steps for processing a web app manifest; url: #dfn-processing-a-manifest
   text: processed web app manifest; url: #dfn-processed-manifest
 urlPrefix: https://w3c.github.io/payment-method-id/; spec: PAYMENT-METHOD-ID; type: dfn
   text: payment method identifier; url: #dfn-payment-method-identifiers
