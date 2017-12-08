@@ -51,8 +51,6 @@ urlPrefix: https://tc39.github.io/ecma262/; spec: ECMASCRIPT
     text: Type; url: #sec-ecmascript-data-types-and-values
 </pre>
 
-<div data-fill-with="status"></div>
-
 <div class="non-normative">
 
 <h2 id="introduction">Introduction</h2>
