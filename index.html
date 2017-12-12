@@ -1176,9 +1176,9 @@ Possible extra rowspan handling
 		}
 	}
 </style>
-  <meta content="Bikeshed version b5661f4452f3fe1ea683d7d646a0b68b91450738" name="generator">
+  <meta content="Bikeshed version fbf1456a756299b3ff6d248d0857ec87f2e68cd7" name="generator">
   <link href="https://www.w3.org/TR/payment-method-manifest/" rel="canonical">
-  <meta content="8b0c14ebea429c4934c88216b35adb388bac990e" name="document-revision">
+  <meta content="f8752bcb65dfcac3e5fc3544d341a4e206912488" name="document-revision">
 <style>/* style-md-lists */
 
 /* This is a weird hack for me not yet following the commonmark spec
@@ -1421,20 +1421,18 @@ pre.highlight, pre > code.highlight { display: block; padding: 1em; margin: .5em
 .highlight .vi { color: #0077aa } /* Name.Variable.Instance */
 .highlight .il { color: #000000 } /* Literal.Number.Integer.Long */
 </style>
-  <link href="https://www.w3.org/StyleSheets/TR/2016/W3C-WD" rel="stylesheet" type="text/css">
+  <link href="https://www.w3.org/StyleSheets/TR/2016/W3C-ED" rel="stylesheet" type="text/css">
  <body class="h-entry">
   <div class="head">
    <p data-fill-with="logo"><a class="logo" href="https://www.w3.org/"> <img alt="W3C" height="48" src="https://www.w3.org/StyleSheets/TR/2016/logos/W3C" width="72"> </a> </p>
    <h1 class="p-name no-ref" id="title">Payment Method Manifest</h1>
-   <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">W3C First Public Working Draft, <time class="dt-updated" datetime="2017-12-12">12 December 2017</time></span></h2>
+   <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">Editor’s Draft, <time class="dt-updated" datetime="2017-12-12">12 December 2017</time></span></h2>
    <div data-fill-with="spec-metadata">
     <dl>
      <dt>This version:
-     <dd><a class="u-url" href="https://www.w3.org/TR/2017/WD-payment-method-manifest-20171212/">https://www.w3.org/TR/2017/WD-payment-method-manifest-20171212/</a>
+     <dd><a class="u-url" href="https://w3c.github.io/payment-method-manifest/">https://w3c.github.io/payment-method-manifest/</a>
      <dt>Latest published version:
      <dd><a href="https://www.w3.org/TR/payment-method-manifest/">https://www.w3.org/TR/payment-method-manifest/</a>
-     <dt>Editor's Draft:
-     <dd><a href="https://w3c.github.io/payment-method-manifest/">https://w3c.github.io/payment-method-manifest/</a>
      <dt>Issue Tracking:
      <dd><a href="https://github.com/w3c/payment-method-manifest/issues/">GitHub</a>
      <dt class="editor">Editors:
@@ -1453,18 +1451,6 @@ pre.highlight, pre > code.highlight { display: block; padding: 1em; margin: .5em
   </div>
   <h2 class="no-num no-toc no-ref heading settled" id="status"><span class="content">Status of this document</span></h2>
   <div data-fill-with="status">
-   <p> <em>This section describes the status of this document at the time of its publication. Other documents may supersede this document. A list of current <abbr title="World Wide Web Consortium">W3C</abbr> publications and the latest revision of this technical report can be found in the <a href="https://www.w3.org/TR/"><abbr title="World Wide Web Consortium">W3C</abbr> technical reports index</a> at https://www.w3.org/TR/.</em> </p>
-   <p> The Web Payments Working Group maintains <a href="https://github.com/w3c/payment-method-manifest/issues">a list of all bug
-        reports that the group has not yet addressed</a>. This draft highlights some of the pending issues that are still to be discussed in the working group. No decision has been taken on the outcome of these issues including whether they are valid.
-            Pull requests with proposed specification text for outstanding issues are strongly encouraged. </p>
-   <p> This document was published by the <a href="https://www.w3.org/Payments/WG/">Web Payments Working Group</a> as a Working Draft. This document is intended to become a <abbr title="World Wide Web Consortium">W3C</abbr> Recommendation. </p>
-   <p> This document is a <strong>First Public Working Draft</strong>. </p>
-   <p> Publication as a First Public Working Draft does not imply endorsement by the W3C Membership. This is a draft document and may be updated, replaced or obsoleted by other documents at any time. It is inappropriate to cite this document as other than work in progress. </p>
-   <p> This document was produced by a group operating under the <a class="css" data-link-type="property" href="https://www.w3.org/Consortium/Patent-Policy/" id="sotd_patent">W3C Patent Policy</a>. <abbr title="World Wide Web Consortium">W3C</abbr> maintains a <a href="https://www.w3.org/2004/01/pp-impl/83744/status" rel="disclosure">public list of any patent
-              disclosures</a> made in connection with the deliverables of the group; that page also includes instructions for disclosing a patent. An individual who has actual knowledge of a patent which the individual believes contains <a href="https://www.w3.org/Consortium/Patent-Policy-20040205/#def-essential">Essential
-            Claim(s)</a> must disclose the information in accordance with <a href="https://www.w3.org/Consortium/Patent-Policy-20040205/#sec-Disclosure">section
-            6 of the <abbr title="World Wide Web Consortium">W3C</abbr> Patent Policy</a>. </p>
-   <p> This document is governed by the <a href="https://www.w3.org/2017/Process-20170301/" id="w3c_process_revision">1 March 2017 <abbr title="World Wide Web Consortium">W3C</abbr> Process Document</a>. </p>
    <p></p>
   </div>
   <div data-fill-with="at-risk"></div>
@@ -1554,7 +1540,7 @@ Link: &lt;/pay/payment-manifest.json>; rel="payment-method-manifest"
     <p>Continuing our example from <a href="#accessing">§1.2 Accessing the manifest</a>, the AlicePay <a data-link-type="dfn" href="https://w3c.github.io/payment-request/#dfn-payment-method" id="ref-for-dfn-payment-method⑧">payment method</a> could provide the
 following <a data-link-type="dfn" href="#payment-method-manifest" id="ref-for-payment-method-manifest③">payment method manifest</a> file at <code>https://alicepay.com/pay/payment-manifest.json</code>:</p>
 <pre class="highlight"><span class="p">{</span>
-  <span class="nt">"default_applications"</span><span class="p">:</span> <span class="p">[</span><span class="s2">"https://alicepay.com/pay/app/webappmanifest.json"</span><span class="p">],</span>
+  <span class="nt">"default_applications"</span><span class="p">:</span> <span class="p">[</span><span class="s2">"app/webappmanifest.json"</span><span class="p">],</span>
   <span class="nt">"supported_origins"</span><span class="p">:</span> <span class="p">[</span>
     <span class="s2">"https://bobpay.xyz"</span><span class="p">,</span>
     <span class="s2">"https://alicepay.friendsofalice.example"</span>
@@ -1576,9 +1562,9 @@ support the payment method.</p>
 at most two items, with the possible keys "<code>default_applications</code>" and
 "<code>supported_origins</code>".</p>
    <p>The value of the <code>default_applications</code> key, if present, must be a non-empty JSON array.
-Each item in the array must be an <a data-link-type="dfn" href="https://url.spec.whatwg.org/#absolute-url-string" id="ref-for-absolute-url-string①">absolute-URL string</a> such that the resulting parsed <a data-link-type="dfn" href="https://url.spec.whatwg.org/#concept-url" id="ref-for-concept-url">URL</a>'s <a data-link-type="dfn" href="https://url.spec.whatwg.org/#concept-url-scheme" id="ref-for-concept-url-scheme">scheme</a> is "<code>https</code>".</p>
+Each item in the array must be a <a data-link-type="dfn" href="https://url.spec.whatwg.org/#valid-url-string" id="ref-for-valid-url-string">valid URL string</a> such that the resulting <a data-link-type="dfn" href="https://url.spec.whatwg.org/#concept-url" id="ref-for-concept-url">URL</a>'s <a data-link-type="dfn" href="https://url.spec.whatwg.org/#concept-url-scheme" id="ref-for-concept-url-scheme">scheme</a>, when parsed against the URL of the payment method manifest, is "<code>https</code>".</p>
    <p>The value of the <code>supported_origins</code> key, if present, must be either the string
-"<code>*</code>", or a non-empty JSON array. In the latter case, each item in the array must be an <a data-link-type="dfn" href="https://url.spec.whatwg.org/#absolute-url-string" id="ref-for-absolute-url-string②">absolute-URL string</a> that represents an HTTPS <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/origin.html#concept-origin" id="ref-for-concept-origin③">origin</a>. Formally, the string must be equal to
+"<code>*</code>", or a non-empty JSON array. In the latter case, each item in the array must be an <a data-link-type="dfn" href="https://url.spec.whatwg.org/#absolute-url-string" id="ref-for-absolute-url-string①">absolute-URL string</a> that represents an HTTPS <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/origin.html#concept-origin" id="ref-for-concept-origin③">origin</a>. Formally, the string must be equal to
 the <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/origin.html#ascii-serialisation-of-an-origin" id="ref-for-ascii-serialisation-of-an-origin">serialization</a> of the resulting parsed <a data-link-type="dfn" href="https://url.spec.whatwg.org/#concept-url" id="ref-for-concept-url①">URL</a>'s <a data-link-type="dfn" href="https://url.spec.whatwg.org/#concept-url-origin" id="ref-for-concept-url-origin">origin</a>.</p>
    <p>Web developers must ensure that all of their <a data-link-type="dfn" href="#payment-method-manifest" id="ref-for-payment-method-manifest④">payment method manifests</a> are <a data-link-type="dfn" href="#valid-payment-method-manifest" id="ref-for-valid-payment-method-manifest">valid</a>.</p>
    <p class="note" role="note">As with all conformance requirements on the contents of files, these are
@@ -1588,7 +1574,7 @@ including invalid ones.</p>
     <a class="self-link" href="#example-invalid-manifest"></a> The following <a data-link-type="dfn" href="#payment-method-manifest" id="ref-for-payment-method-manifest⑥">payment method manifest</a> is not <a data-link-type="dfn" href="#valid-payment-method-manifest" id="ref-for-valid-payment-method-manifest①">valid</a>, but the currently-specified processing
   model algorithms will still accept it: 
 <pre class="highlight"><span class="p">{</span>
-  <span class="nt">"default_applications"</span><span class="p">:</span> <span class="p">[</span><span class="s2">"https://alicepay.com/pay/app/webappmanifest.json"</span><span class="p">],</span>
+  <span class="nt">"default_applications"</span><span class="p">:</span> <span class="p">[</span><span class="s2">"app/webappmanifest.json"</span><span class="p">],</span>
   <span class="nt">"created_by"</span><span class="p">:</span> <span class="s2">"Alice"</span><span class="p">,</span>
   <span class="nt">"created_in"</span><span class="p">:</span> <span class="s2">"Wonderland"</span>
 <span class="p">}</span>
@@ -1623,11 +1609,10 @@ here.</p>
      <p><a data-link-type="dfn" href="#fetch-payment-method-manifests" id="ref-for-fetch-payment-method-manifests">Fetch payment method manifests</a>, given <var>identifiers</var> and <var>client</var>, and wait for this to
  asynchronously complete with <var>manifestsMap</var>. If the result is failure, return.</p>
     <li data-md="">
-     <p><a data-link-type="dfn" href="https://infra.spec.whatwg.org/#list-iterate" id="ref-for-list-iterate">For each</a> <var>identifier</var> → <var>manifest</var> of <var>manifestsMap</var>:</p>
+     <p><a data-link-type="dfn" href="https://infra.spec.whatwg.org/#list-iterate" id="ref-for-list-iterate">For each</a> <var>url</var> → <var>manifest</var> of <var>manifestsMap</var>:</p>
      <ol>
       <li data-md="">
-       <p>Let <var>parsed</var> be the result of <a data-link-type="dfn" href="#validate-and-parse-the-payment-method-manifest" id="ref-for-validate-and-parse-the-payment-method-manifest">validating and parsing</a> <var>manifest</var>. If this
- returns failure, <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#iteration-continue" id="ref-for-iteration-continue">continue</a>.</p>
+       <p>Let <var>parsed</var> be the result of <a data-link-type="dfn" href="#validate-and-parse-the-payment-method-manifest" id="ref-for-validate-and-parse-the-payment-method-manifest">validating and parsing</a> <var>manifest</var> given <var>url</var>. If this returns failure, <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#iteration-continue" id="ref-for-iteration-continue">continue</a>.</p>
       <li data-md="">
        <p><a data-link-type="dfn" href="https://infra.spec.whatwg.org/#list-iterate" id="ref-for-list-iterate①">For each</a> <var>url</var> in <var>parsed</var>’s <a data-link-type="dfn" href="#parsed-payment-method-manifest-default-applications" id="ref-for-parsed-payment-method-manifest-default-applications">default applications</a>:</p>
        <ol>
@@ -1749,8 +1734,9 @@ manifest.</p>
     <dd data-md="">
      <p>Either the string "<code>*</code>", or an <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#ordered-set" id="ref-for-ordered-set①">ordered set</a> of <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/origin.html#concept-origin" id="ref-for-concept-origin④">origins</a></p>
    </dl>
-   <p>To <dfn class="dfn-paneled" data-dfn-type="dfn" data-export="" data-lt="validate and parse the payment method manifest" id="validate-and-parse-the-payment-method-manifest">validate and parse</dfn> a <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#byte-sequence" id="ref-for-byte-sequence②">byte sequence</a> <var>bytes</var> purporting to contain a payment method manifest, perform the following
-steps. The result will either be a <a data-link-type="dfn" href="#parsed-payment-method-manifest" id="ref-for-parsed-payment-method-manifest">parsed payment method manifest</a>, or failure.</p>
+   <p>To <dfn class="dfn-paneled" data-dfn-type="dfn" data-export="" data-lt="validate and parse the payment method manifest" id="validate-and-parse-the-payment-method-manifest">validate and parse</dfn> a <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#byte-sequence" id="ref-for-byte-sequence②">byte sequence</a> <var>bytes</var> purporting to contain a payment method manifest, given a <a data-link-type="dfn" href="https://url.spec.whatwg.org/#concept-url" id="ref-for-concept-url④">URL</a> <var>url</var>,
+perform the following steps. The result will either be a <a data-link-type="dfn" href="#parsed-payment-method-manifest" id="ref-for-parsed-payment-method-manifest">parsed payment method manifest</a>, or
+failure.</p>
    <ol>
     <li data-md="">
      <p>Let <var>parsed</var> be the result of <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#parse-json-from-bytes" id="ref-for-parse-json-from-bytes">parsing JSON from bytes</a> given <var>bytes</var>, in
@@ -1775,7 +1761,7 @@ steps. The result will either be a <a data-link-type="dfn" href="#parsed-payment
        <p><a data-link-type="dfn" href="https://infra.spec.whatwg.org/#list-iterate" id="ref-for-list-iterate⑤">For each</a> <var>defaultAppString</var> in <var>defaultAppsList</var>:</p>
        <ol>
         <li data-md="">
-         <p>Let <var>defaultAppURL</var> be the result of <a data-link-type="dfn" href="https://url.spec.whatwg.org/#concept-basic-url-parser" id="ref-for-concept-basic-url-parser②">basic URL parsing</a> <var>defaultAppString</var>. If the result is failure, return failure.</p>
+         <p>Let <var>defaultAppURL</var> be the result of <a data-link-type="dfn" href="https://url.spec.whatwg.org/#concept-basic-url-parser" id="ref-for-concept-basic-url-parser②">basic URL parsing</a> <var>defaultAppString</var>, given the base URL <var>url</var>. If the result is failure, return failure.</p>
         <li data-md="">
          <p>If <var>defaultAppURL</var>’s <a data-link-type="dfn" href="https://url.spec.whatwg.org/#concept-url-scheme" id="ref-for-concept-url-scheme②">scheme</a> is not "<code>https</code>", return failure.</p>
         <li data-md="">
@@ -1833,7 +1819,7 @@ steps. The result will either be a <a data-link-type="dfn" href="#parsed-payment
    <p>Because the determination of <a data-link-type="dfn" href="https://w3c.github.io/payment-request/#dfn-payment-apps" id="ref-for-dfn-payment-apps①⓪">payment apps</a> happens independent of any embedding HTML document,
 the procedure for obtaining a <a data-link-type="dfn" href="https://www.w3.org/TR/appmanifest/#dfn-manifest" id="ref-for-dfn-manifest②">web app manifest</a> that gives information about a default payment
 app is different from the usual <a data-link-type="dfn" href="https://www.w3.org/TR/appmanifest/#dfn-obtaining-the-manifest" id="ref-for-dfn-obtaining-the-manifest">steps for obtaining a web app manifest</a>.</p>
-   <p>To <dfn class="dfn-paneled" data-dfn-type="dfn" data-export="" id="fetch-the-web-app-manifest-for-a-default-payment-app">fetch the web app manifest for a default payment app</dfn>, given a <a data-link-type="dfn" href="https://url.spec.whatwg.org/#concept-url" id="ref-for-concept-url④">URL</a> <var>url</var> and
+   <p>To <dfn class="dfn-paneled" data-dfn-type="dfn" data-export="" id="fetch-the-web-app-manifest-for-a-default-payment-app">fetch the web app manifest for a default payment app</dfn>, given a <a data-link-type="dfn" href="https://url.spec.whatwg.org/#concept-url" id="ref-for-concept-url⑤">URL</a> <var>url</var> and
 an <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#environment-settings-object" id="ref-for-environment-settings-object②">environment settings object</a> <var>client</var>, perform the following steps. This algorithm will
 asynchronously complete with either a <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#scalar-value-string" id="ref-for-scalar-value-string">scalar value string</a> or failure.</p>
    <ol>
@@ -2022,6 +2008,7 @@ and registration with IANA.</p>
      <li><a href="https://url.spec.whatwg.org/#concept-url-scheme">scheme</a>
      <li><a href="https://url.spec.whatwg.org/#concept-url">url</a>
      <li><a href="https://url.spec.whatwg.org/#concept-url-username">username</a>
+     <li><a href="https://url.spec.whatwg.org/#valid-url-string">valid url string</a>
     </ul>
   </ul>
   <h2 class="no-num no-ref heading settled" id="references"><span class="content">References</span><a class="self-link" href="#references"></a></h2>

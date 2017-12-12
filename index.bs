@@ -115,7 +115,7 @@ following [=payment method manifest=] file at
 
 <pre highlight="json">
 {
-  "default_applications": ["https://alicepay.com/pay/app/webappmanifest.json"],
+  "default_applications": ["app/webappmanifest.json"],
   "supported_origins": [
     "https://bobpay.xyz",
     "https://alicepay.friendsofalice.example"
@@ -147,8 +147,8 @@ at most two items, with the possible keys "<code>default_applications</code>" an
 "<code>supported_origins</code>".
 
 The value of the <code>default_applications</code> key, if present, must be a non-empty JSON array.
-Each item in the array must be an [=absolute-URL string=] such that the resulting parsed [=URL=]'s
-[=url/scheme=] is "<code>https</code>".
+Each item in the array must be a [=valid URL string=] such that the resulting [=URL=]'s
+[=url/scheme=], when parsed against the URL of the payment method manifest, is "<code>https</code>".
 
 The value of the <code>supported_origins</code> key, if present, must be either the string
 "<code>*</code>", or a non-empty JSON array. In the latter case, each item in the array must be an
@@ -168,7 +168,7 @@ including invalid ones.</p>
 
   <pre highlight="json">
     {
-      "default_applications": ["https://alicepay.com/pay/app/webappmanifest.json"],
+      "default_applications": ["app/webappmanifest.json"],
       "created_by": "Alice",
       "created_in": "Wonderland"
     }
@@ -211,10 +211,10 @@ Given a list of [=payment method identifiers=] |identifiers|, as well as an
 
 1. [=Fetch payment method manifests=], given |identifiers| and |client|, and wait for this to
    asynchronously complete with |manifestsMap|. If the result is failure, return.
-1. [=list/For each=] |identifier| → |manifest| of |manifestsMap|:
+1. [=list/For each=] |url| → |manifest| of |manifestsMap|:
   1. Let |parsed| be the result of
-     [=validate and parse the payment method manifest|validating and parsing=] |manifest|. If this
-     returns failure, [=iteration/continue=].
+     [=validate and parse the payment method manifest|validating and parsing=] |manifest| given
+     |url|. If this returns failure, [=iteration/continue=].
   1. [=set/For each=] |url| in |parsed|'s [=parsed payment method manifest/default applications=]:
     1. [=fetch the web app manifest for a default payment app|Fetch the web app manifest=] at |url|
        given |client|, and wait for it to asynchronously complete with |webAppManifestString|. If
@@ -318,8 +318,9 @@ A <dfn export>parsed payment method manifest</dfn> is a [=struct=] containing tw
 :: Either the string "<code>*</code>", or an [=ordered set=] of [=origins=]
 
 To <dfn export lt="validate and parse the payment method manifest">validate and parse</dfn> a
-[=byte sequence=] |bytes| purporting to contain a payment method manifest, perform the following
-steps. The result will either be a [=parsed payment method manifest=], or failure.
+[=byte sequence=] |bytes| purporting to contain a payment method manifest, given a [=URL=] |url|,
+perform the following steps. The result will either be a [=parsed payment method manifest=], or
+failure.
 
 1. Let |parsed| be the result of [=parse JSON from bytes|parsing JSON from bytes=] given |bytes|, in
    a user-agent defined [=JavaScript realm=]. If this throws an exception, return failure.
@@ -333,7 +334,7 @@ steps. The result will either be a [=parsed payment method manifest=], or failur
   1. If the [=list/size=] of |defaultAppsList| is 0, return failure.
   1. [=list/For each=] |defaultAppString| in |defaultAppsList|:
     1. Let |defaultAppURL| be the result of [=basic URL parser|basic URL parsing=]
-       |defaultAppString|. If the result is failure, return failure.
+       |defaultAppString|, given the base URL |url|. If the result is failure, return failure.
     1. If |defaultAppURL|'s [=url/scheme=] is not "<code>https</code>", return failure.
     1. [=set/Append=] |defaultAppURL| to |defaultApps|.
 1. Let |supportedOrigins| be an empty [=ordered set=].
