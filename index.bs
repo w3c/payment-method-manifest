@@ -400,6 +400,8 @@ asynchronously complete with either a [=scalar value string=] or failure.
 
 <h2 id="security">Security and privacy considerations</h2>
 
+<h3 id="revealing-to-providers">Revealing user activity to payment providers</h3>
+
 [=ingest payment method manifests|Ingesting payment method manifests=] might reveal information
 to a payment service about the activity of an end user. For example, a [=payment method=] that is
 only supported on one website might allow that payment provider to discover the IP addresses of
@@ -408,6 +410,17 @@ users who visit that website.
 One way to mitigate this is to [=fetch payment method manifests|fetch the manifests=] only for the
 [=payment apps=] that the user has installed or has explicitly expressed interest in. This confines
 the risk to only sharing the user's IP address with those parties.
+
+<h3 id="development-environments">Considerations for development environments</h3>
+
+In development situations, a user agent might lower the security requirements of this specification
+to ease testing. For example, the requirements in the [=fetch payment method manifests=] and
+[=validate and parse the payment method manifest=] algorithms requiring a "<code>https</code>"
+[=url/scheme=] might be dropped in a development environment. In such situations, the user agent is
+intentionally not complying with this specification, and should notify the user of the reduced
+security.
+
+<h3 id="matching-payment-apps">Matching payment apps</h3>
 
 Issue(11):
 

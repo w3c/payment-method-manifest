@@ -1178,7 +1178,7 @@ Possible extra rowspan handling
 </style>
   <meta content="Bikeshed version fbf1456a756299b3ff6d248d0857ec87f2e68cd7" name="generator">
   <link href="https://www.w3.org/TR/payment-method-manifest/" rel="canonical">
-  <meta content="f8752bcb65dfcac3e5fc3544d341a4e206912488" name="document-revision">
+  <meta content="7d20225f08923042ac6726b46ae513f497c88d18" name="document-revision">
 <style>/* style-md-lists */
 
 /* This is a weird hack for me not yet following the commonmark spec
@@ -1474,7 +1474,13 @@ pre.highlight, pre > code.highlight { display: block; padding: 1em; margin: .5em
       <li><a href="#validate-and-parse"><span class="secno">3.4</span> <span class="content">Validating and parsing payment method manifests</span></a>
       <li><a href="#fetch-wam"><span class="secno">3.5</span> <span class="content">Fetching web app manifests</span></a>
      </ol>
-    <li><a href="#security"><span class="secno">4</span> <span class="content">Security and privacy considerations</span></a>
+    <li>
+     <a href="#security"><span class="secno">4</span> <span class="content">Security and privacy considerations</span></a>
+     <ol class="toc">
+      <li><a href="#revealing-to-providers"><span class="secno">4.1</span> <span class="content">Revealing user activity to payment providers</span></a>
+      <li><a href="#development-environments"><span class="secno">4.2</span> <span class="content">Considerations for development environments</span></a>
+      <li><a href="#matching-payment-apps"><span class="secno">4.3</span> <span class="content">Matching payment apps</span></a>
+     </ol>
     <li>
      <a href="#iana"><span class="secno">5</span> <span class="content">IANA considerations</span></a>
      <ol class="toc">
@@ -1847,12 +1853,19 @@ asynchronously complete with either a <a data-link-type="dfn" href="https://infr
      </ol>
    </ol>
    <h2 class="heading settled" data-level="4" id="security"><span class="secno">4. </span><span class="content">Security and privacy considerations</span><a class="self-link" href="#security"></a></h2>
+   <h3 class="heading settled" data-level="4.1" id="revealing-to-providers"><span class="secno">4.1. </span><span class="content">Revealing user activity to payment providers</span><a class="self-link" href="#revealing-to-providers"></a></h3>
    <p><a data-link-type="dfn" href="#ingest-payment-method-manifests" id="ref-for-ingest-payment-method-manifests①">Ingesting payment method manifests</a> might reveal information
 to a payment service about the activity of an end user. For example, a <a data-link-type="dfn" href="https://w3c.github.io/payment-request/#dfn-payment-method" id="ref-for-dfn-payment-method①③">payment method</a> that is
 only supported on one website might allow that payment provider to discover the IP addresses of
 users who visit that website.</p>
    <p>One way to mitigate this is to <a data-link-type="dfn" href="#fetch-payment-method-manifests" id="ref-for-fetch-payment-method-manifests①">fetch the manifests</a> only for the <a data-link-type="dfn" href="https://w3c.github.io/payment-request/#dfn-payment-apps" id="ref-for-dfn-payment-apps①①">payment apps</a> that the user has installed or has explicitly expressed interest in. This confines
 the risk to only sharing the user’s IP address with those parties.</p>
+   <h3 class="heading settled" data-level="4.2" id="development-environments"><span class="secno">4.2. </span><span class="content">Considerations for development environments</span><a class="self-link" href="#development-environments"></a></h3>
+   <p>In development situations, a user agent might lower the security requirements of this specification
+to ease testing. For example, the requirements in the <a data-link-type="dfn" href="#fetch-payment-method-manifests" id="ref-for-fetch-payment-method-manifests②">fetch payment method manifests</a> and <a data-link-type="dfn" href="#validate-and-parse-the-payment-method-manifest" id="ref-for-validate-and-parse-the-payment-method-manifest①">validate and parse the payment method manifest</a> algorithms requiring a "<code>https</code>" <a data-link-type="dfn" href="https://url.spec.whatwg.org/#concept-url-scheme" id="ref-for-concept-url-scheme④">scheme</a> might be dropped in a development environment. In such situations, the user agent is
+intentionally not complying with this specification, and should notify the user of the reduced
+security.</p>
+   <h3 class="heading settled" data-level="4.3" id="matching-payment-apps"><span class="secno">4.3. </span><span class="content">Matching payment apps</span><a class="self-link" href="#matching-payment-apps"></a></h3>
    <div class="issue no-marker" id="issue-d41d8cd9"><a class="self-link" href="#issue-d41d8cd9"></a><a class="marker" href="https://github.com/w3c/payment-method-manifest/issues/11" style="text-transform:none">w3c/payment-method-manifest/11</a><a href="https://github.com/w3c/payment-method-manifest/issues/11">Matching payment apps and security in a world of payment method manifests</a></div>
    <h2 class="heading settled" data-level="5" id="iana"><span class="secno">5. </span><span class="content">IANA considerations</span><a class="self-link" href="#iana"></a></h2>
    <h3 class="heading settled" data-level="5.1" id="payment-method-manifest-link"><span class="secno">5.1. </span><span class="content">The <code>payment-method-manifest</code> link relation</span><a class="self-link" href="#payment-method-manifest-link"></a></h3>
@@ -2062,14 +2075,15 @@ and registration with IANA.</p>
    <b><a href="#ingest-payment-method-manifests">#ingest-payment-method-manifests</a></b><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-ingest-payment-method-manifests">3.1. Modifications to Payment Request API</a>
-    <li><a href="#ref-for-ingest-payment-method-manifests①">4. Security and privacy considerations</a>
+    <li><a href="#ref-for-ingest-payment-method-manifests①">4.1. Revealing user activity to payment providers</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="fetch-payment-method-manifests">
    <b><a href="#fetch-payment-method-manifests">#fetch-payment-method-manifests</a></b><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-fetch-payment-method-manifests">3.2. Ingesting payment method manifests</a>
-    <li><a href="#ref-for-fetch-payment-method-manifests①">4. Security and privacy considerations</a>
+    <li><a href="#ref-for-fetch-payment-method-manifests①">4.1. Revealing user activity to payment providers</a>
+    <li><a href="#ref-for-fetch-payment-method-manifests②">4.2. Considerations for development environments</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="parsed-payment-method-manifest">
@@ -2096,6 +2110,7 @@ and registration with IANA.</p>
    <b><a href="#validate-and-parse-the-payment-method-manifest">#validate-and-parse-the-payment-method-manifest</a></b><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-validate-and-parse-the-payment-method-manifest">3.2. Ingesting payment method manifests</a>
+    <li><a href="#ref-for-validate-and-parse-the-payment-method-manifest①">4.2. Considerations for development environments</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="fetch-the-web-app-manifest-for-a-default-payment-app">
