@@ -211,14 +211,15 @@ Given a list of [=payment method identifiers=] |identifiers|, as well as an
 
 1. [=Fetch payment method manifests=], given |identifiers| and |client|, and wait for this to
    asynchronously complete with |manifestsMap|. If the result is failure, return.
-1. [=list/For each=] |url| → |manifest| of |manifestsMap|:
+1. [=list/For each=] |identifierURL| → |manifest| of |manifestsMap|:
   1. Let |parsed| be the result of
      [=validate and parse the payment method manifest|validating and parsing=] |manifest| given
-     |url|. If this returns failure, [=iteration/continue=].
-  1. [=set/For each=] |url| in |parsed|'s [=parsed payment method manifest/default applications=]:
-    1. [=fetch the web app manifest for a default payment app|Fetch the web app manifest=] at |url|
-       given |client|, and wait for it to asynchronously complete with |webAppManifestString|. If
-       the result is failure, [=iteration/continue=].
+     |identifierURL|. If this returns failure, [=iteration/continue=].
+  1. [=set/For each=] |webAppManifestURL| in |parsed|'s [=parsed payment method manifest/default
+     applications=]:
+    1. [=fetch the web app manifest for a default payment app|Fetch the web app manifest=] at
+       |webAppManifestURL| given |identifierURL| and |client|, and wait for it to asynchronously
+       complete with |webAppManifestString|. If the result is failure, [=iteration/continue=].
     1. Let |webAppManifest| be the result of running the [=steps for processing a web app manifest=]
        given |webAppManifestString|.
 
@@ -265,8 +266,9 @@ manifest.
 1. [=list/For each=] |identifierURL| of |identifierURLs|:
   1. Let |identifierRequest| be a new [=request=] whose [=request/method=] is `<code>HEAD</code>`,
      [=request/url=] is |identifierURL|, [=request/client=] is |client|, [=request/mode=] is
-     "<code>cors</code>", [=request/credentials mode=] is "<code>omit</code>", and
-     [=request/redirect mode=] is "<code>error</code>".
+     "<code>cors</code>", [=request/credentials mode=] is "<code>omit</code>",
+     [=request/redirect mode=] is "<code>error</code>", and [=request/referrer policy=] is
+     "<code>strict-origin-when-cross-origin</code>".
   1. [=Fetch=] |identifierRequest|. To [=process response=] with the [=response=]
      |identifierResponse|:
     1. If |identifierResponse| is a [=network error=] or |identifierResponse|'s [=response/status=]
@@ -289,9 +291,9 @@ manifest.
          result is failure, [=iteration/continue=].
       1. If |manifestURL|'s [=url/scheme=] is not "<code>https</code>", [=iteration/continue=].
       1. Let |manifestRequest| be a new [=request=] whose [=request/url=] is |manifestURL|,
-         [=request/client=] is |client|, [=request/mode=] is "<code>cors</code>",
-         [=request/credentials mode=] is "<code>omit</code>", and [=request/redirect mode=] is
-         "<code>error</code>".
+         [=request/client=] is |client|, [=request/referrer=] is |identifierResponse|'s
+         [=response/url=], [=request/mode=] is "<code>cors</code>", [=request/credentials mode=] is
+         "<code>omit</code>", and [=request/redirect mode=] is "<code>error</code>".
       1. [=Fetch=] |manifestRequest|. To [=process response end-of-body=] with the [=response=]
          |manifestResponse|:
          1. If |manifestResponse| is a [=network error=] or |manifestResponse|'s [=response/status=]
@@ -378,13 +380,14 @@ Because the determination of [=payment apps=] happens independent of any embeddi
 the procedure for obtaining a [=web app manifest=] that gives information about a default payment
 app is different from the usual [=steps for obtaining a web app manifest=].
 
-To <dfn export>fetch the web app manifest for a default payment app</dfn>, given a [=URL=] |url| and
-an [=environment settings object=] |client|, perform the following steps. This algorithm will
-asynchronously complete with either a [=scalar value string=] or failure.
+To <dfn export>fetch the web app manifest for a default payment app</dfn>, given a [=URL=] |url|, a
+URL |referrer|, and an [=environment settings object=] |client|, perform the following steps. This
+algorithm will asynchronously complete with either a [=scalar value string=] or failure.
 
 1. Let |request| be a new [=request=] whose [=request/url=] is |url|, [=request/client=] is
-   |client|, [=request/mode=] is "<code>cors</code>", [=request/credentials mode=] is
-   "<code>omit</code>", and [=request/redirect mode=] is "<code>error</code>".
+   |client|, [=request/referrer=] is |referrer|, [=request/mode=] is "<code>cors</code>",
+   [=request/credentials mode=] is "<code>omit</code>", and [=request/redirect mode=] is
+   "<code>error</code>".
 1. [=Fetch=] |request|. To [=process response end-of-body=] with the [=response=] |response|:
    1. If |response| is a [=network error=] or |response|'s [=response/status=] is not an
       [=ok status=], asynchronously complete this algorithm with failure.
@@ -410,6 +413,12 @@ users who visit that website.
 One way to mitigate this is to [=fetch payment method manifests|fetch the manifests=] only for the
 [=payment apps=] that the user has installed or has explicitly expressed interest in. This confines
 the risk to only sharing the user's IP address with those parties.
+
+Another important mitigation is already built in to the spec, by setting the appropriate
+[=request/referrer policy=] and [=request/referrer=] on the various fetches performed here. These
+requirements ensure that only the server that controls the [=URL-based payment method
+identifier|identifier URL=] will see the user's activity, and even then will only see the [=origin=]
+of the web page that is creating the {{PaymentRequest}} object (instead of seeing the full URL).
 
 <h3 id="development-environments">Considerations for development environments</h3>
 
