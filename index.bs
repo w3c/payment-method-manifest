@@ -457,3 +457,11 @@ and registration with IANA.
 <h2 id="acknowledgments" class="no-num">Acknowledgments</h2>
 
 [[#processing-model]] is based heavily on algorithms originally outlined by Rouslan Solomakhin.
+
+Thanks to
+Andrew Betts,
+Anne van Kesteren,
+Ian Jacobs,
+L. David Baron,
+Marcos Cáceres, and
+Rouslan Solomakhin for their contributions to making this specification awesome!
