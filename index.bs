@@ -42,13 +42,6 @@ urlPrefix: https://w3c.github.io/payment-method-id/; spec: PAYMENT-METHOD-ID; ty
   text: standardized payment method identifier; url: #dfn-standardized-payment-method-identifiers
   text: URL-based payment method identifier; url: #dfn-url-based-payment-method-identifiers
   text: validate a URL-based payment method identifier; url: #dfn-validate-a-url-based-payment-method-identifier
-urlPrefix: https://tc39.github.io/ecma262/; spec: ECMASCRIPT
-  text: JavaScript realm; type: dfn; url: #realm
-  type: abstract-op;
-    text: CreateListFromArrayLike; url: #sec-createlistfromarraylike
-    text: Get; url: #sec-get-o-p
-    text: IsArray; url: #sec-isarray
-    text: Type; url: #sec-ecmascript-data-types-and-values
 </pre>
 
 <div class="non-normative">
@@ -324,39 +317,38 @@ To <dfn export lt="validate and parse the payment method manifest">validate and 
 perform the following steps. The result will either be a [=parsed payment method manifest=], or
 failure.
 
-1. Let |parsed| be the result of [=parse JSON from bytes|parsing JSON from bytes=] given |bytes|, in
-   a user-agent defined [=JavaScript realm=]. If this throws an exception, return failure.
-1. If <a abstract-op>Type</a>(|parsed|) is not Object, return failure.
+1. Let |string| be the result of [=UTF-8 decode|UTF-8 decoding=] |bytes|.
+1. Let |parsed| be the result of [=parse JSON into Infra values|parsing JSON into Infra values=]
+   given |string|. If this throws an exception, return failure.
+1. If |parsed| is not an [=ordered map=], return failure.
 1. Let |defaultApps| be an empty [=ordered set=].
-1. Let |defaultAppsValue| be <a abstract-op>Get</a>(|parsed|, "default_applications").
-1. If |defaultAppsValue| is not undefined:
-  1. If <a abstract-op>IsArray</a>(|defaultAppsValue|) is false, return failure.
-  1. Let |defaultAppsList| be <a abstract-op>CreateListFromArrayLike</a>(|defaultAppsValue|,
-     « String »). If this throws an exception, return failure.
-  1. If the [=list/size=] of |defaultAppsList| is 0, return failure.
-  1. [=list/For each=] |defaultAppString| in |defaultAppsList|:
+1. If |parsed|["<code>default_applications</code>"] [=map/exists=]:
+  1. Let |defaultAppsValue| be |parsed|["<code>default_applications</code>"].
+  1. If |defaultAppsValue| is not a [=list=], return failure.
+  1. If the [=list/size=] of |defaultAppsValue| is 0, return failure.
+  1. [=list/For each=] |defaultApp| in |defaultAppsValue|:
+    1. If |defaultApp| is not a string, return failure.
     1. Let |defaultAppURL| be the result of [=basic URL parser|basic URL parsing=]
-       |defaultAppString|, given the base URL |url|. If the result is failure, return failure.
+       |defaultApp|, given the base URL |url|. If the result is failure, return failure.
     1. If |defaultAppURL|'s [=url/scheme=] is not "<code>https</code>", return failure.
     1. [=set/Append=] |defaultAppURL| to |defaultApps|.
 1. Let |supportedOrigins| be an empty [=ordered set=].
-1. Let |supportedOriginsValue| be <a abstract-op>Get</a>(|parsed|, "supported_origins").
-1. If |supportedOriginsValue| is "<code>*</code>", set |supportedOrigins| to "<code>*</code>".
-1. Otherwise, if |supportedOriginsValue| is not undefined:
-  1. If <a abstract-op>IsArray</a>(|supportedOriginsValue|) is false, return failure.
-  1. Let |supportedOriginsList| be
-     <a abstract-op>CreateListFromArrayLike</a>(|supportedOriginsValue|, « String »). If this throws
-     an exception, return failure.
-  1. If the [=list/size=] of |supportedOriginsList| is 0, return failure.
-  1. [=list/For each=] |supportedOriginString| in |supportedOriginsList|:
-    1. Let |supportedOriginURL| be the result of [=basic URL parser|basic URL parsing=]
-       |supportedOriginString|. If the result is failure, return failure.
-    1. If |supportedOriginURL|'s [=url/scheme=] is not "<code>https</code>", return failure.
-    1. If |supportedOriginURL|'s [=url/username=] or [=url/password=] are not the empty string,
-       return failure.
-    1. If |supportedOriginURL|'s [=url/path=]'s [=list/size=] is not 0, return failure.
-    1. If |supportedOriginURL|'s [=url/query=] or [=url/fragment=] are not null, return failure.
-    1. [=set/Append=] |supportedOriginURL|'s [=url/origin=] to |supportedOrigins|.
+1. If |parsed|["<code>supported_origins</code>"] [=map/exists=]:
+  1. Let |supportedOriginsValue| be |parsed|["<code>supported_origins</code>"].
+  1. If |supportedOriginsValue| is "<code>*</code>", set |supportedOrigins| to "<code>*</code>".
+  1. Otherwise:
+    1. If |supportedOriginsValue| is not a [=list=], return failure.
+    1. If the [=list/size=] of |supportedOriginsValue| is 0, return failure.
+    1. [=list/For each=] |supportedOrigin| in |supportedOriginsValue|:
+      1. If |supportedOrigin| is not a string, return failure.
+      1. Let |supportedOriginURL| be the result of [=basic URL parser|basic URL parsing=]
+        |supportedOrigin|. If the result is failure, return failure.
+      1. If |supportedOriginURL|'s [=url/scheme=] is not "<code>https</code>", return failure.
+      1. If |supportedOriginURL|'s [=url/username=] or [=url/password=] are not the empty string,
+        return failure.
+      1. If |supportedOriginURL|'s [=url/path=]'s [=list/size=] is not 0, return failure.
+      1. If |supportedOriginURL|'s [=url/query=] or [=url/fragment=] are not null, return failure.
+      1. [=set/Append=] |supportedOriginURL|'s [=url/origin=] to |supportedOrigins|.
 1. Return a new [=parsed payment method manifest=] with
    [=parsed payment method manifest/default applications=] given by |defaultApps| and
    [=parsed payment method manifest/supported origins=] given by |supportedOrigins|.
