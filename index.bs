@@ -77,28 +77,34 @@ provide a [=payment method manifest=] file in JSON format containing two key pie
 
 <h3 id="accessing">Accessing the manifest</h3>
 
-The resource identified by the [=payment method identifier=] URL does not directly contain the
-machine-readable [=payment method manifest=]. It is often a generic URL (such as
-"<code>https://alicepay.com/</code>") which is more suitable for human-readable content. Instead, a
-HTTP Link header is used to direct user agents seeking out the [=payment method manifest=] toward
-another location. [[RFC8288]]
+The machine-readable [=payment method manifest=] might be found either directly at the
+[=payment method identifier=] URL, or in a location indicated indirectly by following a HTTP
+`<code>Link</code>` header from that URL. [[RFC8288]]
+
+This potential indirection allows the use of generic, human-readable URLs (such as
+"<code>https://alicepay.com/</code>") to serve as [=payment method identifiers=], while still
+locating the actual [=payment method manifest=] at a different URL.
 
 For an example [=payment method=] AlicePay, with [=payment method identifier=]
-"<code>https://alicepay.com/</code>", a user agent might issue a request to that
+"<code>https://alicepay.com/</code>", a user agent would issue a GET request to that
 [=payment method identifier=] URL as follows:
 
 <pre>
-  HEAD / HTTP/2
+  GET / HTTP/2
   Host: alicepay.com
   User-Agent: Mellblomenator/9000
 </pre>
 
-The server would then respond:
+The server could then either respond with
 
 <pre>
   HTTP/2 204
   Link: &lt;/pay/payment-manifest.json>; rel="payment-method-manifest"
 </pre>
+
+to redirect the user agent to "<code>https://alicepay.com/pay/payment-manifest.json</code>", or
+could respond with the JSON contents of the payment method manifest directly in a
+<code>200</code>-status response.
 
 <h3 id="manifest-example">Example manifest file</h3>
 
@@ -257,19 +263,20 @@ manifest.
   1. [=list/Append=] |identifierURL| to |identifierURLs|.
 1. Let |manifestsMap| be an empty [=map=].
 1. [=list/For each=] |identifierURL| of |identifierURLs|:
-  1. Let |identifierRequest| be a new [=request=] whose [=request/method=] is `<code>HEAD</code>`,
+  1. Let |manifestURLString| be null.
+  1. Let |identifierRequest| be a new [=request=] whose [=request/method=] is `<code>GET</code>`,
      [=request/url=] is |identifierURL|, [=request/client=] is |client|, [=request/mode=] is
      "<code>cors</code>", [=request/credentials mode=] is "<code>omit</code>",
      [=request/redirect mode=] is "<code>error</code>", and [=request/referrer policy=] is
      "<code>strict-origin-when-cross-origin</code>".
-  1. [=Fetch=] |identifierRequest|. To [=process response=] with the [=response=]
-     |identifierResponse|:
+  1. [=Fetch=] |identifierRequest|.
+
+     To [=process response=] with the [=response=] |identifierResponse|:
     1. If |identifierResponse| is a [=network error=] or |identifierResponse|'s [=response/status=]
        is not an [=ok status=], [=iteration/continue=].
     1. Let |linkHeaders| be the result of
        [=extract header list values|extracting header list values=] given `<code>Link</code>` and
        |identifierResponse|'s [=response/header list=].
-    1. Let |manifestURLString| be null.
     1. [=list/For each=] |linkHeader| of |linkHeaders|:
       1. Parse |linkHeader| according to the <code>link-value</code> production. If it cannot be
          parsed, [=iteration/continue=]. [[!RFC8288]]
@@ -279,6 +286,8 @@ manifest.
          string given by the <code>URI-Reference</code> production in the parsed header, and
          [=iteration/break=].
     1. If |manifestURLString| is not null, then:
+      1. [=fetch/terminated|Terminate=] the ongoing fetch of |identifierRequest| (since the
+         [=response/body=] will not be needed).
       1. Let |manifestURL| be the result of [=basic URL parser|basic URL parsing=]
          |manifestURLString| with base URL given by |identifierResponse|'s [=response/url=]. If the
          result is failure, [=iteration/continue=].
@@ -299,6 +308,17 @@ manifest.
             |body| with |reader|.
          1. [=Upon fulfillment=] of |promise| with a [=byte sequence=] |bytes|, [=map/set=]
             |manifestsMap|[|identifierURL|] to |bytes|.
+
+     To [=process response end-of-body=] with the [=response=] |identifierResponse|:
+      1. If |manifestURLString| is not null, [=iteration/continue=].
+      1. Let |body| be |identifierResponse|'s [=response/body=].
+      1. If |body| is null, [=iteration/continue=].
+      1. Let |reader| be the result of [=ReadableStream/get a reader|getting a reader=] from
+        |body|.
+      1. Let |promise| be the result of [=ReadableStream/read all bytes|reading all bytes=] from
+        |body| with |reader|.
+      1. [=Upon fulfillment=] of |promise| with a [=byte sequence=] |bytes|, [=map/set=]
+        |manifestsMap|[|identifierURL|] to |bytes|.
 1. Once all ongoing [=fetch=] algorithms initiated by the above steps are complete, including the
    specified [=process response=] and [=process response end-of-body=] steps, asynchronously
    complete this algorithm with |manifestsMap|.
