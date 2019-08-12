@@ -1782,29 +1782,29 @@ perform the following steps. The result will either be a <a data-link-type="dfn"
 failure.</p>
    <ol>
     <li data-md>
-     <p>Let <var>parsed</var> be the result of <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#parse-json-from-bytes" id="ref-for-parse-json-from-bytes">parsing JSON from bytes</a> given <var>bytes</var>, in
- a user-agent defined <a data-link-type="dfn" href="https://tc39.github.io/ecma262/#realm" id="ref-for-realm">JavaScript realm</a>. If this throws an exception, return failure.</p>
+     <p>Let <var>string</var> be the result of <a data-link-type="dfn" href="https://encoding.spec.whatwg.org/#utf-8-decode" id="ref-for-utf-8-decode">UTF-8 decoding</a> <var>bytes</var>.</p>
     <li data-md>
-     <p>If <a data-link-type="abstract-op" href="https://tc39.github.io/ecma262/#sec-ecmascript-data-types-and-values" id="ref-for-sec-ecmascript-data-types-and-values">Type</a>(<var>parsed</var>) is not Object, return failure.</p>
+     <p>Let <var>parsed</var> be the result of <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#parse-json-into-infra-values" id="ref-for-parse-json-into-infra-values">parsing JSON into Infra values</a> given <var>string</var>. If this throws an exception, return failure.</p>
+    <li data-md>
+     <p>If <var>parsed</var> is not an <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#ordered-map" id="ref-for-ordered-map②">ordered map</a>, return failure.</p>
     <li data-md>
      <p>Let <var>defaultApps</var> be an empty <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#ordered-set" id="ref-for-ordered-set②">ordered set</a>.</p>
     <li data-md>
-     <p>Let <var>defaultAppsValue</var> be <a data-link-type="abstract-op" href="https://tc39.github.io/ecma262/#sec-get-o-p" id="ref-for-sec-get-o-p">Get</a>(<var>parsed</var>, "default_applications").</p>
-    <li data-md>
-     <p>If <var>defaultAppsValue</var> is not undefined:</p>
+     <p>If <var>parsed</var>["<code>default_applications</code>"] <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#map-exists" id="ref-for-map-exists">exists</a>:</p>
      <ol>
       <li data-md>
-       <p>If <a data-link-type="abstract-op" href="https://tc39.github.io/ecma262/#sec-isarray" id="ref-for-sec-isarray">IsArray</a>(<var>defaultAppsValue</var>) is false, return failure.</p>
+       <p>Let <var>defaultAppsValue</var> be <var>parsed</var>["<code>default_applications</code>"].</p>
       <li data-md>
-       <p>Let <var>defaultAppsList</var> be <a data-link-type="abstract-op" href="https://tc39.github.io/ecma262/#sec-createlistfromarraylike" id="ref-for-sec-createlistfromarraylike">CreateListFromArrayLike</a>(<var>defaultAppsValue</var>,
- « String »). If this throws an exception, return failure.</p>
+       <p>If <var>defaultAppsValue</var> is not a <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#list" id="ref-for-list②">list</a>, return failure.</p>
       <li data-md>
-       <p>If the <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#list-size" id="ref-for-list-size">size</a> of <var>defaultAppsList</var> is 0, return failure.</p>
+       <p>If the <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#list-size" id="ref-for-list-size">size</a> of <var>defaultAppsValue</var> is 0, return failure.</p>
       <li data-md>
-       <p><a data-link-type="dfn" href="https://infra.spec.whatwg.org/#list-iterate" id="ref-for-list-iterate⑤">For each</a> <var>defaultAppString</var> in <var>defaultAppsList</var>:</p>
+       <p><a data-link-type="dfn" href="https://infra.spec.whatwg.org/#list-iterate" id="ref-for-list-iterate⑤">For each</a> <var>defaultApp</var> in <var>defaultAppsValue</var>:</p>
        <ol>
         <li data-md>
-         <p>Let <var>defaultAppURL</var> be the result of <a data-link-type="dfn" href="https://url.spec.whatwg.org/#concept-basic-url-parser" id="ref-for-concept-basic-url-parser②">basic URL parsing</a> <var>defaultAppString</var>, given the base URL <var>url</var>. If the result is failure, return failure.</p>
+         <p>If <var>defaultApp</var> is not a string, return failure.</p>
+        <li data-md>
+         <p>Let <var>defaultAppURL</var> be the result of <a data-link-type="dfn" href="https://url.spec.whatwg.org/#concept-basic-url-parser" id="ref-for-concept-basic-url-parser②">basic URL parsing</a> <var>defaultApp</var>, given the base URL <var>url</var>. If the result is failure, return failure.</p>
         <li data-md>
          <p>If <var>defaultAppURL</var>’s <a data-link-type="dfn" href="https://url.spec.whatwg.org/#concept-url-scheme" id="ref-for-concept-url-scheme②">scheme</a> is not "<code>https</code>", return failure.</p>
         <li data-md>
@@ -1814,35 +1814,38 @@ failure.</p>
     <li data-md>
      <p>Let <var>supportedOrigins</var> be an empty <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#ordered-set" id="ref-for-ordered-set③">ordered set</a>.</p>
     <li data-md>
-     <p>Let <var>supportedOriginsValue</var> be <a data-link-type="abstract-op" href="https://tc39.github.io/ecma262/#sec-get-o-p" id="ref-for-sec-get-o-p①">Get</a>(<var>parsed</var>, "supported_origins").</p>
-    <li data-md>
-     <p>If <var>supportedOriginsValue</var> is "<code>*</code>", set <var>supportedOrigins</var> to "<code>*</code>".</p>
-    <li data-md>
-     <p>Otherwise, if <var>supportedOriginsValue</var> is not undefined:</p>
+     <p>If <var>parsed</var>["<code>supported_origins</code>"] <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#map-exists" id="ref-for-map-exists①">exists</a>:</p>
      <ol>
       <li data-md>
-       <p>If <a data-link-type="abstract-op" href="https://tc39.github.io/ecma262/#sec-isarray" id="ref-for-sec-isarray①">IsArray</a>(<var>supportedOriginsValue</var>) is false, return failure.</p>
+       <p>Let <var>supportedOriginsValue</var> be <var>parsed</var>["<code>supported_origins</code>"].</p>
       <li data-md>
-       <p>Let <var>supportedOriginsList</var> be <a data-link-type="abstract-op" href="https://tc39.github.io/ecma262/#sec-createlistfromarraylike" id="ref-for-sec-createlistfromarraylike①">CreateListFromArrayLike</a>(<var>supportedOriginsValue</var>, « String »). If this throws
- an exception, return failure.</p>
+       <p>If <var>supportedOriginsValue</var> is "<code>*</code>", set <var>supportedOrigins</var> to "<code>*</code>".</p>
       <li data-md>
-       <p>If the <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#list-size" id="ref-for-list-size①">size</a> of <var>supportedOriginsList</var> is 0, return failure.</p>
-      <li data-md>
-       <p><a data-link-type="dfn" href="https://infra.spec.whatwg.org/#list-iterate" id="ref-for-list-iterate⑥">For each</a> <var>supportedOriginString</var> in <var>supportedOriginsList</var>:</p>
+       <p>Otherwise:</p>
        <ol>
         <li data-md>
-         <p>Let <var>supportedOriginURL</var> be the result of <a data-link-type="dfn" href="https://url.spec.whatwg.org/#concept-basic-url-parser" id="ref-for-concept-basic-url-parser③">basic URL parsing</a> <var>supportedOriginString</var>. If the result is failure, return failure.</p>
+         <p>If <var>supportedOriginsValue</var> is not a <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#list" id="ref-for-list③">list</a>, return failure.</p>
         <li data-md>
-         <p>If <var>supportedOriginURL</var>’s <a data-link-type="dfn" href="https://url.spec.whatwg.org/#concept-url-scheme" id="ref-for-concept-url-scheme③">scheme</a> is not "<code>https</code>", return failure.</p>
+         <p>If the <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#list-size" id="ref-for-list-size①">size</a> of <var>supportedOriginsValue</var> is 0, return failure.</p>
         <li data-md>
-         <p>If <var>supportedOriginURL</var>’s <a data-link-type="dfn" href="https://url.spec.whatwg.org/#concept-url-username" id="ref-for-concept-url-username">username</a> or <a data-link-type="dfn" href="https://url.spec.whatwg.org/#concept-url-password" id="ref-for-concept-url-password">password</a> are not the empty string,
- return failure.</p>
-        <li data-md>
-         <p>If <var>supportedOriginURL</var>’s <a data-link-type="dfn" href="https://url.spec.whatwg.org/#concept-url-path" id="ref-for-concept-url-path">path</a>'s <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#list-size" id="ref-for-list-size②">size</a> is not 0, return failure.</p>
-        <li data-md>
-         <p>If <var>supportedOriginURL</var>’s <a data-link-type="dfn" href="https://url.spec.whatwg.org/#concept-url-query" id="ref-for-concept-url-query">query</a> or <a data-link-type="dfn" href="https://url.spec.whatwg.org/#concept-url-fragment" id="ref-for-concept-url-fragment">fragment</a> are not null, return failure.</p>
-        <li data-md>
-         <p><a data-link-type="dfn" href="https://infra.spec.whatwg.org/#set-append" id="ref-for-set-append①">Append</a> <var>supportedOriginURL</var>’s <a data-link-type="dfn" href="https://url.spec.whatwg.org/#concept-url-origin" id="ref-for-concept-url-origin①">origin</a> to <var>supportedOrigins</var>.</p>
+         <p><a data-link-type="dfn" href="https://infra.spec.whatwg.org/#list-iterate" id="ref-for-list-iterate⑥">For each</a> <var>supportedOrigin</var> in <var>supportedOriginsValue</var>:</p>
+         <ol>
+          <li data-md>
+           <p>If <var>supportedOrigin</var> is not a string, return failure.</p>
+          <li data-md>
+           <p>Let <var>supportedOriginURL</var> be the result of <a data-link-type="dfn" href="https://url.spec.whatwg.org/#concept-basic-url-parser" id="ref-for-concept-basic-url-parser③">basic URL parsing</a> <var>supportedOrigin</var>. If the result is failure, return failure.</p>
+          <li data-md>
+           <p>If <var>supportedOriginURL</var>’s <a data-link-type="dfn" href="https://url.spec.whatwg.org/#concept-url-scheme" id="ref-for-concept-url-scheme③">scheme</a> is not "<code>https</code>", return failure.</p>
+          <li data-md>
+           <p>If <var>supportedOriginURL</var>’s <a data-link-type="dfn" href="https://url.spec.whatwg.org/#concept-url-username" id="ref-for-concept-url-username">username</a> or <a data-link-type="dfn" href="https://url.spec.whatwg.org/#concept-url-password" id="ref-for-concept-url-password">password</a> are not the empty string,
+return failure.</p>
+          <li data-md>
+           <p>If <var>supportedOriginURL</var>’s <a data-link-type="dfn" href="https://url.spec.whatwg.org/#concept-url-path" id="ref-for-concept-url-path">path</a>'s <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#list-size" id="ref-for-list-size②">size</a> is not 0, return failure.</p>
+          <li data-md>
+           <p>If <var>supportedOriginURL</var>’s <a data-link-type="dfn" href="https://url.spec.whatwg.org/#concept-url-query" id="ref-for-concept-url-query">query</a> or <a data-link-type="dfn" href="https://url.spec.whatwg.org/#concept-url-fragment" id="ref-for-concept-url-fragment">fragment</a> are not null, return failure.</p>
+          <li data-md>
+           <p><a data-link-type="dfn" href="https://infra.spec.whatwg.org/#set-append" id="ref-for-set-append①">Append</a> <var>supportedOriginURL</var>’s <a data-link-type="dfn" href="https://url.spec.whatwg.org/#concept-url-origin" id="ref-for-concept-url-origin①">origin</a> to <var>supportedOrigins</var>.</p>
+         </ol>
        </ol>
      </ol>
     <li data-md>
@@ -1884,7 +1887,7 @@ algorithm will asynchronously complete with either a <a data-link-type="dfn" hre
        <p>Let <var>promise</var> be the result of <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#concept-read-all-bytes-from-readablestream" id="ref-for-concept-read-all-bytes-from-readablestream①">reading all bytes</a> from <var>body</var> with <var>reader</var>.</p>
       <li data-md>
        <p><a data-link-type="dfn" href="https://www.w3.org/2001/tag/doc/promises-guide/#upon-fulfillment" id="ref-for-upon-fulfillment①">Upon fulfillment</a> of <var>promise</var> with a <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#byte-sequence" id="ref-for-byte-sequence③">byte sequence</a> <var>bytes</var>, asynchronously complete
-  this algorithm with the result of <a data-link-type="dfn" href="https://encoding.spec.whatwg.org/#utf-8-decode" id="ref-for-utf-8-decode">UTF-8 decoding</a> <var>bytes</var>.</p>
+  this algorithm with the result of <a data-link-type="dfn" href="https://encoding.spec.whatwg.org/#utf-8-decode" id="ref-for-utf-8-decode①">UTF-8 decoding</a> <var>bytes</var>.</p>
       <li data-md>
        <p><a data-link-type="dfn" href="https://www.w3.org/2001/tag/doc/promises-guide/#upon-rejection" id="ref-for-upon-rejection">Upon rejection</a> of <var>promise</var>, asynchronously complete this algorithm with failure.</p>
      </ol>
@@ -1984,36 +1987,6 @@ Rouslan Solomakhin for their contributions to making this specification awesome!
     <li><a href="#ref-for-dfn-manifest②">3.5. Fetching web app manifests</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="term-for-sec-createlistfromarraylike">
-   <a href="https://tc39.github.io/ecma262/#sec-createlistfromarraylike">https://tc39.github.io/ecma262/#sec-createlistfromarraylike</a><b>Referenced in:</b>
-   <ul>
-    <li><a href="#ref-for-sec-createlistfromarraylike">3.4. Validating and parsing payment method manifests</a> <a href="#ref-for-sec-createlistfromarraylike①">(2)</a>
-   </ul>
-  </aside>
-  <aside class="dfn-panel" data-for="term-for-sec-get-o-p">
-   <a href="https://tc39.github.io/ecma262/#sec-get-o-p">https://tc39.github.io/ecma262/#sec-get-o-p</a><b>Referenced in:</b>
-   <ul>
-    <li><a href="#ref-for-sec-get-o-p">3.4. Validating and parsing payment method manifests</a> <a href="#ref-for-sec-get-o-p①">(2)</a>
-   </ul>
-  </aside>
-  <aside class="dfn-panel" data-for="term-for-sec-isarray">
-   <a href="https://tc39.github.io/ecma262/#sec-isarray">https://tc39.github.io/ecma262/#sec-isarray</a><b>Referenced in:</b>
-   <ul>
-    <li><a href="#ref-for-sec-isarray">3.4. Validating and parsing payment method manifests</a> <a href="#ref-for-sec-isarray①">(2)</a>
-   </ul>
-  </aside>
-  <aside class="dfn-panel" data-for="term-for-sec-ecmascript-data-types-and-values">
-   <a href="https://tc39.github.io/ecma262/#sec-ecmascript-data-types-and-values">https://tc39.github.io/ecma262/#sec-ecmascript-data-types-and-values</a><b>Referenced in:</b>
-   <ul>
-    <li><a href="#ref-for-sec-ecmascript-data-types-and-values">3.4. Validating and parsing payment method manifests</a>
-   </ul>
-  </aside>
-  <aside class="dfn-panel" data-for="term-for-realm">
-   <a href="https://tc39.github.io/ecma262/#realm">https://tc39.github.io/ecma262/#realm</a><b>Referenced in:</b>
-   <ul>
-    <li><a href="#ref-for-realm">3.4. Validating and parsing payment method manifests</a>
-   </ul>
-  </aside>
   <aside class="dfn-panel" data-for="term-for-utf-8">
    <a href="https://encoding.spec.whatwg.org/#utf-8">https://encoding.spec.whatwg.org/#utf-8</a><b>Referenced in:</b>
    <ul>
@@ -2023,7 +1996,8 @@ Rouslan Solomakhin for their contributions to making this specification awesome!
   <aside class="dfn-panel" data-for="term-for-utf-8-decode">
    <a href="https://encoding.spec.whatwg.org/#utf-8-decode">https://encoding.spec.whatwg.org/#utf-8-decode</a><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-utf-8-decode">3.5. Fetching web app manifests</a>
+    <li><a href="#ref-for-utf-8-decode">3.4. Validating and parsing payment method manifests</a>
+    <li><a href="#ref-for-utf-8-decode①">3.5. Fetching web app manifests</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-concept-response-body">
@@ -2232,6 +2206,12 @@ Rouslan Solomakhin for their contributions to making this specification awesome!
     <li><a href="#ref-for-iteration-continue②">3.3. Fetching payment method manifests</a> <a href="#ref-for-iteration-continue③">(2)</a> <a href="#ref-for-iteration-continue④">(3)</a> <a href="#ref-for-iteration-continue⑤">(4)</a> <a href="#ref-for-iteration-continue⑥">(5)</a> <a href="#ref-for-iteration-continue⑦">(6)</a> <a href="#ref-for-iteration-continue⑧">(7)</a> <a href="#ref-for-iteration-continue⑨">(8)</a> <a href="#ref-for-iteration-continue①⓪">(9)</a>
    </ul>
   </aside>
+  <aside class="dfn-panel" data-for="term-for-map-exists">
+   <a href="https://infra.spec.whatwg.org/#map-exists">https://infra.spec.whatwg.org/#map-exists</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-map-exists">3.4. Validating and parsing payment method manifests</a> <a href="#ref-for-map-exists①">(2)</a>
+   </ul>
+  </aside>
   <aside class="dfn-panel" data-for="term-for-list-iterate">
    <a href="https://infra.spec.whatwg.org/#list-iterate">https://infra.spec.whatwg.org/#list-iterate</a><b>Referenced in:</b>
    <ul>
@@ -2256,12 +2236,21 @@ Rouslan Solomakhin for their contributions to making this specification awesome!
    <a href="https://infra.spec.whatwg.org/#list">https://infra.spec.whatwg.org/#list</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-list">3.3. Fetching payment method manifests</a> <a href="#ref-for-list①">(2)</a>
+    <li><a href="#ref-for-list②">3.4. Validating and parsing payment method manifests</a> <a href="#ref-for-list③">(2)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-ordered-map">
    <a href="https://infra.spec.whatwg.org/#ordered-map">https://infra.spec.whatwg.org/#ordered-map</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-ordered-map">3.3. Fetching payment method manifests</a> <a href="#ref-for-ordered-map①">(2)</a>
+    <li><a href="#ref-for-ordered-map②">3.4. Validating and parsing payment method manifests</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="term-for-ordered-map">
+   <a href="https://infra.spec.whatwg.org/#ordered-map">https://infra.spec.whatwg.org/#ordered-map</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-ordered-map">3.3. Fetching payment method manifests</a> <a href="#ref-for-ordered-map①">(2)</a>
+    <li><a href="#ref-for-ordered-map②">3.4. Validating and parsing payment method manifests</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-ordered-set">
@@ -2270,10 +2259,10 @@ Rouslan Solomakhin for their contributions to making this specification awesome!
     <li><a href="#ref-for-ordered-set">3.4. Validating and parsing payment method manifests</a> <a href="#ref-for-ordered-set①">(2)</a> <a href="#ref-for-ordered-set②">(3)</a> <a href="#ref-for-ordered-set③">(4)</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="term-for-parse-json-from-bytes">
-   <a href="https://infra.spec.whatwg.org/#parse-json-from-bytes">https://infra.spec.whatwg.org/#parse-json-from-bytes</a><b>Referenced in:</b>
+  <aside class="dfn-panel" data-for="term-for-parse-json-into-infra-values">
+   <a href="https://infra.spec.whatwg.org/#parse-json-into-infra-values">https://infra.spec.whatwg.org/#parse-json-into-infra-values</a><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-parse-json-from-bytes">3.4. Validating and parsing payment method manifests</a>
+    <li><a href="#ref-for-parse-json-into-infra-values">3.4. Validating and parsing payment method manifests</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-scalar-value-string">
@@ -2470,15 +2459,6 @@ Rouslan Solomakhin for their contributions to making this specification awesome!
      <li><span class="dfn-paneled" id="term-for-dfn-manifest" style="color:initial">web app manifest</span>
     </ul>
    <li>
-    <a data-link-type="biblio">[ECMASCRIPT]</a> defines the following terms:
-    <ul>
-     <li><span class="dfn-paneled" id="term-for-sec-createlistfromarraylike" style="color:initial">CreateListFromArrayLike</span>
-     <li><span class="dfn-paneled" id="term-for-sec-get-o-p" style="color:initial">Get</span>
-     <li><span class="dfn-paneled" id="term-for-sec-isarray" style="color:initial">IsArray</span>
-     <li><span class="dfn-paneled" id="term-for-sec-ecmascript-data-types-and-values" style="color:initial">Type</span>
-     <li><span class="dfn-paneled" id="term-for-realm" style="color:initial">javascript realm</span>
-    </ul>
-   <li>
     <a data-link-type="biblio">[ENCODING]</a> defines the following terms:
     <ul>
      <li><span class="dfn-paneled" id="term-for-utf-8" style="color:initial">utf-8</span>
@@ -2525,13 +2505,15 @@ Rouslan Solomakhin for their contributions to making this specification awesome!
      <li><span class="dfn-paneled" id="term-for-iteration-break" style="color:initial">break</span>
      <li><span class="dfn-paneled" id="term-for-byte-sequence" style="color:initial">byte sequence</span>
      <li><span class="dfn-paneled" id="term-for-iteration-continue" style="color:initial">continue</span>
+     <li><span class="dfn-paneled" id="term-for-map-exists" style="color:initial">exist</span>
      <li><span class="dfn-paneled" id="term-for-list-iterate" style="color:initial">for each</span>
      <li><span class="dfn-paneled" id="term-for-struct-item" style="color:initial">item</span>
      <li><span class="dfn-paneled" id="term-for-javascript-string" style="color:initial">javascript string</span>
      <li><span class="dfn-paneled" id="term-for-list" style="color:initial">list</span>
      <li><span class="dfn-paneled" id="term-for-ordered-map" style="color:initial">map</span>
+     <li><span class="dfn-paneled" id="term-for-ordered-map①" style="color:initial">ordered map</span>
      <li><span class="dfn-paneled" id="term-for-ordered-set" style="color:initial">ordered set</span>
-     <li><span class="dfn-paneled" id="term-for-parse-json-from-bytes" style="color:initial">parse json from bytes</span>
+     <li><span class="dfn-paneled" id="term-for-parse-json-into-infra-values" style="color:initial">parse json into infra values</span>
      <li><span class="dfn-paneled" id="term-for-scalar-value-string" style="color:initial">scalar value string</span>
      <li><span class="dfn-paneled" id="term-for-map-set" style="color:initial">set</span>
      <li><span class="dfn-paneled" id="term-for-list-size" style="color:initial">size</span>
@@ -2581,8 +2563,6 @@ Rouslan Solomakhin for their contributions to making this specification awesome!
   <dl>
    <dt id="biblio-appmanifest">[APPMANIFEST]
    <dd>Marcos Caceres; et al. <a href="https://w3c.github.io/manifest/">Web App Manifest</a>. URL: <a href="https://w3c.github.io/manifest/">https://w3c.github.io/manifest/</a>
-   <dt id="biblio-ecmascript">[ECMASCRIPT]
-   <dd><a href="https://tc39.github.io/ecma262/">ECMAScript Language Specification</a>. URL: <a href="https://tc39.github.io/ecma262/">https://tc39.github.io/ecma262/</a>
    <dt id="biblio-encoding">[ENCODING]
    <dd>Anne van Kesteren. <a href="https://encoding.spec.whatwg.org/">Encoding Standard</a>. Living Standard. URL: <a href="https://encoding.spec.whatwg.org/">https://encoding.spec.whatwg.org/</a>
    <dt id="biblio-fetch">[FETCH]
