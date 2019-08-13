@@ -1563,20 +1563,22 @@ provide a <a data-link-type="dfn" href="#payment-method-manifest" id="ref-for-pa
       <p>any other <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/origin.html#concept-origin" id="ref-for-concept-origin">origins</a> that are permitted to return payment credentials for this <a data-link-type="dfn" href="https://w3c.github.io/payment-request/#dfn-payment-method" id="ref-for-dfn-payment-method⑥">payment method</a>.</p>
     </ul>
     <h3 class="heading settled" data-level="1.2" id="accessing"><span class="secno">1.2. </span><span class="content">Accessing the manifest</span><a class="self-link" href="#accessing"></a></h3>
-    <p>The resource identified by the <a data-link-type="dfn" href="https://w3c.github.io/payment-method-id/#dfn-payment-method-identifiers" id="ref-for-dfn-payment-method-identifiers①">payment method identifier</a> URL does not directly contain the
-machine-readable <a data-link-type="dfn" href="#payment-method-manifest" id="ref-for-payment-method-manifest①">payment method manifest</a>. It is often a generic URL (such as
-"<code>https://alicepay.com/</code>") which is more suitable for human-readable content. Instead, a
-HTTP Link header is used to direct user agents seeking out the <a data-link-type="dfn" href="#payment-method-manifest" id="ref-for-payment-method-manifest②">payment method manifest</a> toward
-another location. <a data-link-type="biblio" href="#biblio-rfc8288">[RFC8288]</a></p>
-    <p>For an example <a data-link-type="dfn" href="https://w3c.github.io/payment-request/#dfn-payment-method" id="ref-for-dfn-payment-method⑦">payment method</a> AlicePay, with <a data-link-type="dfn" href="https://w3c.github.io/payment-method-id/#dfn-payment-method-identifiers" id="ref-for-dfn-payment-method-identifiers②">payment method identifier</a> "<code>https://alicepay.com/</code>", a user agent might issue a request to that <a data-link-type="dfn" href="https://w3c.github.io/payment-method-id/#dfn-payment-method-identifiers" id="ref-for-dfn-payment-method-identifiers③">payment method identifier</a> URL as follows:</p>
-<pre>HEAD / HTTP/2
+    <p>The machine-readable <a data-link-type="dfn" href="#payment-method-manifest" id="ref-for-payment-method-manifest①">payment method manifest</a> might be found either directly at the <a data-link-type="dfn" href="https://w3c.github.io/payment-method-id/#dfn-payment-method-identifiers" id="ref-for-dfn-payment-method-identifiers①">payment method identifier</a> URL, or in a location indicated indirectly by following a HTTP
+`<code>Link</code>` header from that URL. <a data-link-type="biblio" href="#biblio-rfc8288">[RFC8288]</a></p>
+    <p>This potential indirection allows the use of generic, human-readable URLs (such as
+"<code>https://alicepay.com/</code>") to serve as <a data-link-type="dfn" href="https://w3c.github.io/payment-method-id/#dfn-payment-method-identifiers" id="ref-for-dfn-payment-method-identifiers②">payment method identifiers</a>, while still
+locating the actual <a data-link-type="dfn" href="#payment-method-manifest" id="ref-for-payment-method-manifest②">payment method manifest</a> at a different URL.</p>
+    <p>For an example <a data-link-type="dfn" href="https://w3c.github.io/payment-request/#dfn-payment-method" id="ref-for-dfn-payment-method⑦">payment method</a> AlicePay, with <a data-link-type="dfn" href="https://w3c.github.io/payment-method-id/#dfn-payment-method-identifiers" id="ref-for-dfn-payment-method-identifiers③">payment method identifier</a> "<code>https://alicepay.com/</code>", a user agent would issue a GET request to that <a data-link-type="dfn" href="https://w3c.github.io/payment-method-id/#dfn-payment-method-identifiers" id="ref-for-dfn-payment-method-identifiers④">payment method identifier</a> URL as follows:</p>
+<pre>GET / HTTP/2
 Host: alicepay.com
 User-Agent: Mellblomenator/9000
 </pre>
-    <p>The server would then respond:</p>
+    <p>The server could then either respond with</p>
 <pre>HTTP/2 204
 Link: &lt;/pay/payment-manifest.json>; rel="payment-method-manifest"
 </pre>
+    <p>to redirect the user agent to "<code>https://alicepay.com/pay/payment-manifest.json</code>", or
+could respond with the JSON contents of the payment method manifest directly in a <code>200</code>-status response.</p>
     <h3 class="heading settled" data-level="1.3" id="manifest-example"><span class="secno">1.3. </span><span class="content">Example manifest file</span><a class="self-link" href="#manifest-example"></a></h3>
     <p>Continuing our example from <a href="#accessing">§ 1.2 Accessing the manifest</a>, the AlicePay <a data-link-type="dfn" href="https://w3c.github.io/payment-request/#dfn-payment-method" id="ref-for-dfn-payment-method⑧">payment method</a> could provide the
 following <a data-link-type="dfn" href="#payment-method-manifest" id="ref-for-payment-method-manifest③">payment method manifest</a> file at <code>https://alicepay.com/pay/payment-manifest.json</code>:</p>
@@ -1644,7 +1646,7 @@ user.</p>
 into the <cite>Payment Request API</cite> specification itself, instead of maintaining a monkeypatch
 here.</p>
    <h3 class="heading settled" data-level="3.2" id="ingest"><span class="secno">3.2. </span><span class="content">Ingesting payment method manifests</span><a class="self-link" href="#ingest"></a></h3>
-   <p>Given a list of <a data-link-type="dfn" href="https://w3c.github.io/payment-method-id/#dfn-payment-method-identifiers" id="ref-for-dfn-payment-method-identifiers④">payment method identifiers</a> <var>identifiers</var>, as well as an <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#environment-settings-object" id="ref-for-environment-settings-object">environment settings object</a> <var>client</var>, the user agent may run the following steps, to <dfn class="dfn-paneled" data-dfn-type="dfn" data-export id="ingest-payment-method-manifests">ingest payment method manifests</dfn>:</p>
+   <p>Given a list of <a data-link-type="dfn" href="https://w3c.github.io/payment-method-id/#dfn-payment-method-identifiers" id="ref-for-dfn-payment-method-identifiers⑤">payment method identifiers</a> <var>identifiers</var>, as well as an <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#environment-settings-object" id="ref-for-environment-settings-object">environment settings object</a> <var>client</var>, the user agent may run the following steps, to <dfn class="dfn-paneled" data-dfn-type="dfn" data-export id="ingest-payment-method-manifests">ingest payment method manifests</dfn>:</p>
    <ol>
     <li data-md>
      <p><a data-link-type="dfn" href="#fetch-payment-method-manifests" id="ref-for-fetch-payment-method-manifests">Fetch payment method manifests</a>, given <var>identifiers</var> and <var>client</var>, and wait for this to
@@ -1680,7 +1682,7 @@ here.</p>
    </ol>
    <h3 class="heading settled" data-level="3.3" id="fetch-pmm"><span class="secno">3.3. </span><span class="content">Fetching payment method manifests</span><a class="self-link" href="#fetch-pmm"></a></h3>
    <p>To <dfn class="dfn-paneled" data-dfn-type="dfn" data-export id="fetch-payment-method-manifests">fetch payment method manifests</dfn>, given a <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#list" id="ref-for-list">list</a> of <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#javascript-string" id="ref-for-javascript-string">JavaScript strings</a> <var>supportedMethods</var> and an <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#environment-settings-object" id="ref-for-environment-settings-object①">environment settings object</a> <var>client</var>, perform the following steps.
-This algorithm will asynchronously complete with a <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#ordered-map" id="ref-for-ordered-map">map</a> (possibly empty) from <a data-link-type="dfn" href="https://url.spec.whatwg.org/#concept-url" id="ref-for-concept-url②">URLs</a> to <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#byte-sequence" id="ref-for-byte-sequence">byte sequences</a>, mapping <a data-link-type="dfn" href="https://w3c.github.io/payment-method-id/#dfn-payment-method-identifiers" id="ref-for-dfn-payment-method-identifiers⑤">payment method identifiers</a> to the contents of the corresponding
+This algorithm will asynchronously complete with a <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#ordered-map" id="ref-for-ordered-map">map</a> (possibly empty) from <a data-link-type="dfn" href="https://url.spec.whatwg.org/#concept-url" id="ref-for-concept-url②">URLs</a> to <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#byte-sequence" id="ref-for-byte-sequence">byte sequences</a>, mapping <a data-link-type="dfn" href="https://w3c.github.io/payment-method-id/#dfn-payment-method-identifiers" id="ref-for-dfn-payment-method-identifiers⑥">payment method identifiers</a> to the contents of the corresponding
 manifest.</p>
    <ol>
     <li data-md>
@@ -1691,12 +1693,12 @@ manifest.</p>
       <li data-md>
        <p>Let <var>identifierURL</var> be the result of <a data-link-type="dfn" href="https://url.spec.whatwg.org/#concept-basic-url-parser" id="ref-for-concept-basic-url-parser">basic URL parsing</a> <var>string</var>. If the
  result is failure, <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#iteration-continue" id="ref-for-iteration-continue②">continue</a>.</p>
-       <p class="note" role="note">The result will be failure for any <a data-link-type="dfn" href="https://w3c.github.io/payment-method-id/#dfn-payment-method-identifiers" id="ref-for-dfn-payment-method-identifiers⑥">payment method identifier</a> that is not a <a data-link-type="dfn" href="https://w3c.github.io/payment-method-id/#dfn-url-based-payment-method-identifiers" id="ref-for-dfn-url-based-payment-method-identifiers①">URL-based payment method identifier</a>, i.e. for a <a data-link-type="dfn" href="https://w3c.github.io/payment-method-id/#dfn-standardized-payment-method-identifiers" id="ref-for-dfn-standardized-payment-method-identifiers">standardized payment method identifier</a>.</p>
+       <p class="note" role="note">The result will be failure for any <a data-link-type="dfn" href="https://w3c.github.io/payment-method-id/#dfn-payment-method-identifiers" id="ref-for-dfn-payment-method-identifiers⑦">payment method identifier</a> that is not a <a data-link-type="dfn" href="https://w3c.github.io/payment-method-id/#dfn-url-based-payment-method-identifiers" id="ref-for-dfn-url-based-payment-method-identifiers①">URL-based payment method identifier</a>, i.e. for a <a data-link-type="dfn" href="https://w3c.github.io/payment-method-id/#dfn-standardized-payment-method-identifiers" id="ref-for-dfn-standardized-payment-method-identifiers">standardized payment method identifier</a>.</p>
       <li data-md>
        <p>If <a data-link-type="dfn" href="https://w3c.github.io/payment-method-id/#dfn-validate-a-url-based-payment-method-identifier" id="ref-for-dfn-validate-a-url-based-payment-method-identifier">validating</a> <var>identifierURL</var> returns false, <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#iteration-continue" id="ref-for-iteration-continue③">continue</a>.</p>
       <li data-md>
        <p>Optionally, <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#iteration-continue" id="ref-for-iteration-continue④">continue</a>.</p>
-       <p class="note" role="note">This step allows implementations to skip any of the provided <a data-link-type="dfn" href="https://w3c.github.io/payment-method-id/#dfn-payment-method-identifiers" id="ref-for-dfn-payment-method-identifiers⑦">payment method
+       <p class="note" role="note">This step allows implementations to skip any of the provided <a data-link-type="dfn" href="https://w3c.github.io/payment-method-id/#dfn-payment-method-identifiers" id="ref-for-dfn-payment-method-identifiers⑧">payment method
  identifiers</a> for user-agent-specific reasons. <a href="#security">§ 4 Security and privacy considerations</a> discusses some reasons why user
  agents might prefer to only ingest certain identifiers.</p>
       <li data-md>
@@ -1708,18 +1710,19 @@ manifest.</p>
      <p><a data-link-type="dfn" href="https://infra.spec.whatwg.org/#list-iterate" id="ref-for-list-iterate③">For each</a> <var>identifierURL</var> of <var>identifierURLs</var>:</p>
      <ol>
       <li data-md>
-       <p>Let <var>identifierRequest</var> be a new <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#concept-request" id="ref-for-concept-request">request</a> whose <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#concept-request-method" id="ref-for-concept-request-method">method</a> is `<code>HEAD</code>`, <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#concept-request-url" id="ref-for-concept-request-url">url</a> is <var>identifierURL</var>, <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#concept-request-client" id="ref-for-concept-request-client">client</a> is <var>client</var>, <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#concept-request-mode" id="ref-for-concept-request-mode">mode</a> is
+       <p>Let <var>manifestURLString</var> be null.</p>
+      <li data-md>
+       <p>Let <var>identifierRequest</var> be a new <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#concept-request" id="ref-for-concept-request">request</a> whose <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#concept-request-method" id="ref-for-concept-request-method">method</a> is `<code>GET</code>`, <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#concept-request-url" id="ref-for-concept-request-url">url</a> is <var>identifierURL</var>, <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#concept-request-client" id="ref-for-concept-request-client">client</a> is <var>client</var>, <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#concept-request-mode" id="ref-for-concept-request-mode">mode</a> is
  "<code>cors</code>", <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#concept-request-credentials-mode" id="ref-for-concept-request-credentials-mode">credentials mode</a> is "<code>omit</code>", <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#concept-request-redirect-mode" id="ref-for-concept-request-redirect-mode">redirect mode</a> is "<code>error</code>", and <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#concept-request-referrer-policy" id="ref-for-concept-request-referrer-policy">referrer policy</a> is
  "<code>strict-origin-when-cross-origin</code>".</p>
       <li data-md>
-       <p><a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#concept-fetch" id="ref-for-concept-fetch">Fetch</a> <var>identifierRequest</var>. To <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#process-response" id="ref-for-process-response">process response</a> with the <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#concept-response" id="ref-for-concept-response">response</a> <var>identifierResponse</var>:</p>
+       <p><a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#concept-fetch" id="ref-for-concept-fetch">Fetch</a> <var>identifierRequest</var>.</p>
+       <p>To <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#process-response" id="ref-for-process-response">process response</a> with the <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#concept-response" id="ref-for-concept-response">response</a> <var>identifierResponse</var>:</p>
        <ol>
         <li data-md>
          <p>If <var>identifierResponse</var> is a <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#concept-network-error" id="ref-for-concept-network-error">network error</a> or <var>identifierResponse</var>’s <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#concept-response-status" id="ref-for-concept-response-status">status</a> is not an <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#ok-status" id="ref-for-ok-status">ok status</a>, <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#iteration-continue" id="ref-for-iteration-continue⑤">continue</a>.</p>
         <li data-md>
          <p>Let <var>linkHeaders</var> be the result of <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#extract-header-list-values" id="ref-for-extract-header-list-values">extracting header list values</a> given `<code>Link</code>` and <var>identifierResponse</var>’s <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#concept-response-header-list" id="ref-for-concept-response-header-list">header list</a>.</p>
-        <li data-md>
-         <p>Let <var>manifestURLString</var> be null.</p>
         <li data-md>
          <p><a data-link-type="dfn" href="https://infra.spec.whatwg.org/#list-iterate" id="ref-for-list-iterate④">For each</a> <var>linkHeader</var> of <var>linkHeaders</var>:</p>
          <ol>
@@ -1736,6 +1739,8 @@ manifest.</p>
          <p>If <var>manifestURLString</var> is not null, then:</p>
          <ol>
           <li data-md>
+           <p><a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#concept-fetch-terminate" id="ref-for-concept-fetch-terminate">Terminate</a> the ongoing fetch of <var>identifierRequest</var> (since the <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#concept-response-body" id="ref-for-concept-response-body">body</a> will not be needed).</p>
+          <li data-md>
            <p>Let <var>manifestURL</var> be the result of <a data-link-type="dfn" href="https://url.spec.whatwg.org/#concept-basic-url-parser" id="ref-for-concept-basic-url-parser①">basic URL parsing</a> <var>manifestURLString</var> with base URL given by <var>identifierResponse</var>’s <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#concept-response-url" id="ref-for-concept-response-url">url</a>. If the
  result is failure, <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#iteration-continue" id="ref-for-iteration-continue⑦">continue</a>.</p>
           <li data-md>
@@ -1749,7 +1754,7 @@ manifest.</p>
             <li data-md>
              <p>If <var>manifestResponse</var> is a <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#concept-network-error" id="ref-for-concept-network-error①">network error</a> or <var>manifestResponse</var>’s <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#concept-response-status" id="ref-for-concept-response-status①">status</a> is not an <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#ok-status" id="ref-for-ok-status①">ok status</a>, <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#iteration-continue" id="ref-for-iteration-continue⑨">continue</a>.</p>
             <li data-md>
-             <p>Let <var>body</var> be <var>manifestResponse</var>’s <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#concept-response-body" id="ref-for-concept-response-body">body</a>.</p>
+             <p>Let <var>body</var> be <var>manifestResponse</var>’s <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#concept-response-body" id="ref-for-concept-response-body①">body</a>.</p>
             <li data-md>
              <p>If <var>body</var> is null, <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#iteration-continue" id="ref-for-iteration-continue①⓪">continue</a>.</p>
             <li data-md>
@@ -1761,10 +1766,25 @@ manifest.</p>
            </ol>
          </ol>
        </ol>
+       <p>To <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#process-response-end-of-body" id="ref-for-process-response-end-of-body①">process response end-of-body</a> with the <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#concept-response" id="ref-for-concept-response②">response</a> <var>identifierResponse</var>:</p>
+       <ol>
+        <li data-md>
+         <p>If <var>manifestURLString</var> is not null, <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#iteration-continue" id="ref-for-iteration-continue①①">continue</a>.</p>
+        <li data-md>
+         <p>Let <var>body</var> be <var>identifierResponse</var>’s <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#concept-response-body" id="ref-for-concept-response-body②">body</a>.</p>
+        <li data-md>
+         <p>If <var>body</var> is null, <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#iteration-continue" id="ref-for-iteration-continue①②">continue</a>.</p>
+        <li data-md>
+         <p>Let <var>reader</var> be the result of <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#concept-get-reader" id="ref-for-concept-get-reader①">getting a reader</a> from <var>body</var>.</p>
+        <li data-md>
+         <p>Let <var>promise</var> be the result of <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#concept-read-all-bytes-from-readablestream" id="ref-for-concept-read-all-bytes-from-readablestream①">reading all bytes</a> from <var>body</var> with <var>reader</var>.</p>
+        <li data-md>
+         <p><a data-link-type="dfn" href="https://www.w3.org/2001/tag/doc/promises-guide/#upon-fulfillment" id="ref-for-upon-fulfillment①">Upon fulfillment</a> of <var>promise</var> with a <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#byte-sequence" id="ref-for-byte-sequence②">byte sequence</a> <var>bytes</var>, <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#map-set" id="ref-for-map-set①">set</a> <var>manifestsMap</var>[<var>identifierURL</var>] to <var>bytes</var>.</p>
+       </ol>
      </ol>
     <li data-md>
      <p>Once all ongoing <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#concept-fetch" id="ref-for-concept-fetch②">fetch</a> algorithms initiated by the above steps are complete, including the
- specified <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#process-response" id="ref-for-process-response①">process response</a> and <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#process-response-end-of-body" id="ref-for-process-response-end-of-body①">process response end-of-body</a> steps, asynchronously
+ specified <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#process-response" id="ref-for-process-response①">process response</a> and <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#process-response-end-of-body" id="ref-for-process-response-end-of-body②">process response end-of-body</a> steps, asynchronously
  complete this algorithm with <var>manifestsMap</var>.</p>
    </ol>
    <h3 class="heading settled" data-level="3.4" id="validate-and-parse"><span class="secno">3.4. </span><span class="content">Validating and parsing payment method manifests</span><a class="self-link" href="#validate-and-parse"></a></h3>
@@ -1777,7 +1797,7 @@ manifest.</p>
     <dd data-md>
      <p>Either the string "<code>*</code>", or an <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#ordered-set" id="ref-for-ordered-set①">ordered set</a> of <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/origin.html#concept-origin" id="ref-for-concept-origin④">origins</a></p>
    </dl>
-   <p>To <dfn class="dfn-paneled" data-dfn-type="dfn" data-export data-lt="validate and parse the payment method manifest" id="validate-and-parse-the-payment-method-manifest">validate and parse</dfn> a <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#byte-sequence" id="ref-for-byte-sequence②">byte sequence</a> <var>bytes</var> purporting to contain a payment method manifest, given a <a data-link-type="dfn" href="https://url.spec.whatwg.org/#concept-url" id="ref-for-concept-url④">URL</a> <var>url</var>,
+   <p>To <dfn class="dfn-paneled" data-dfn-type="dfn" data-export data-lt="validate and parse the payment method manifest" id="validate-and-parse-the-payment-method-manifest">validate and parse</dfn> a <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#byte-sequence" id="ref-for-byte-sequence③">byte sequence</a> <var>bytes</var> purporting to contain a payment method manifest, given a <a data-link-type="dfn" href="https://url.spec.whatwg.org/#concept-url" id="ref-for-concept-url④">URL</a> <var>url</var>,
 perform the following steps. The result will either be a <a data-link-type="dfn" href="#parsed-payment-method-manifest" id="ref-for-parsed-payment-method-manifest">parsed payment method manifest</a>, or
 failure.</p>
    <ol>
@@ -1873,20 +1893,20 @@ algorithm will asynchronously complete with either a <a data-link-type="dfn" hre
      <p>Let <var>request</var> be a new <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#concept-request" id="ref-for-concept-request②">request</a> whose <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#concept-request-url" id="ref-for-concept-request-url②">url</a> is <var>url</var>, <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#concept-request-client" id="ref-for-concept-request-client②">client</a> is <var>client</var>, <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#concept-request-referrer" id="ref-for-concept-request-referrer①">referrer</a> is <var>referrer</var>, <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#concept-request-mode" id="ref-for-concept-request-mode②">mode</a> is "<code>cors</code>", <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#concept-request-credentials-mode" id="ref-for-concept-request-credentials-mode②">credentials mode</a> is "<code>omit</code>", and <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#concept-request-redirect-mode" id="ref-for-concept-request-redirect-mode②">redirect mode</a> is
  "<code>error</code>".</p>
     <li data-md>
-     <p><a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#concept-fetch" id="ref-for-concept-fetch③">Fetch</a> <var>request</var>. To <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#process-response-end-of-body" id="ref-for-process-response-end-of-body②">process response end-of-body</a> with the <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#concept-response" id="ref-for-concept-response②">response</a> <var>response</var>:</p>
+     <p><a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#concept-fetch" id="ref-for-concept-fetch③">Fetch</a> <var>request</var>. To <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#process-response-end-of-body" id="ref-for-process-response-end-of-body③">process response end-of-body</a> with the <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#concept-response" id="ref-for-concept-response③">response</a> <var>response</var>:</p>
      <ol>
       <li data-md>
        <p>If <var>response</var> is a <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#concept-network-error" id="ref-for-concept-network-error②">network error</a> or <var>response</var>’s <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#concept-response-status" id="ref-for-concept-response-status②">status</a> is not an <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#ok-status" id="ref-for-ok-status②">ok status</a>, asynchronously complete this algorithm with failure.</p>
       <li data-md>
-       <p>Let <var>body</var> be <var>response</var>’s <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#concept-response-body" id="ref-for-concept-response-body①">body</a>.</p>
+       <p>Let <var>body</var> be <var>response</var>’s <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#concept-response-body" id="ref-for-concept-response-body③">body</a>.</p>
       <li data-md>
        <p>If <var>body</var> is null, asynchronously complete this algorithm with failure.</p>
       <li data-md>
-       <p>Let <var>reader</var> be the result of <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#concept-get-reader" id="ref-for-concept-get-reader①">getting a reader</a> from <var>body</var>.</p>
+       <p>Let <var>reader</var> be the result of <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#concept-get-reader" id="ref-for-concept-get-reader②">getting a reader</a> from <var>body</var>.</p>
       <li data-md>
-       <p>Let <var>promise</var> be the result of <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#concept-read-all-bytes-from-readablestream" id="ref-for-concept-read-all-bytes-from-readablestream①">reading all bytes</a> from <var>body</var> with <var>reader</var>.</p>
+       <p>Let <var>promise</var> be the result of <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#concept-read-all-bytes-from-readablestream" id="ref-for-concept-read-all-bytes-from-readablestream②">reading all bytes</a> from <var>body</var> with <var>reader</var>.</p>
       <li data-md>
-       <p><a data-link-type="dfn" href="https://www.w3.org/2001/tag/doc/promises-guide/#upon-fulfillment" id="ref-for-upon-fulfillment①">Upon fulfillment</a> of <var>promise</var> with a <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#byte-sequence" id="ref-for-byte-sequence③">byte sequence</a> <var>bytes</var>, asynchronously complete
+       <p><a data-link-type="dfn" href="https://www.w3.org/2001/tag/doc/promises-guide/#upon-fulfillment" id="ref-for-upon-fulfillment②">Upon fulfillment</a> of <var>promise</var> with a <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#byte-sequence" id="ref-for-byte-sequence④">byte sequence</a> <var>bytes</var>, asynchronously complete
   this algorithm with the result of <a data-link-type="dfn" href="https://encoding.spec.whatwg.org/#utf-8-decode" id="ref-for-utf-8-decode①">UTF-8 decoding</a> <var>bytes</var>.</p>
       <li data-md>
        <p><a data-link-type="dfn" href="https://www.w3.org/2001/tag/doc/promises-guide/#upon-rejection" id="ref-for-upon-rejection">Upon rejection</a> of <var>promise</var>, asynchronously complete this algorithm with failure.</p>
@@ -2003,8 +2023,8 @@ Rouslan Solomakhin for their contributions to making this specification awesome!
   <aside class="dfn-panel" data-for="term-for-concept-response-body">
    <a href="https://fetch.spec.whatwg.org/#concept-response-body">https://fetch.spec.whatwg.org/#concept-response-body</a><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-concept-response-body">3.3. Fetching payment method manifests</a>
-    <li><a href="#ref-for-concept-response-body①">3.5. Fetching web app manifests</a>
+    <li><a href="#ref-for-concept-response-body">3.3. Fetching payment method manifests</a> <a href="#ref-for-concept-response-body①">(2)</a> <a href="#ref-for-concept-response-body②">(3)</a>
+    <li><a href="#ref-for-concept-response-body③">3.5. Fetching web app manifests</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-concept-request-client">
@@ -2037,8 +2057,8 @@ Rouslan Solomakhin for their contributions to making this specification awesome!
   <aside class="dfn-panel" data-for="term-for-concept-get-reader">
    <a href="https://fetch.spec.whatwg.org/#concept-get-reader">https://fetch.spec.whatwg.org/#concept-get-reader</a><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-concept-get-reader">3.3. Fetching payment method manifests</a>
-    <li><a href="#ref-for-concept-get-reader①">3.5. Fetching web app manifests</a>
+    <li><a href="#ref-for-concept-get-reader">3.3. Fetching payment method manifests</a> <a href="#ref-for-concept-get-reader①">(2)</a>
+    <li><a href="#ref-for-concept-get-reader②">3.5. Fetching web app manifests</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-concept-response-header-list">
@@ -2083,15 +2103,15 @@ Rouslan Solomakhin for their contributions to making this specification awesome!
   <aside class="dfn-panel" data-for="term-for-process-response-end-of-body">
    <a href="https://fetch.spec.whatwg.org/#process-response-end-of-body">https://fetch.spec.whatwg.org/#process-response-end-of-body</a><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-process-response-end-of-body">3.3. Fetching payment method manifests</a> <a href="#ref-for-process-response-end-of-body①">(2)</a>
-    <li><a href="#ref-for-process-response-end-of-body②">3.5. Fetching web app manifests</a>
+    <li><a href="#ref-for-process-response-end-of-body">3.3. Fetching payment method manifests</a> <a href="#ref-for-process-response-end-of-body①">(2)</a> <a href="#ref-for-process-response-end-of-body②">(3)</a>
+    <li><a href="#ref-for-process-response-end-of-body③">3.5. Fetching web app manifests</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-concept-read-all-bytes-from-readablestream">
    <a href="https://fetch.spec.whatwg.org/#concept-read-all-bytes-from-readablestream">https://fetch.spec.whatwg.org/#concept-read-all-bytes-from-readablestream</a><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-concept-read-all-bytes-from-readablestream">3.3. Fetching payment method manifests</a>
-    <li><a href="#ref-for-concept-read-all-bytes-from-readablestream①">3.5. Fetching web app manifests</a>
+    <li><a href="#ref-for-concept-read-all-bytes-from-readablestream">3.3. Fetching payment method manifests</a> <a href="#ref-for-concept-read-all-bytes-from-readablestream①">(2)</a>
+    <li><a href="#ref-for-concept-read-all-bytes-from-readablestream②">3.5. Fetching web app manifests</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-concept-request-redirect-mode">
@@ -2126,8 +2146,8 @@ Rouslan Solomakhin for their contributions to making this specification awesome!
   <aside class="dfn-panel" data-for="term-for-concept-response">
    <a href="https://fetch.spec.whatwg.org/#concept-response">https://fetch.spec.whatwg.org/#concept-response</a><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-concept-response">3.3. Fetching payment method manifests</a> <a href="#ref-for-concept-response①">(2)</a>
-    <li><a href="#ref-for-concept-response②">3.5. Fetching web app manifests</a>
+    <li><a href="#ref-for-concept-response">3.3. Fetching payment method manifests</a> <a href="#ref-for-concept-response①">(2)</a> <a href="#ref-for-concept-response②">(3)</a>
+    <li><a href="#ref-for-concept-response③">3.5. Fetching web app manifests</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-concept-response-status">
@@ -2135,6 +2155,12 @@ Rouslan Solomakhin for their contributions to making this specification awesome!
    <ul>
     <li><a href="#ref-for-concept-response-status">3.3. Fetching payment method manifests</a> <a href="#ref-for-concept-response-status①">(2)</a>
     <li><a href="#ref-for-concept-response-status②">3.5. Fetching web app manifests</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="term-for-concept-fetch-terminate">
+   <a href="https://fetch.spec.whatwg.org/#concept-fetch-terminate">https://fetch.spec.whatwg.org/#concept-fetch-terminate</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-concept-fetch-terminate">3.3. Fetching payment method manifests</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-concept-response-url">
@@ -2194,16 +2220,16 @@ Rouslan Solomakhin for their contributions to making this specification awesome!
   <aside class="dfn-panel" data-for="term-for-byte-sequence">
    <a href="https://infra.spec.whatwg.org/#byte-sequence">https://infra.spec.whatwg.org/#byte-sequence</a><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-byte-sequence">3.3. Fetching payment method manifests</a> <a href="#ref-for-byte-sequence①">(2)</a>
-    <li><a href="#ref-for-byte-sequence②">3.4. Validating and parsing payment method manifests</a>
-    <li><a href="#ref-for-byte-sequence③">3.5. Fetching web app manifests</a>
+    <li><a href="#ref-for-byte-sequence">3.3. Fetching payment method manifests</a> <a href="#ref-for-byte-sequence①">(2)</a> <a href="#ref-for-byte-sequence②">(3)</a>
+    <li><a href="#ref-for-byte-sequence③">3.4. Validating and parsing payment method manifests</a>
+    <li><a href="#ref-for-byte-sequence④">3.5. Fetching web app manifests</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-iteration-continue">
    <a href="https://infra.spec.whatwg.org/#iteration-continue">https://infra.spec.whatwg.org/#iteration-continue</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-iteration-continue">3.2. Ingesting payment method manifests</a> <a href="#ref-for-iteration-continue①">(2)</a>
-    <li><a href="#ref-for-iteration-continue②">3.3. Fetching payment method manifests</a> <a href="#ref-for-iteration-continue③">(2)</a> <a href="#ref-for-iteration-continue④">(3)</a> <a href="#ref-for-iteration-continue⑤">(4)</a> <a href="#ref-for-iteration-continue⑥">(5)</a> <a href="#ref-for-iteration-continue⑦">(6)</a> <a href="#ref-for-iteration-continue⑧">(7)</a> <a href="#ref-for-iteration-continue⑨">(8)</a> <a href="#ref-for-iteration-continue①⓪">(9)</a>
+    <li><a href="#ref-for-iteration-continue②">3.3. Fetching payment method manifests</a> <a href="#ref-for-iteration-continue③">(2)</a> <a href="#ref-for-iteration-continue④">(3)</a> <a href="#ref-for-iteration-continue⑤">(4)</a> <a href="#ref-for-iteration-continue⑥">(5)</a> <a href="#ref-for-iteration-continue⑦">(6)</a> <a href="#ref-for-iteration-continue⑧">(7)</a> <a href="#ref-for-iteration-continue⑨">(8)</a> <a href="#ref-for-iteration-continue①⓪">(9)</a> <a href="#ref-for-iteration-continue①①">(10)</a> <a href="#ref-for-iteration-continue①②">(11)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-map-exists">
@@ -2274,7 +2300,7 @@ Rouslan Solomakhin for their contributions to making this specification awesome!
   <aside class="dfn-panel" data-for="term-for-map-set">
    <a href="https://infra.spec.whatwg.org/#map-set">https://infra.spec.whatwg.org/#map-set</a><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-map-set">3.3. Fetching payment method manifests</a>
+    <li><a href="#ref-for-map-set">3.3. Fetching payment method manifests</a> <a href="#ref-for-map-set①">(2)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-list-size">
@@ -2293,9 +2319,9 @@ Rouslan Solomakhin for their contributions to making this specification awesome!
    <a href="https://w3c.github.io/payment-method-id/#dfn-payment-method-identifiers">https://w3c.github.io/payment-method-id/#dfn-payment-method-identifiers</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-dfn-payment-method-identifiers">1.1. Use cases</a>
-    <li><a href="#ref-for-dfn-payment-method-identifiers①">1.2. Accessing the manifest</a> <a href="#ref-for-dfn-payment-method-identifiers②">(2)</a> <a href="#ref-for-dfn-payment-method-identifiers③">(3)</a>
-    <li><a href="#ref-for-dfn-payment-method-identifiers④">3.2. Ingesting payment method manifests</a>
-    <li><a href="#ref-for-dfn-payment-method-identifiers⑤">3.3. Fetching payment method manifests</a> <a href="#ref-for-dfn-payment-method-identifiers⑥">(2)</a> <a href="#ref-for-dfn-payment-method-identifiers⑦">(3)</a>
+    <li><a href="#ref-for-dfn-payment-method-identifiers①">1.2. Accessing the manifest</a> <a href="#ref-for-dfn-payment-method-identifiers②">(2)</a> <a href="#ref-for-dfn-payment-method-identifiers③">(3)</a> <a href="#ref-for-dfn-payment-method-identifiers④">(4)</a>
+    <li><a href="#ref-for-dfn-payment-method-identifiers⑤">3.2. Ingesting payment method manifests</a>
+    <li><a href="#ref-for-dfn-payment-method-identifiers⑥">3.3. Fetching payment method manifests</a> <a href="#ref-for-dfn-payment-method-identifiers⑦">(2)</a> <a href="#ref-for-dfn-payment-method-identifiers⑧">(3)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-dfn-standardized-payment-method-identifiers">
@@ -2362,8 +2388,8 @@ Rouslan Solomakhin for their contributions to making this specification awesome!
   <aside class="dfn-panel" data-for="term-for-upon-fulfillment">
    <a href="https://www.w3.org/2001/tag/doc/promises-guide/#upon-fulfillment">https://www.w3.org/2001/tag/doc/promises-guide/#upon-fulfillment</a><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-upon-fulfillment">3.3. Fetching payment method manifests</a>
-    <li><a href="#ref-for-upon-fulfillment①">3.5. Fetching web app manifests</a>
+    <li><a href="#ref-for-upon-fulfillment">3.3. Fetching payment method manifests</a> <a href="#ref-for-upon-fulfillment①">(2)</a>
+    <li><a href="#ref-for-upon-fulfillment②">3.5. Fetching web app manifests</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-upon-rejection">
@@ -2487,6 +2513,7 @@ Rouslan Solomakhin for their contributions to making this specification awesome!
      <li><span class="dfn-paneled" id="term-for-concept-request" style="color:initial">request</span>
      <li><span class="dfn-paneled" id="term-for-concept-response" style="color:initial">response</span>
      <li><span class="dfn-paneled" id="term-for-concept-response-status" style="color:initial">status</span>
+     <li><span class="dfn-paneled" id="term-for-concept-fetch-terminate" style="color:initial">terminated</span>
      <li><span class="dfn-paneled" id="term-for-concept-response-url" style="color:initial">url <small>(for response)</small></span>
     </ul>
    <li>
