@@ -1,21 +1,21 @@
 language: generic
-
 script:
-  - make ci
-
+- make ci
 branches:
   only:
-    - master
-
+  - master
 notifications:
   email:
     on_success: never
     on_failure: always
-
 deploy:
   provider: pages
   local-dir: out
   committer-from-gh: true
   skip-cleanup: true
   keep-history: true
-  github-token: $GH_TOKEN
+  edge:
+    branch: master
+env:
+  global:
+    secure: 0mEjcOWqPrQo2GqHc5Le7d6XWvIVq17nDvBdcL/Z36+Cw1wlXuHgoYyuUma6wcFWxs8EHbfyXt+YSpFFg0Fa4fQKcLj+CmpTLwjR/+UEfOnlhrE0TylFLOkPYURC0NeAbAkQYFnOj5BlcItPoKb2tafxYitumjoB5Odb156qTi+cKUgLymXpjzIpUgL2T/uP5Vy+xueRnwIqy7YJNvNEVQJtwsuSM2nOavR4T/JL2SfIRIt4pkncH2BDcb9bsXDS6gR19ApxCZPk9z8MU2CHnWLvuxdfGmPJ0k1n5+zSrDiq1g6DvWLB+kq4xvYI61/SGwbjDRbgzkXyXPokyjM5uBBkkOZB7XN55SAVMFyfkLWOXqAd+qxMhjRVrWz6e6GOdQfO1qrUWwt58hBLQmgP0STr/I1qyVLWog4kVuOKACI/Tmc51pWbCS2BssMAhYzoxcrQ/MNmyRyv3MJdU9BwKkqi+cqyA9clEoLqskG320pEiMb6yckRjdoaharPrljQeyVv5V/QKnmV1AlVEmY1h80nRu4sj0Rr423oUvSyrDXdg/gTl5mvjndY5r4ZIr/GL/uRsU8o1atbsRLLv/WPSSIsFhuDsZ8wQVYo5k1s3BjNlrXDjPKeA+a1yIfxr7vRCGX52hROPrvdVvsknlBfAsvlczt0qYcsxVJoO/A3gHU=
