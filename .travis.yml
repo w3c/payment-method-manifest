@@ -11,9 +11,7 @@ notifications:
 deploy:
   provider: pages
   local-dir: out
-  committer-from-gh: true
   skip-cleanup: true
-  keep-history: true
   deploy_key: "$DEPLOY_KEY"
   edge:
     branch: master
