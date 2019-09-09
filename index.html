@@ -1212,7 +1212,7 @@ Possible extra rowspan handling
 		}
 	}
 </style>
-  <meta content="Bikeshed version 08c4b0e94d147852f66673459784d3429bb3bda1" name="generator">
+  <meta content="Bikeshed version cb5a17652cb33dffd20b8b6a876bb811c1f749a9" name="generator">
   <link href="https://www.w3.org/TR/payment-method-manifest/" rel="canonical">
 <style>/* style-md-lists */
 
@@ -1461,7 +1461,7 @@ c-[il] { color: #000000 } /* Literal.Number.Integer.Long */
   <div class="head">
    <p data-fill-with="logo"><a class="logo" href="https://www.w3.org/"> <img alt="W3C" height="48" src="https://www.w3.org/StyleSheets/TR/2016/logos/W3C" width="72"> </a> </p>
    <h1 class="p-name no-ref" id="title">Payment Method Manifest</h1>
-   <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">Editor’s Draft, <time class="dt-updated" datetime="2019-08-26">26 August 2019</time></span></h2>
+   <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">Editor’s Draft, <time class="dt-updated" datetime="2019-09-09">9 September 2019</time></span></h2>
    <div data-fill-with="spec-metadata">
     <dl>
      <dt>This version:
@@ -1652,10 +1652,10 @@ here.</p>
      <p><a data-link-type="dfn" href="#fetch-payment-method-manifests" id="ref-for-fetch-payment-method-manifests">Fetch payment method manifests</a>, given <var>identifiers</var> and <var>client</var>, and wait for this to
  asynchronously complete with <var>manifestsMap</var>. If the result is failure, return.</p>
     <li data-md>
-     <p><a data-link-type="dfn" href="https://infra.spec.whatwg.org/#list-iterate" id="ref-for-list-iterate">For each</a> <var>identifierURL</var> → <var>manifest</var> of <var>manifestsMap</var>:</p>
+     <p><a data-link-type="dfn" href="https://infra.spec.whatwg.org/#list-iterate" id="ref-for-list-iterate">For each</a> <var>identifierURL</var> → (<var>responseURL</var>, <var>manifest</var>) of <var>manifestsMap</var>:</p>
      <ol>
       <li data-md>
-       <p>Let <var>parsed</var> be the result of <a data-link-type="dfn" href="#validate-and-parse-the-payment-method-manifest" id="ref-for-validate-and-parse-the-payment-method-manifest">validating and parsing</a> <var>manifest</var> given <var>identifierURL</var>. If this returns failure, <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#iteration-continue" id="ref-for-iteration-continue">continue</a>.</p>
+       <p>Let <var>parsed</var> be the result of <a data-link-type="dfn" href="#validate-and-parse-the-payment-method-manifest" id="ref-for-validate-and-parse-the-payment-method-manifest">validating and parsing</a> <var>manifest</var> given <var>responseURL</var>. If this returns failure, <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#iteration-continue" id="ref-for-iteration-continue">continue</a>.</p>
       <li data-md>
        <p><a data-link-type="dfn" href="https://infra.spec.whatwg.org/#list-iterate" id="ref-for-list-iterate①">For each</a> <var>webAppManifestURL</var> in <var>parsed</var>’s <a data-link-type="dfn" href="#parsed-payment-method-manifest-default-applications" id="ref-for-parsed-payment-method-manifest-default-applications">default
  applications</a>:</p>
@@ -1682,8 +1682,9 @@ here.</p>
    </ol>
    <h3 class="heading settled" data-level="3.3" id="fetch-pmm"><span class="secno">3.3. </span><span class="content">Fetching payment method manifests</span><a class="self-link" href="#fetch-pmm"></a></h3>
    <p>To <dfn class="dfn-paneled" data-dfn-type="dfn" data-export id="fetch-payment-method-manifests">fetch payment method manifests</dfn>, given a <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#list" id="ref-for-list">list</a> of <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#javascript-string" id="ref-for-javascript-string">JavaScript strings</a> <var>supportedMethods</var> and an <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#environment-settings-object" id="ref-for-environment-settings-object①">environment settings object</a> <var>client</var>, perform the following steps.
-This algorithm will asynchronously complete with a <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#ordered-map" id="ref-for-ordered-map">map</a> (possibly empty) from <a data-link-type="dfn" href="https://url.spec.whatwg.org/#concept-url" id="ref-for-concept-url②">URLs</a> to <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#byte-sequence" id="ref-for-byte-sequence">byte sequences</a>, mapping <a data-link-type="dfn" href="https://w3c.github.io/payment-method-id/#dfn-payment-method-identifiers" id="ref-for-dfn-payment-method-identifiers⑥">payment method identifiers</a> to the contents of the corresponding
-manifest.</p>
+This algorithm will asynchronously complete with a <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#ordered-map" id="ref-for-ordered-map">map</a> (possibly empty) from <a data-link-type="dfn" href="https://url.spec.whatwg.org/#concept-url" id="ref-for-concept-url②">URLs</a> to
+(<a data-link-type="dfn" href="https://url.spec.whatwg.org/#concept-url" id="ref-for-concept-url③">URL</a>, <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#byte-sequence" id="ref-for-byte-sequence">byte sequence</a>) <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#tuple" id="ref-for-tuple">tuples</a>, mapping <a data-link-type="dfn" href="https://w3c.github.io/payment-method-id/#dfn-payment-method-identifiers" id="ref-for-dfn-payment-method-identifiers⑥">payment method identifiers</a> to the <a data-link-type="dfn" href="https://url.spec.whatwg.org/#concept-url" id="ref-for-concept-url④">URL</a> and
+contents of the corresponding manifest.</p>
    <ol>
     <li data-md>
      <p>Let <var>identifierURLs</var> be an empty <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#list" id="ref-for-list①">list</a>.</p>
@@ -1762,7 +1763,7 @@ manifest.</p>
             <li data-md>
              <p>Let <var>promise</var> be the result of <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#concept-read-all-bytes-from-readablestream" id="ref-for-concept-read-all-bytes-from-readablestream">reading all bytes</a> from <var>body</var> with <var>reader</var>.</p>
             <li data-md>
-             <p><a data-link-type="dfn" href="https://www.w3.org/2001/tag/doc/promises-guide/#upon-fulfillment" id="ref-for-upon-fulfillment">Upon fulfillment</a> of <var>promise</var> with a <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#byte-sequence" id="ref-for-byte-sequence①">byte sequence</a> <var>bytes</var>, <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#map-set" id="ref-for-map-set">set</a> <var>manifestsMap</var>[<var>identifierURL</var>] to <var>bytes</var>.</p>
+             <p><a data-link-type="dfn" href="https://heycam.github.io/webidl/#upon-fulfillment" id="ref-for-upon-fulfillment">Upon fulfillment</a> of <var>promise</var> with a <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#byte-sequence" id="ref-for-byte-sequence①">byte sequence</a> <var>bytes</var>, <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#map-set" id="ref-for-map-set">set</a> <var>manifestsMap</var>[<var>identifierURL</var>] to (<var>response</var>’s <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#concept-response-url" id="ref-for-concept-response-url②">URL</a>, <var>bytes</var>).</p>
            </ol>
          </ol>
        </ol>
@@ -1779,7 +1780,7 @@ manifest.</p>
         <li data-md>
          <p>Let <var>promise</var> be the result of <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#concept-read-all-bytes-from-readablestream" id="ref-for-concept-read-all-bytes-from-readablestream①">reading all bytes</a> from <var>body</var> with <var>reader</var>.</p>
         <li data-md>
-         <p><a data-link-type="dfn" href="https://www.w3.org/2001/tag/doc/promises-guide/#upon-fulfillment" id="ref-for-upon-fulfillment①">Upon fulfillment</a> of <var>promise</var> with a <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#byte-sequence" id="ref-for-byte-sequence②">byte sequence</a> <var>bytes</var>, <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#map-set" id="ref-for-map-set①">set</a> <var>manifestsMap</var>[<var>identifierURL</var>] to <var>bytes</var>.</p>
+         <p><a data-link-type="dfn" href="https://heycam.github.io/webidl/#upon-fulfillment" id="ref-for-upon-fulfillment①">Upon fulfillment</a> of <var>promise</var> with a <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#byte-sequence" id="ref-for-byte-sequence②">byte sequence</a> <var>bytes</var>, <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#map-set" id="ref-for-map-set①">set</a> <var>manifestsMap</var>[<var>identifierURL</var>] to (<var>identifierResponse</var>’s <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#concept-response-url" id="ref-for-concept-response-url③">URL</a>, <var>bytes</var>).</p>
        </ol>
      </ol>
     <li data-md>
@@ -1792,12 +1793,12 @@ manifest.</p>
    <dl>
     <dt data-md><dfn class="dfn-paneled" data-dfn-for="parsed payment method manifest" data-dfn-type="dfn" data-export id="parsed-payment-method-manifest-default-applications">default applications</dfn>
     <dd data-md>
-     <p>An <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#ordered-set" id="ref-for-ordered-set">ordered set</a> of <a data-link-type="dfn" href="https://url.spec.whatwg.org/#concept-url" id="ref-for-concept-url③">URLs</a>, possibly empty</p>
+     <p>An <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#ordered-set" id="ref-for-ordered-set">ordered set</a> of <a data-link-type="dfn" href="https://url.spec.whatwg.org/#concept-url" id="ref-for-concept-url⑤">URLs</a>, possibly empty</p>
     <dt data-md><dfn class="dfn-paneled" data-dfn-for="parsed payment method manifest" data-dfn-type="dfn" data-export id="parsed-payment-method-manifest-supported-origins">supported origins</dfn>
     <dd data-md>
      <p>Either the string "<code>*</code>", or an <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#ordered-set" id="ref-for-ordered-set①">ordered set</a> of <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/origin.html#concept-origin" id="ref-for-concept-origin④">origins</a></p>
    </dl>
-   <p>To <dfn class="dfn-paneled" data-dfn-type="dfn" data-export data-lt="validate and parse the payment method manifest" id="validate-and-parse-the-payment-method-manifest">validate and parse</dfn> a <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#byte-sequence" id="ref-for-byte-sequence③">byte sequence</a> <var>bytes</var> purporting to contain a payment method manifest, given a <a data-link-type="dfn" href="https://url.spec.whatwg.org/#concept-url" id="ref-for-concept-url④">URL</a> <var>url</var>,
+   <p>To <dfn class="dfn-paneled" data-dfn-type="dfn" data-export data-lt="validate and parse the payment method manifest" id="validate-and-parse-the-payment-method-manifest">validate and parse</dfn> a <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#byte-sequence" id="ref-for-byte-sequence③">byte sequence</a> <var>bytes</var> purporting to contain a payment method manifest, given a <a data-link-type="dfn" href="https://url.spec.whatwg.org/#concept-url" id="ref-for-concept-url⑥">URL</a> <var>url</var>,
 perform the following steps. The result will either be a <a data-link-type="dfn" href="#parsed-payment-method-manifest" id="ref-for-parsed-payment-method-manifest">parsed payment method manifest</a>, or
 failure.</p>
    <ol>
@@ -1885,7 +1886,7 @@ return failure.</p>
    <p>Because the determination of <a data-link-type="dfn" href="https://w3c.github.io/payment-request/#dfn-payment-apps" id="ref-for-dfn-payment-apps①⓪">payment apps</a> happens independent of any embedding HTML document,
 the procedure for obtaining a <a data-link-type="dfn" href="https://www.w3.org/TR/appmanifest/#dfn-manifest" id="ref-for-dfn-manifest②">web app manifest</a> that gives information about a default payment
 app is different from the usual <a data-link-type="dfn" href="https://www.w3.org/TR/appmanifest/#dfn-obtaining-the-manifest" id="ref-for-dfn-obtaining-the-manifest">steps for obtaining a web app manifest</a>.</p>
-   <p>To <dfn class="dfn-paneled" data-dfn-type="dfn" data-export id="fetch-the-web-app-manifest-for-a-default-payment-app">fetch the web app manifest for a default payment app</dfn>, given a <a data-link-type="dfn" href="https://url.spec.whatwg.org/#concept-url" id="ref-for-concept-url⑤">URL</a> <var>url</var>, a
+   <p>To <dfn class="dfn-paneled" data-dfn-type="dfn" data-export id="fetch-the-web-app-manifest-for-a-default-payment-app">fetch the web app manifest for a default payment app</dfn>, given a <a data-link-type="dfn" href="https://url.spec.whatwg.org/#concept-url" id="ref-for-concept-url⑦">URL</a> <var>url</var>, a
 URL <var>referrer</var>, and an <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#environment-settings-object" id="ref-for-environment-settings-object②">environment settings object</a> <var>client</var>, perform the following steps. This
 algorithm will asynchronously complete with either a <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#scalar-value-string" id="ref-for-scalar-value-string">scalar value string</a> or failure.</p>
    <ol>
@@ -1906,10 +1907,10 @@ algorithm will asynchronously complete with either a <a data-link-type="dfn" hre
       <li data-md>
        <p>Let <var>promise</var> be the result of <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#concept-read-all-bytes-from-readablestream" id="ref-for-concept-read-all-bytes-from-readablestream②">reading all bytes</a> from <var>body</var> with <var>reader</var>.</p>
       <li data-md>
-       <p><a data-link-type="dfn" href="https://www.w3.org/2001/tag/doc/promises-guide/#upon-fulfillment" id="ref-for-upon-fulfillment②">Upon fulfillment</a> of <var>promise</var> with a <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#byte-sequence" id="ref-for-byte-sequence④">byte sequence</a> <var>bytes</var>, asynchronously complete
+       <p><a data-link-type="dfn" href="https://heycam.github.io/webidl/#upon-fulfillment" id="ref-for-upon-fulfillment②">Upon fulfillment</a> of <var>promise</var> with a <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#byte-sequence" id="ref-for-byte-sequence④">byte sequence</a> <var>bytes</var>, asynchronously complete
   this algorithm with the result of <a data-link-type="dfn" href="https://encoding.spec.whatwg.org/#utf-8-decode" id="ref-for-utf-8-decode①">UTF-8 decoding</a> <var>bytes</var>.</p>
       <li data-md>
-       <p><a data-link-type="dfn" href="https://www.w3.org/2001/tag/doc/promises-guide/#upon-rejection" id="ref-for-upon-rejection">Upon rejection</a> of <var>promise</var>, asynchronously complete this algorithm with failure.</p>
+       <p><a data-link-type="dfn" href="https://heycam.github.io/webidl/#upon-rejection" id="ref-for-upon-rejection">Upon rejection</a> of <var>promise</var>, asynchronously complete this algorithm with failure.</p>
      </ol>
    </ol>
    <h2 class="heading settled" data-level="4" id="security"><span class="secno">4. </span><span class="content">Security and privacy considerations</span><a class="self-link" href="#security"></a></h2>
@@ -2166,7 +2167,7 @@ Rouslan Solomakhin for their contributions to making this specification awesome!
   <aside class="dfn-panel" data-for="term-for-concept-response-url">
    <a href="https://fetch.spec.whatwg.org/#concept-response-url">https://fetch.spec.whatwg.org/#concept-response-url</a><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-concept-response-url">3.3. Fetching payment method manifests</a> <a href="#ref-for-concept-response-url①">(2)</a>
+    <li><a href="#ref-for-concept-response-url">3.3. Fetching payment method manifests</a> <a href="#ref-for-concept-response-url①">(2)</a> <a href="#ref-for-concept-response-url②">(3)</a> <a href="#ref-for-concept-response-url③">(4)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-current-settings-object">
@@ -2315,6 +2316,12 @@ Rouslan Solomakhin for their contributions to making this specification awesome!
     <li><a href="#ref-for-struct">3.4. Validating and parsing payment method manifests</a>
    </ul>
   </aside>
+  <aside class="dfn-panel" data-for="term-for-tuple">
+   <a href="https://infra.spec.whatwg.org/#tuple">https://infra.spec.whatwg.org/#tuple</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-tuple">3.3. Fetching payment method manifests</a>
+   </ul>
+  </aside>
   <aside class="dfn-panel" data-for="term-for-dfn-payment-method-identifiers">
    <a href="https://w3c.github.io/payment-method-id/#dfn-payment-method-identifiers">https://w3c.github.io/payment-method-id/#dfn-payment-method-identifiers</a><b>Referenced in:</b>
    <ul>
@@ -2385,19 +2392,6 @@ Rouslan Solomakhin for their contributions to making this specification awesome!
     <li><a href="#ref-for-dfn-payment-method①④">5.1. The payment-method-manifest link relation</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="term-for-upon-fulfillment">
-   <a href="https://www.w3.org/2001/tag/doc/promises-guide/#upon-fulfillment">https://www.w3.org/2001/tag/doc/promises-guide/#upon-fulfillment</a><b>Referenced in:</b>
-   <ul>
-    <li><a href="#ref-for-upon-fulfillment">3.3. Fetching payment method manifests</a> <a href="#ref-for-upon-fulfillment①">(2)</a>
-    <li><a href="#ref-for-upon-fulfillment②">3.5. Fetching web app manifests</a>
-   </ul>
-  </aside>
-  <aside class="dfn-panel" data-for="term-for-upon-rejection">
-   <a href="https://www.w3.org/2001/tag/doc/promises-guide/#upon-rejection">https://www.w3.org/2001/tag/doc/promises-guide/#upon-rejection</a><b>Referenced in:</b>
-   <ul>
-    <li><a href="#ref-for-upon-rejection">3.5. Fetching web app manifests</a>
-   </ul>
-  </aside>
   <aside class="dfn-panel" data-for="term-for-absolute-url-string">
    <a href="https://url.spec.whatwg.org/#absolute-url-string">https://url.spec.whatwg.org/#absolute-url-string</a><b>Referenced in:</b>
    <ul>
@@ -2456,9 +2450,9 @@ Rouslan Solomakhin for their contributions to making this specification awesome!
    <a href="https://url.spec.whatwg.org/#concept-url">https://url.spec.whatwg.org/#concept-url</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-concept-url">2. Manifest format</a> <a href="#ref-for-concept-url①">(2)</a>
-    <li><a href="#ref-for-concept-url②">3.3. Fetching payment method manifests</a>
-    <li><a href="#ref-for-concept-url③">3.4. Validating and parsing payment method manifests</a> <a href="#ref-for-concept-url④">(2)</a>
-    <li><a href="#ref-for-concept-url⑤">3.5. Fetching web app manifests</a>
+    <li><a href="#ref-for-concept-url②">3.3. Fetching payment method manifests</a> <a href="#ref-for-concept-url③">(2)</a> <a href="#ref-for-concept-url④">(3)</a>
+    <li><a href="#ref-for-concept-url⑤">3.4. Validating and parsing payment method manifests</a> <a href="#ref-for-concept-url⑥">(2)</a>
+    <li><a href="#ref-for-concept-url⑦">3.5. Fetching web app manifests</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-concept-url-username">
@@ -2471,6 +2465,19 @@ Rouslan Solomakhin for their contributions to making this specification awesome!
    <a href="https://url.spec.whatwg.org/#valid-url-string">https://url.spec.whatwg.org/#valid-url-string</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-valid-url-string">2. Manifest format</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="term-for-upon-fulfillment">
+   <a href="https://heycam.github.io/webidl/#upon-fulfillment">https://heycam.github.io/webidl/#upon-fulfillment</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-upon-fulfillment">3.3. Fetching payment method manifests</a> <a href="#ref-for-upon-fulfillment①">(2)</a>
+    <li><a href="#ref-for-upon-fulfillment②">3.5. Fetching web app manifests</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="term-for-upon-rejection">
+   <a href="https://heycam.github.io/webidl/#upon-rejection">https://heycam.github.io/webidl/#upon-rejection</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-upon-rejection">3.5. Fetching web app manifests</a>
    </ul>
   </aside>
   <h3 class="no-num no-ref heading settled" id="index-defined-elsewhere"><span class="content">Terms defined by reference</span><a class="self-link" href="#index-defined-elsewhere"></a></h3>
@@ -2545,6 +2552,7 @@ Rouslan Solomakhin for their contributions to making this specification awesome!
      <li><span class="dfn-paneled" id="term-for-map-set" style="color:initial">set</span>
      <li><span class="dfn-paneled" id="term-for-list-size" style="color:initial">size</span>
      <li><span class="dfn-paneled" id="term-for-struct" style="color:initial">struct</span>
+     <li><span class="dfn-paneled" id="term-for-tuple" style="color:initial">tuple</span>
     </ul>
    <li>
     <a data-link-type="biblio">[payment-method-id]</a> defines the following terms:
@@ -2564,12 +2572,6 @@ Rouslan Solomakhin for their contributions to making this specification awesome!
      <li><span class="dfn-paneled" id="term-for-dfn-payment-method" style="color:initial">payment method</span>
     </ul>
    <li>
-    <a data-link-type="biblio">[promises-guide]</a> defines the following terms:
-    <ul>
-     <li><span class="dfn-paneled" id="term-for-upon-fulfillment" style="color:initial">upon fulfillment</span>
-     <li><span class="dfn-paneled" id="term-for-upon-rejection" style="color:initial">upon rejection</span>
-    </ul>
-   <li>
     <a data-link-type="biblio">[URL]</a> defines the following terms:
     <ul>
      <li><span class="dfn-paneled" id="term-for-absolute-url-string" style="color:initial">absolute-url string</span>
@@ -2583,6 +2585,12 @@ Rouslan Solomakhin for their contributions to making this specification awesome!
      <li><span class="dfn-paneled" id="term-for-concept-url" style="color:initial">url</span>
      <li><span class="dfn-paneled" id="term-for-concept-url-username" style="color:initial">username</span>
      <li><span class="dfn-paneled" id="term-for-valid-url-string" style="color:initial">valid url string</span>
+    </ul>
+   <li>
+    <a data-link-type="biblio">[WebIDL]</a> defines the following terms:
+    <ul>
+     <li><span class="dfn-paneled" id="term-for-upon-fulfillment" style="color:initial">upon fulfillment</span>
+     <li><span class="dfn-paneled" id="term-for-upon-rejection" style="color:initial">upon rejection</span>
     </ul>
   </ul>
   <h2 class="no-num no-ref heading settled" id="references"><span class="content">References</span><a class="self-link" href="#references"></a></h2>
@@ -2602,12 +2610,12 @@ Rouslan Solomakhin for their contributions to making this specification awesome!
    <dd>Marcos Caceres; et al. <a href="https://w3c.github.io/payment-method-id/">Payment Method Identifiers</a>. URL: <a href="https://w3c.github.io/payment-method-id/">https://w3c.github.io/payment-method-id/</a>
    <dt id="biblio-payment-request">[PAYMENT-REQUEST]
    <dd>Zach Koch; et al. <a href="https://w3c.github.io/payment-request/">Payment Request API</a>. URL: <a href="https://w3c.github.io/payment-request/">https://w3c.github.io/payment-request/</a>
-   <dt id="biblio-promises-guide">[PROMISES-GUIDE]
-   <dd>Domenic Denicola. <a href="https://www.w3.org/2001/tag/doc/promises-guide">Writing Promise-Using Specifications</a>. 9 November 2018. TAG Finding. URL: <a href="https://www.w3.org/2001/tag/doc/promises-guide">https://www.w3.org/2001/tag/doc/promises-guide</a>
    <dt id="biblio-rfc8288">[RFC8288]
    <dd>M. Nottingham. <a href="https://httpwg.org/specs/rfc8288.html">Web Linking</a>. October 2017. Proposed Standard. URL: <a href="https://httpwg.org/specs/rfc8288.html">https://httpwg.org/specs/rfc8288.html</a>
    <dt id="biblio-url">[URL]
    <dd>Anne van Kesteren. <a href="https://url.spec.whatwg.org/">URL Standard</a>. Living Standard. URL: <a href="https://url.spec.whatwg.org/">https://url.spec.whatwg.org/</a>
+   <dt id="biblio-webidl">[WebIDL]
+   <dd>Boris Zbarsky. <a href="https://heycam.github.io/webidl/">Web IDL</a>. URL: <a href="https://heycam.github.io/webidl/">https://heycam.github.io/webidl/</a>
   </dl>
   <h3 class="no-num no-ref heading settled" id="informative"><span class="content">Informative References</span><a class="self-link" href="#informative"></a></h3>
   <dl>
