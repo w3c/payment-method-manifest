@@ -1167,6 +1167,18 @@ Possible extra rowspan handling
 		margin-left: auto;
 		margin-right: auto;
 	}
+	.overlarge {
+		/* Magic to create good table positioning:
+		   "content column" is 50ems wide at max; less on smaller screens.
+		   Extra space (after ToC + content) is empty on the right.
+
+		   1. When table < content column, centers table in column.
+		   2. When content < table < available, left-aligns.
+		   3. When table > available, fills available + scroll bar.
+		*/ 
+		display: grid;
+		grid-template-columns: minmax(0, 50em);
+	}
 	.overlarge > table {
 		/* limit preferred width of table */
 		max-width: 50em;
@@ -1176,7 +1188,6 @@ Possible extra rowspan handling
 
 	@media (min-width: 55em) {
 		.overlarge {
-			margin-left: calc(13px + 26.5rem - 50vw);
 			margin-right: calc(13px + 26.5rem - 50vw);
 			max-width: none;
 		}
@@ -1184,14 +1195,12 @@ Possible extra rowspan handling
 	@media screen and (min-width: 78em) {
 		body:not(.toc-inline) .overlarge {
 			/* 30.5em body padding 50em content area */
-			margin-left: calc(40em - 50vw) !important;
 			margin-right: calc(40em - 50vw) !important;
 		}
 	}
 	@media screen and (min-width: 90em) {
 		body:not(.toc-inline) .overlarge {
 			/* 4em html margin 30.5em body padding 50em content area */
-			margin-left: 0 !important;
 			margin-right: calc(84.5em - 100vw) !important;
 		}
 	}
@@ -1212,93 +1221,8 @@ Possible extra rowspan handling
 		}
 	}
 </style>
-  <meta content="Bikeshed version cb5a17652cb33dffd20b8b6a876bb811c1f749a9" name="generator">
+  <meta content="Bikeshed version 78f8c09c, updated Tue May 19 10:51:23 2020 -0700" name="generator">
   <link href="https://www.w3.org/TR/payment-method-manifest/" rel="canonical">
-<style>/* style-md-lists */
-
-/* This is a weird hack for me not yet following the commonmark spec
-   regarding paragraph and lists. */
-[data-md] > :first-child {
-    margin-top: 0;
-}
-[data-md] > :last-child {
-    margin-bottom: 0;
-}</style>
-<style>/* style-selflinks */
-
-.heading, .issue, .note, .example, li, dt {
-    position: relative;
-}
-a.self-link {
-    position: absolute;
-    top: 0;
-    left: calc(-1 * (3.5rem - 26px));
-    width: calc(3.5rem - 26px);
-    height: 2em;
-    text-align: center;
-    border: none;
-    transition: opacity .2s;
-    opacity: .5;
-}
-a.self-link:hover {
-    opacity: 1;
-}
-.heading > a.self-link {
-    font-size: 83%;
-}
-li > a.self-link {
-    left: calc(-1 * (3.5rem - 26px) - 2em);
-}
-dfn > a.self-link {
-    top: auto;
-    left: auto;
-    opacity: 0;
-    width: 1.5em;
-    height: 1.5em;
-    background: gray;
-    color: white;
-    font-style: normal;
-    transition: opacity .2s, background-color .2s, color .2s;
-}
-dfn:hover > a.self-link {
-    opacity: 1;
-}
-dfn > a.self-link:hover {
-    color: black;
-}
-
-a.self-link::before            { content: "¶"; }
-.heading > a.self-link::before { content: "§"; }
-dfn > a.self-link::before      { content: "#"; }</style>
-<style>/* style-counters */
-
-body {
-    counter-reset: example figure issue;
-}
-.issue {
-    counter-increment: issue;
-}
-.issue:not(.no-marker)::before {
-    content: "Issue " counter(issue);
-}
-
-.example {
-    counter-increment: example;
-}
-.example:not(.no-marker)::before {
-    content: "Example " counter(example);
-}
-.invalid.example:not(.no-marker)::before,
-.illegal.example:not(.no-marker)::before {
-    content: "Invalid Example" counter(example);
-}
-
-figcaption {
-    counter-increment: figure;
-}
-figcaption:not(.no-marker)::before {
-    content: "Figure " counter(figure) " ";
-}</style>
 <style>/* style-autolinks */
 
 .css.css, .property.property, .descriptor.descriptor {
@@ -1361,6 +1285,35 @@ pre .property::before, pre .property::after {
 [data-link-type=biblio] {
     white-space: pre;
 }</style>
+<style>/* style-counters */
+
+body {
+    counter-reset: example figure issue;
+}
+.issue {
+    counter-increment: issue;
+}
+.issue:not(.no-marker)::before {
+    content: "Issue " counter(issue);
+}
+
+.example {
+    counter-increment: example;
+}
+.example:not(.no-marker)::before {
+    content: "Example " counter(example);
+}
+.invalid.example:not(.no-marker)::before,
+.illegal.example:not(.no-marker)::before {
+    content: "Invalid Example" counter(example);
+}
+
+figcaption {
+    counter-increment: figure;
+}
+figcaption:not(.no-marker)::before {
+    content: "Figure " counter(figure) " ";
+}</style>
 <style>/* style-dfn-panel */
 
 .dfn-panel {
@@ -1398,6 +1351,62 @@ pre .property::before, pre .property::after {
 
 .dfn-paneled { cursor: pointer; }
 </style>
+<style>/* style-md-lists */
+
+/* This is a weird hack for me not yet following the commonmark spec
+   regarding paragraph and lists. */
+[data-md] > :first-child {
+    margin-top: 0;
+}
+[data-md] > :last-child {
+    margin-bottom: 0;
+}</style>
+<style>/* style-selflinks */
+
+.heading, .issue, .note, .example, li, dt {
+    position: relative;
+}
+a.self-link {
+    position: absolute;
+    top: 0;
+    left: calc(-1 * (3.5rem - 26px));
+    width: calc(3.5rem - 26px);
+    height: 2em;
+    text-align: center;
+    border: none;
+    transition: opacity .2s;
+    opacity: .5;
+}
+a.self-link:hover {
+    opacity: 1;
+}
+.heading > a.self-link {
+    font-size: 83%;
+}
+li > a.self-link {
+    left: calc(-1 * (3.5rem - 26px) - 2em);
+}
+dfn > a.self-link {
+    top: auto;
+    left: auto;
+    opacity: 0;
+    width: 1.5em;
+    height: 1.5em;
+    background: gray;
+    color: white;
+    font-style: normal;
+    transition: opacity .2s, background-color .2s, color .2s;
+}
+dfn:hover > a.self-link {
+    opacity: 1;
+}
+dfn > a.self-link:hover {
+    color: black;
+}
+
+a.self-link::before            { content: "¶"; }
+.heading > a.self-link::before { content: "§"; }
+dfn > a.self-link::before      { content: "#"; }</style>
 <style>/* style-syntax-highlighting */
 
 .highlight:not(.idl) { background: hsl(24, 20%, 95%); }
@@ -1461,7 +1470,7 @@ c-[il] { color: #000000 } /* Literal.Number.Integer.Long */
   <div class="head">
    <p data-fill-with="logo"><a class="logo" href="https://www.w3.org/"> <img alt="W3C" height="48" src="https://www.w3.org/StyleSheets/TR/2016/logos/W3C" width="72"> </a> </p>
    <h1 class="p-name no-ref" id="title">Payment Method Manifest</h1>
-   <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">Editor’s Draft, <time class="dt-updated" datetime="2019-09-09">9 September 2019</time></span></h2>
+   <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">Editor’s Draft, <time class="dt-updated" datetime="2020-05-20">20 May 2020</time></span></h2>
    <div data-fill-with="spec-metadata">
     <dl>
      <dt>This version:
@@ -1477,7 +1486,7 @@ c-[il] { color: #000000 } /* Literal.Number.Integer.Long */
     </dl>
    </div>
    <div data-fill-with="warning"></div>
-   <p class="copyright" data-fill-with="copyright"><a href="https://www.w3.org/Consortium/Legal/ipr-notice#Copyright">Copyright</a> © 2019 <a href="https://www.w3.org/"><abbr title="World Wide Web Consortium">W3C</abbr></a><sup>®</sup> (<a href="http://www.csail.mit.edu/"><abbr title="Massachusetts Institute of Technology">MIT</abbr></a>, <a href="http://www.ercim.eu/"><abbr title="European Research Consortium for Informatics and Mathematics">ERCIM</abbr></a>, <a href="http://www.keio.ac.jp/">Keio</a>, <a href="https://ev.buaa.edu.cn/">Beihang</a>). W3C <a href="https://www.w3.org/Consortium/Legal/ipr-notice#Legal_Disclaimer">liability</a>, <a href="https://www.w3.org/Consortium/Legal/ipr-notice#W3C_Trademarks">trademark</a> and <a href="https://www.w3.org/Consortium/Legal/2015/copyright-software-and-document" rel="license">permissive document license</a> rules apply. </p>
+   <p class="copyright" data-fill-with="copyright"><a href="https://www.w3.org/Consortium/Legal/ipr-notice#Copyright">Copyright</a> © 2020 <a href="https://www.w3.org/"><abbr title="World Wide Web Consortium">W3C</abbr></a><sup>®</sup> (<a href="https://www.csail.mit.edu/"><abbr title="Massachusetts Institute of Technology">MIT</abbr></a>, <a href="https://www.ercim.eu/"><abbr title="European Research Consortium for Informatics and Mathematics">ERCIM</abbr></a>, <a href="https://www.keio.ac.jp/">Keio</a>, <a href="https://ev.buaa.edu.cn/">Beihang</a>). W3C <a href="https://www.w3.org/Consortium/Legal/ipr-notice#Legal_Disclaimer">liability</a>, <a href="https://www.w3.org/Consortium/Legal/ipr-notice#W3C_Trademarks">trademark</a> and <a href="https://www.w3.org/Consortium/Legal/2015/copyright-software-and-document" rel="license">permissive document license</a> rules apply. </p>
    <hr title="Separator for header">
   </div>
   <div class="p-summary" data-fill-with="abstract">
@@ -1596,9 +1605,7 @@ can locate one by consulting the <a data-link-type="dfn" href="https://www.w3.or
     <p>It also indicates that, apart from this default payment app, AlicePay also allows <a data-link-type="dfn" href="https://w3c.github.io/payment-request/#dfn-payment-apps" id="ref-for-dfn-payment-apps④">payment apps</a> hosted at the two indicated <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/origin.html#concept-origin" id="ref-for-concept-origin①">origins</a> to be used for AlicePay. This means that if the user agent
 ever encounters payment apps hosted at those origins claiming support for AlicePay, it can allow
 them to act as payment apps for the AlicePay <a data-link-type="dfn" href="https://w3c.github.io/payment-request/#dfn-payment-method" id="ref-for-dfn-payment-method⑨">payment method</a>.</p>
-    <p>The manifest file could also omit the "<code>supported_origins</code>" key, if no third-party <a data-link-type="dfn" href="https://w3c.github.io/payment-request/#dfn-payment-apps" id="ref-for-dfn-payment-apps⑤">payment apps</a> are supported for the <a data-link-type="dfn" href="https://w3c.github.io/payment-request/#dfn-payment-method" id="ref-for-dfn-payment-method①⓪">payment method</a> in question, or it could use the value
-"<code>*</code>" instead of an array of <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/origin.html#concept-origin" id="ref-for-concept-origin②">origins</a>, to indicate that any third party is allowed to
-support the payment method.</p>
+    <p>The manifest file could also omit the "<code>supported_origins</code>" key, if no third-party <a data-link-type="dfn" href="https://w3c.github.io/payment-request/#dfn-payment-apps" id="ref-for-dfn-payment-apps⑤">payment apps</a> are supported for the <a data-link-type="dfn" href="https://w3c.github.io/payment-request/#dfn-payment-method" id="ref-for-dfn-payment-method①⓪">payment method</a> in question.</p>
    </div>
    <h2 class="heading settled" data-level="2" id="format"><span class="secno">2. </span><span class="content">Manifest format</span><a class="self-link" href="#format"></a></h2>
    <p>A <dfn class="dfn-paneled" data-dfn-type="dfn" data-export data-local-lt="valid|validity" id="valid-payment-method-manifest">valid payment method manifest</dfn> file is a <a data-link-type="dfn" href="https://encoding.spec.whatwg.org/#utf-8" id="ref-for-utf-8">UTF-8</a> encoded file containing contents parseable as a JSON object. The resulting JSON object must contain
@@ -1606,8 +1613,8 @@ at most two items, with the possible keys "<code>default_applications</code>" an
 "<code>supported_origins</code>".</p>
    <p>The value of the <code>default_applications</code> key, if present, must be a non-empty JSON array.
 Each item in the array must be a <a data-link-type="dfn" href="https://url.spec.whatwg.org/#valid-url-string" id="ref-for-valid-url-string">valid URL string</a> such that the resulting <a data-link-type="dfn" href="https://url.spec.whatwg.org/#concept-url" id="ref-for-concept-url">URL</a>'s <a data-link-type="dfn" href="https://url.spec.whatwg.org/#concept-url-scheme" id="ref-for-concept-url-scheme">scheme</a>, when parsed against the URL of the payment method manifest, is "<code>https</code>".</p>
-   <p>The value of the <code>supported_origins</code> key, if present, must be either the string
-"<code>*</code>", or a non-empty JSON array. In the latter case, each item in the array must be an <a data-link-type="dfn" href="https://url.spec.whatwg.org/#absolute-url-string" id="ref-for-absolute-url-string①">absolute-URL string</a> that represents an HTTPS <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/origin.html#concept-origin" id="ref-for-concept-origin③">origin</a>. Formally, the string must be equal to
+   <p>The value of the <code>supported_origins</code> key, if present, must be a non-empty JSON array.
+Each item in the array must be an <a data-link-type="dfn" href="https://url.spec.whatwg.org/#absolute-url-string" id="ref-for-absolute-url-string①">absolute-URL string</a> that represents an HTTPS <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/origin.html#concept-origin" id="ref-for-concept-origin②">origin</a>. Formally, the string must be equal to
 the <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/origin.html#ascii-serialisation-of-an-origin" id="ref-for-ascii-serialisation-of-an-origin">serialization</a> of the resulting parsed <a data-link-type="dfn" href="https://url.spec.whatwg.org/#concept-url" id="ref-for-concept-url①">URL</a>'s <a data-link-type="dfn" href="https://url.spec.whatwg.org/#concept-url-origin" id="ref-for-concept-url-origin">origin</a>.</p>
    <p>Web developers must ensure that all of their <a data-link-type="dfn" href="#payment-method-manifest" id="ref-for-payment-method-manifest④">payment method manifests</a> are <a data-link-type="dfn" href="#valid-payment-method-manifest" id="ref-for-valid-payment-method-manifest">valid</a>.</p>
    <p class="note" role="note">As with all conformance requirements on the contents of files, these are
@@ -1681,7 +1688,7 @@ here.</p>
      </ol>
    </ol>
    <h3 class="heading settled" data-level="3.3" id="fetch-pmm"><span class="secno">3.3. </span><span class="content">Fetching payment method manifests</span><a class="self-link" href="#fetch-pmm"></a></h3>
-   <p>To <dfn class="dfn-paneled" data-dfn-type="dfn" data-export id="fetch-payment-method-manifests">fetch payment method manifests</dfn>, given a <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#list" id="ref-for-list">list</a> of <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#javascript-string" id="ref-for-javascript-string">JavaScript strings</a> <var>supportedMethods</var> and an <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#environment-settings-object" id="ref-for-environment-settings-object①">environment settings object</a> <var>client</var>, perform the following steps.
+   <p>To <dfn class="dfn-paneled" data-dfn-type="dfn" data-export id="fetch-payment-method-manifests">fetch payment method manifests</dfn>, given a <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#list" id="ref-for-list">list</a> of <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#string" id="ref-for-string">JavaScript strings</a> <var>supportedMethods</var> and an <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#environment-settings-object" id="ref-for-environment-settings-object①">environment settings object</a> <var>client</var>, perform the following steps.
 This algorithm will asynchronously complete with a <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#ordered-map" id="ref-for-ordered-map">map</a> (possibly empty) from <a data-link-type="dfn" href="https://url.spec.whatwg.org/#concept-url" id="ref-for-concept-url②">URLs</a> to
 (<a data-link-type="dfn" href="https://url.spec.whatwg.org/#concept-url" id="ref-for-concept-url③">URL</a>, <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#byte-sequence" id="ref-for-byte-sequence">byte sequence</a>) <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#tuple" id="ref-for-tuple">tuples</a>, mapping <a data-link-type="dfn" href="https://w3c.github.io/payment-method-id/#dfn-payment-method-identifiers" id="ref-for-dfn-payment-method-identifiers⑥">payment method identifiers</a> to the <a data-link-type="dfn" href="https://url.spec.whatwg.org/#concept-url" id="ref-for-concept-url④">URL</a> and
 contents of the corresponding manifest.</p>
@@ -1796,7 +1803,7 @@ contents of the corresponding manifest.</p>
      <p>An <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#ordered-set" id="ref-for-ordered-set">ordered set</a> of <a data-link-type="dfn" href="https://url.spec.whatwg.org/#concept-url" id="ref-for-concept-url⑤">URLs</a>, possibly empty</p>
     <dt data-md><dfn class="dfn-paneled" data-dfn-for="parsed payment method manifest" data-dfn-type="dfn" data-export id="parsed-payment-method-manifest-supported-origins">supported origins</dfn>
     <dd data-md>
-     <p>Either the string "<code>*</code>", or an <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#ordered-set" id="ref-for-ordered-set①">ordered set</a> of <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/origin.html#concept-origin" id="ref-for-concept-origin④">origins</a></p>
+     <p>An <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#ordered-set" id="ref-for-ordered-set①">ordered set</a> of <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/origin.html#concept-origin" id="ref-for-concept-origin③">origins</a></p>
    </dl>
    <p>To <dfn class="dfn-paneled" data-dfn-type="dfn" data-export data-lt="validate and parse the payment method manifest" id="validate-and-parse-the-payment-method-manifest">validate and parse</dfn> a <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#byte-sequence" id="ref-for-byte-sequence③">byte sequence</a> <var>bytes</var> purporting to contain a payment method manifest, given a <a data-link-type="dfn" href="https://url.spec.whatwg.org/#concept-url" id="ref-for-concept-url⑥">URL</a> <var>url</var>,
 perform the following steps. The result will either be a <a data-link-type="dfn" href="#parsed-payment-method-manifest" id="ref-for-parsed-payment-method-manifest">parsed payment method manifest</a>, or
@@ -1840,33 +1847,27 @@ failure.</p>
       <li data-md>
        <p>Let <var>supportedOriginsValue</var> be <var>parsed</var>["<code>supported_origins</code>"].</p>
       <li data-md>
-       <p>If <var>supportedOriginsValue</var> is "<code>*</code>", set <var>supportedOrigins</var> to "<code>*</code>".</p>
+       <p>If <var>supportedOriginsValue</var> is not a <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#list" id="ref-for-list③">list</a>, return failure.</p>
       <li data-md>
-       <p>Otherwise:</p>
+       <p>If the <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#list-size" id="ref-for-list-size①">size</a> of <var>supportedOriginsValue</var> is 0, return failure.</p>
+      <li data-md>
+       <p><a data-link-type="dfn" href="https://infra.spec.whatwg.org/#list-iterate" id="ref-for-list-iterate⑥">For each</a> <var>supportedOrigin</var> in <var>supportedOriginsValue</var>:</p>
        <ol>
         <li data-md>
-         <p>If <var>supportedOriginsValue</var> is not a <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#list" id="ref-for-list③">list</a>, return failure.</p>
+         <p>If <var>supportedOrigin</var> is not a string, return failure.</p>
         <li data-md>
-         <p>If the <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#list-size" id="ref-for-list-size①">size</a> of <var>supportedOriginsValue</var> is 0, return failure.</p>
+         <p>Let <var>supportedOriginURL</var> be the result of <a data-link-type="dfn" href="https://url.spec.whatwg.org/#concept-basic-url-parser" id="ref-for-concept-basic-url-parser③">basic URL parsing</a> <var>supportedOrigin</var>. If the result is failure, return failure.</p>
         <li data-md>
-         <p><a data-link-type="dfn" href="https://infra.spec.whatwg.org/#list-iterate" id="ref-for-list-iterate⑥">For each</a> <var>supportedOrigin</var> in <var>supportedOriginsValue</var>:</p>
-         <ol>
-          <li data-md>
-           <p>If <var>supportedOrigin</var> is not a string, return failure.</p>
-          <li data-md>
-           <p>Let <var>supportedOriginURL</var> be the result of <a data-link-type="dfn" href="https://url.spec.whatwg.org/#concept-basic-url-parser" id="ref-for-concept-basic-url-parser③">basic URL parsing</a> <var>supportedOrigin</var>. If the result is failure, return failure.</p>
-          <li data-md>
-           <p>If <var>supportedOriginURL</var>’s <a data-link-type="dfn" href="https://url.spec.whatwg.org/#concept-url-scheme" id="ref-for-concept-url-scheme③">scheme</a> is not "<code>https</code>", return failure.</p>
-          <li data-md>
-           <p>If <var>supportedOriginURL</var>’s <a data-link-type="dfn" href="https://url.spec.whatwg.org/#concept-url-username" id="ref-for-concept-url-username">username</a> or <a data-link-type="dfn" href="https://url.spec.whatwg.org/#concept-url-password" id="ref-for-concept-url-password">password</a> are not the empty string,
+         <p>If <var>supportedOriginURL</var>’s <a data-link-type="dfn" href="https://url.spec.whatwg.org/#concept-url-scheme" id="ref-for-concept-url-scheme③">scheme</a> is not "<code>https</code>", return failure.</p>
+        <li data-md>
+         <p>If <var>supportedOriginURL</var>’s <a data-link-type="dfn" href="https://url.spec.whatwg.org/#concept-url-username" id="ref-for-concept-url-username">username</a> or <a data-link-type="dfn" href="https://url.spec.whatwg.org/#concept-url-password" id="ref-for-concept-url-password">password</a> are not the empty string,
 return failure.</p>
-          <li data-md>
-           <p>If <var>supportedOriginURL</var>’s <a data-link-type="dfn" href="https://url.spec.whatwg.org/#concept-url-path" id="ref-for-concept-url-path">path</a>'s <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#list-size" id="ref-for-list-size②">size</a> is not 0, return failure.</p>
-          <li data-md>
-           <p>If <var>supportedOriginURL</var>’s <a data-link-type="dfn" href="https://url.spec.whatwg.org/#concept-url-query" id="ref-for-concept-url-query">query</a> or <a data-link-type="dfn" href="https://url.spec.whatwg.org/#concept-url-fragment" id="ref-for-concept-url-fragment">fragment</a> are not null, return failure.</p>
-          <li data-md>
-           <p><a data-link-type="dfn" href="https://infra.spec.whatwg.org/#set-append" id="ref-for-set-append①">Append</a> <var>supportedOriginURL</var>’s <a data-link-type="dfn" href="https://url.spec.whatwg.org/#concept-url-origin" id="ref-for-concept-url-origin①">origin</a> to <var>supportedOrigins</var>.</p>
-         </ol>
+        <li data-md>
+         <p>If <var>supportedOriginURL</var>’s <a data-link-type="dfn" href="https://url.spec.whatwg.org/#concept-url-path" id="ref-for-concept-url-path">path</a>'s <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#list-size" id="ref-for-list-size②">size</a> is not 0, return failure.</p>
+        <li data-md>
+         <p>If <var>supportedOriginURL</var>’s <a data-link-type="dfn" href="https://url.spec.whatwg.org/#concept-url-query" id="ref-for-concept-url-query">query</a> or <a data-link-type="dfn" href="https://url.spec.whatwg.org/#concept-url-fragment" id="ref-for-concept-url-fragment">fragment</a> are not null, return failure.</p>
+        <li data-md>
+         <p><a data-link-type="dfn" href="https://infra.spec.whatwg.org/#set-append" id="ref-for-set-append①">Append</a> <var>supportedOriginURL</var>’s <a data-link-type="dfn" href="https://url.spec.whatwg.org/#concept-url-origin" id="ref-for-concept-url-origin①">origin</a> to <var>supportedOrigins</var>.</p>
        </ol>
      </ol>
     <li data-md>
@@ -1922,7 +1923,7 @@ users who visit that website.</p>
    <p>One way to mitigate this is to <a data-link-type="dfn" href="#fetch-payment-method-manifests" id="ref-for-fetch-payment-method-manifests①">fetch the manifests</a> only for the <a data-link-type="dfn" href="https://w3c.github.io/payment-request/#dfn-payment-apps" id="ref-for-dfn-payment-apps①①">payment apps</a> that the user has installed or has explicitly expressed interest in. This confines
 the risk to only sharing the user’s IP address with those parties.</p>
    <p>Another important mitigation is already built in to the spec, by setting the appropriate <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#concept-request-referrer-policy" id="ref-for-concept-request-referrer-policy①">referrer policy</a> and <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#concept-request-referrer" id="ref-for-concept-request-referrer②">referrer</a> on the various fetches performed here. These
-requirements ensure that only the server that controls the <a data-link-type="dfn" href="https://w3c.github.io/payment-method-id/#dfn-url-based-payment-method-identifiers" id="ref-for-dfn-url-based-payment-method-identifiers②">identifier URL</a> will see the user’s activity, and even then will only see the <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/origin.html#concept-origin" id="ref-for-concept-origin⑤">origin</a> of the web page that is creating the <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/payment-request/#dom-paymentrequest" id="ref-for-dom-paymentrequest②">PaymentRequest</a></code> object (instead of seeing the full URL).</p>
+requirements ensure that only the server that controls the <a data-link-type="dfn" href="https://w3c.github.io/payment-method-id/#dfn-url-based-payment-method-identifiers" id="ref-for-dfn-url-based-payment-method-identifiers②">identifier URL</a> will see the user’s activity, and even then will only see the <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/origin.html#concept-origin" id="ref-for-concept-origin④">origin</a> of the web page that is creating the <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/payment-request/#dom-paymentrequest" id="ref-for-dom-paymentrequest②">PaymentRequest</a></code> object (instead of seeing the full URL).</p>
    <h3 class="heading settled" data-level="4.2" id="development-environments"><span class="secno">4.2. </span><span class="content">Considerations for development environments</span><a class="self-link" href="#development-environments"></a></h3>
    <p>In development situations, a user agent might lower the security requirements of this specification
 to ease testing. For example, the requirements in the <a data-link-type="dfn" href="#fetch-payment-method-manifests" id="ref-for-fetch-payment-method-manifests②">fetch payment method manifests</a> and <a data-link-type="dfn" href="#validate-and-parse-the-payment-method-manifest" id="ref-for-validate-and-parse-the-payment-method-manifest①">validate and parse the payment method manifest</a> algorithms requiring a "<code>https</code>" <a data-link-type="dfn" href="https://url.spec.whatwg.org/#concept-url-scheme" id="ref-for-concept-url-scheme④">scheme</a> might be dropped in a development environment. In such situations, the user agent is
@@ -2188,10 +2189,10 @@ Rouslan Solomakhin for their contributions to making this specification awesome!
    <a href="https://html.spec.whatwg.org/multipage/origin.html#concept-origin">https://html.spec.whatwg.org/multipage/origin.html#concept-origin</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-concept-origin">1.1. Use cases</a>
-    <li><a href="#ref-for-concept-origin①">1.3. Example manifest file</a> <a href="#ref-for-concept-origin②">(2)</a>
-    <li><a href="#ref-for-concept-origin③">2. Manifest format</a>
-    <li><a href="#ref-for-concept-origin④">3.4. Validating and parsing payment method manifests</a>
-    <li><a href="#ref-for-concept-origin⑤">4.1. Revealing user activity to payment providers</a>
+    <li><a href="#ref-for-concept-origin①">1.3. Example manifest file</a>
+    <li><a href="#ref-for-concept-origin②">2. Manifest format</a>
+    <li><a href="#ref-for-concept-origin③">3.4. Validating and parsing payment method manifests</a>
+    <li><a href="#ref-for-concept-origin④">4.1. Revealing user activity to payment providers</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-ascii-serialisation-of-an-origin">
@@ -2253,10 +2254,10 @@ Rouslan Solomakhin for their contributions to making this specification awesome!
     <li><a href="#ref-for-struct-item">3.1. Modifications to Payment Request API</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="term-for-javascript-string">
-   <a href="https://infra.spec.whatwg.org/#javascript-string">https://infra.spec.whatwg.org/#javascript-string</a><b>Referenced in:</b>
+  <aside class="dfn-panel" data-for="term-for-string">
+   <a href="https://infra.spec.whatwg.org/#string">https://infra.spec.whatwg.org/#string</a><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-javascript-string">3.3. Fetching payment method manifests</a>
+    <li><a href="#ref-for-string">3.3. Fetching payment method manifests</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-list">
@@ -2384,6 +2385,7 @@ Rouslan Solomakhin for their contributions to making this specification awesome!
   <aside class="dfn-panel" data-for="term-for-dfn-payment-method">
    <a href="https://w3c.github.io/payment-request/#dfn-payment-method">https://w3c.github.io/payment-request/#dfn-payment-method</a><b>Referenced in:</b>
    <ul>
+    <li><a href="#ref-for-dfn-payment-method">Unnumbered Section</a>
     <li><a href="#ref-for-dfn-payment-method①">1.1. Use cases</a> <a href="#ref-for-dfn-payment-method②">(2)</a> <a href="#ref-for-dfn-payment-method③">(3)</a> <a href="#ref-for-dfn-payment-method④">(4)</a> <a href="#ref-for-dfn-payment-method⑤">(5)</a> <a href="#ref-for-dfn-payment-method⑥">(6)</a>
     <li><a href="#ref-for-dfn-payment-method⑦">1.2. Accessing the manifest</a>
     <li><a href="#ref-for-dfn-payment-method⑧">1.3. Example manifest file</a> <a href="#ref-for-dfn-payment-method⑨">(2)</a> <a href="#ref-for-dfn-payment-method①⓪">(3)</a>
@@ -2542,7 +2544,7 @@ Rouslan Solomakhin for their contributions to making this specification awesome!
      <li><span class="dfn-paneled" id="term-for-map-exists" style="color:initial">exist</span>
      <li><span class="dfn-paneled" id="term-for-list-iterate" style="color:initial">for each</span>
      <li><span class="dfn-paneled" id="term-for-struct-item" style="color:initial">item</span>
-     <li><span class="dfn-paneled" id="term-for-javascript-string" style="color:initial">javascript string</span>
+     <li><span class="dfn-paneled" id="term-for-string" style="color:initial">javascript string</span>
      <li><span class="dfn-paneled" id="term-for-list" style="color:initial">list</span>
      <li><span class="dfn-paneled" id="term-for-ordered-map" style="color:initial">map</span>
      <li><span class="dfn-paneled" id="term-for-ordered-map①" style="color:initial">ordered map</span>
@@ -2609,7 +2611,7 @@ Rouslan Solomakhin for their contributions to making this specification awesome!
    <dt id="biblio-payment-method-id">[PAYMENT-METHOD-ID]
    <dd>Marcos Caceres; et al. <a href="https://w3c.github.io/payment-method-id/">Payment Method Identifiers</a>. URL: <a href="https://w3c.github.io/payment-method-id/">https://w3c.github.io/payment-method-id/</a>
    <dt id="biblio-payment-request">[PAYMENT-REQUEST]
-   <dd>Zach Koch; et al. <a href="https://w3c.github.io/payment-request/">Payment Request API</a>. URL: <a href="https://w3c.github.io/payment-request/">https://w3c.github.io/payment-request/</a>
+   <dd>Marcos Caceres; et al. <a href="https://w3c.github.io/payment-request/">Payment Request API</a>. URL: <a href="https://w3c.github.io/payment-request/">https://w3c.github.io/payment-request/</a>
    <dt id="biblio-rfc8288">[RFC8288]
    <dd>M. Nottingham. <a href="https://httpwg.org/specs/rfc8288.html">Web Linking</a>. October 2017. Proposed Standard. URL: <a href="https://httpwg.org/specs/rfc8288.html">https://httpwg.org/specs/rfc8288.html</a>
    <dt id="biblio-url">[URL]
