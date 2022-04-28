@@ -381,7 +381,7 @@ can provide an improved user experience for procuring one.</p>
 provide a <a data-link-type="dfn" href="#payment-method-manifest" id="ref-for-payment-method-manifest">payment method manifest</a> file in JSON format containing two key pieces of information:</p>
     <ul>
      <li data-md>
-      <p>any default payment apps that are associated with this <a data-link-type="dfn" href="https://w3c.github.io/payment-request/#dfn-payment-method" id="ref-for-dfn-payment-method⑤">payment method</a>, referenced as <a data-link-type="dfn" href="https://url.spec.whatwg.org/#absolute-url-string" id="ref-for-absolute-url-string">absolute-URL strings</a> giving the <a data-link-type="dfn" href="https://w3c.github.io/manifest/#dfn-manifest-url" id="ref-for-dfn-manifest-url">URL</a> of their <a data-link-type="dfn" href="https://w3c.github.io/manifest/#dfn-manifest" id="ref-for-dfn-manifest">web app manifests</a>; and</p>
+      <p>any default payment apps that are associated with this <a data-link-type="dfn" href="https://w3c.github.io/payment-request/#dfn-payment-method" id="ref-for-dfn-payment-method⑤">payment method</a>, referenced as <a data-link-type="dfn" href="https://url.spec.whatwg.org/#valid-url-string" id="ref-for-valid-url-string">valid URL strings</a> giving the <a data-link-type="dfn" href="https://w3c.github.io/manifest/#dfn-manifest-url" id="ref-for-dfn-manifest-url">URL</a> of their <a data-link-type="dfn" href="https://w3c.github.io/manifest/#dfn-manifest" id="ref-for-dfn-manifest">web app manifests</a>; and</p>
      <li data-md>
       <p>any other <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/origin.html#concept-origin" id="ref-for-concept-origin">origins</a> that are permitted to return payment credentials for this <a data-link-type="dfn" href="https://w3c.github.io/payment-request/#dfn-payment-method" id="ref-for-dfn-payment-method⑥">payment method</a>.</p>
     </ul>
@@ -428,9 +428,9 @@ payment apps are supported for the <a data-link-type="dfn" href="https://w3c.git
 at most two items, with the possible keys "<code>default_applications</code>" and
 "<code>supported_origins</code>".</p>
    <p>The value of the <code>default_applications</code> key, if present, must be a non-empty JSON array.
-Each item in the array must be a <a data-link-type="dfn" href="https://url.spec.whatwg.org/#valid-url-string" id="ref-for-valid-url-string">valid URL string</a> such that the resulting <a data-link-type="dfn" href="https://url.spec.whatwg.org/#concept-url" id="ref-for-concept-url">URL</a>'s <a data-link-type="dfn" href="https://url.spec.whatwg.org/#concept-url-scheme" id="ref-for-concept-url-scheme">scheme</a>, when parsed against the URL of the payment method manifest, is "<code>https</code>".</p>
+Each item in the array must be a <a data-link-type="dfn" href="https://url.spec.whatwg.org/#valid-url-string" id="ref-for-valid-url-string①">valid URL string</a> such that the resulting <a data-link-type="dfn" href="https://url.spec.whatwg.org/#concept-url" id="ref-for-concept-url">URL</a>'s <a data-link-type="dfn" href="https://url.spec.whatwg.org/#concept-url-scheme" id="ref-for-concept-url-scheme">scheme</a>, when parsed against the URL of the payment method manifest, is "<code>https</code>".</p>
    <p>The value of the <code>supported_origins</code> key, if present, must be a non-empty JSON array.
-Each item in the array must be an <a data-link-type="dfn" href="https://url.spec.whatwg.org/#absolute-url-string" id="ref-for-absolute-url-string①">absolute-URL string</a> that represents an HTTPS <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/origin.html#concept-origin" id="ref-for-concept-origin②">origin</a>. Formally, the string must be equal to
+Each item in the array must be an <a data-link-type="dfn" href="https://url.spec.whatwg.org/#absolute-url-string" id="ref-for-absolute-url-string">absolute-URL string</a> that represents an HTTPS <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/origin.html#concept-origin" id="ref-for-concept-origin②">origin</a>. Formally, the string must be equal to
 the <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/origin.html#ascii-serialisation-of-an-origin" id="ref-for-ascii-serialisation-of-an-origin">serialization</a> of the resulting parsed <a data-link-type="dfn" href="https://url.spec.whatwg.org/#concept-url" id="ref-for-concept-url①">URL</a>'s <a data-link-type="dfn" href="https://url.spec.whatwg.org/#concept-url-origin" id="ref-for-concept-url-origin">origin</a>.</p>
    <p>Web developers must ensure that all of their <a data-link-type="dfn" href="#payment-method-manifest" id="ref-for-payment-method-manifest④">payment method manifests</a> are <a data-link-type="dfn" href="#valid-payment-method-manifest" id="ref-for-valid-payment-method-manifest">valid</a>.</p>
    <p class="note" role="note">As with all conformance requirements on the contents of files, these are
@@ -1204,8 +1204,7 @@ Rouslan Solomakhin for their contributions to making this specification awesome!
   <aside class="dfn-panel" data-for="term-for-absolute-url-string">
    <a href="https://url.spec.whatwg.org/#absolute-url-string">https://url.spec.whatwg.org/#absolute-url-string</a><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-absolute-url-string">1.1. Use cases</a>
-    <li><a href="#ref-for-absolute-url-string①">2. Manifest format</a>
+    <li><a href="#ref-for-absolute-url-string">2. Manifest format</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-concept-basic-url-parser">
@@ -1273,7 +1272,8 @@ Rouslan Solomakhin for their contributions to making this specification awesome!
   <aside class="dfn-panel" data-for="term-for-valid-url-string">
    <a href="https://url.spec.whatwg.org/#valid-url-string">https://url.spec.whatwg.org/#valid-url-string</a><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-valid-url-string">2. Manifest format</a>
+    <li><a href="#ref-for-valid-url-string">1.1. Use cases</a>
+    <li><a href="#ref-for-valid-url-string①">2. Manifest format</a>
    </ul>
   </aside>
   <h3 class="no-num no-ref heading settled" id="index-defined-elsewhere"><span class="content">Terms defined by reference</span><a class="self-link" href="#index-defined-elsewhere"></a></h3>
