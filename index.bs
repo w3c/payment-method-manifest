@@ -265,11 +265,11 @@ contents of the corresponding manifest.
      "<code>cors</code>", [=request/credentials mode=] is "<code>omit</code>",
      [=request/redirect mode=] is "<code>error</code>", and [=request/referrer policy=] is
      "<code>strict-origin-when-cross-origin</code>".
-  1. [=Fetch=] |identifierRequest|.
-
-     To [=process response=] with the [=response=] |identifierResponse|:
+  1. Let |identifierFetchController| be the result of [=fetching=] |identifierRequest|, with
+     <i>[=fetch/processResponse=]</i> set to the following steps given [=response=]
+     |identifierResponse|:
     1. If |identifierResponse| is a [=network error=] or |identifierResponse|'s [=response/status=]
-       is not an [=ok status=], [=iteration/continue=].
+       is not an [=ok status=], abort these steps.
     1. Let |linkHeaders| be the result of
        [=extract header list values|extracting header list values=] given `<code>Link</code>` and
        |identifierResponse|'s [=response/header list=].
@@ -282,42 +282,35 @@ contents of the corresponding manifest.
          string given by the <code>URI-Reference</code> production in the parsed header, and
          [=iteration/break=].
     1. If |manifestURLString| is not null, then:
-      1. [=fetch/terminated|Terminate=] the ongoing fetch of |identifierRequest| (since the
+      1. [=fetch controller/Terminate=] |identifierFetchController| (since the
          [=response/body=] will not be needed).
       1. Let |manifestURL| be the result of [=basic URL parser|basic URL parsing=]
-         |manifestURLString| with base URL given by |identifierResponse|'s [=response/url=]. If the
-         result is failure, [=iteration/continue=].
+         |manifestURLString| with base URL given by |identifierResponse|'s [=response/URL=]. If the
+         result is failure, then abort these steps.
       1. If |manifestURL|'s [=url/scheme=] is not "<code>https</code>", [=iteration/continue=].
-      1. Let |manifestRequest| be a new [=request=] whose [=request/url=] is |manifestURL|,
+      1. Let |manifestRequest| be a new [=request=] whose [=request/URL=] is |manifestURL|,
          [=request/client=] is |client|, [=request/referrer=] is |identifierResponse|'s
-         [=response/url=], [=request/mode=] is "<code>cors</code>", [=request/credentials mode=] is
+         [=response/URL=], [=request/mode=] is "<code>cors</code>", [=request/credentials mode=] is
          "<code>omit</code>", and [=request/redirect mode=] is "<code>error</code>".
-      1. [=Fetch=] |manifestRequest|. To [=process response end-of-body=] with the [=response=]
-         |manifestResponse|:
-         1. If |manifestResponse| is a [=network error=] or |manifestResponse|'s [=response/status=]
-            is not an [=ok status=], [=iteration/continue=].
-         1. Let |body| be |manifestResponse|'s [=response/body=].
-         1. If |body| is null, [=iteration/continue=].
-         1. Let |reader| be the result of [=ReadableStream/get a reader|getting a reader=] from
-            |body|.
-         1. Let |promise| be the result of [=ReadableStream/read all bytes|reading all bytes=] from
-            |body| with |reader|.
-         1. [=Upon fulfillment=] of |promise| with a [=byte sequence=] |bytes|, [=map/set=]
-            |manifestsMap|[|identifierURL|] to (|response|'s [=response/URL=], |bytes|).
+      1. [=Fetch=] |manifestRequest|, with <i>[=fetch/processResponseConsumeBody=]</i> set to the
+         following steps given |manifestResponse| and |manifestBody|:
+         1. If |manifestResponse|'s [=response/status=] is not an [=ok status=], then abort these
+            steps.
+         1. If |manifestBody| is null or failure, then abort these steps.
+         1. [=map/Set=] |manifestsMap|[|identifierURL|] to (|response|'s [=response/URL=],
+            |manifestBody|).
 
-     To [=process response end-of-body=] with the [=response=] |identifierResponse|:
-      1. If |manifestURLString| is not null, [=iteration/continue=].
-      1. Let |body| be |identifierResponse|'s [=response/body=].
-      1. If |body| is null, [=iteration/continue=].
-      1. Let |reader| be the result of [=ReadableStream/get a reader|getting a reader=] from
-        |body|.
-      1. Let |promise| be the result of [=ReadableStream/read all bytes|reading all bytes=] from
-        |body| with |reader|.
-      1. [=Upon fulfillment=] of |promise| with a [=byte sequence=] |bytes|, [=map/set=]
-        |manifestsMap|[|identifierURL|] to (|identifierResponse|'s [=response/URL=], |bytes|).
+     and with <i>[=fetch/processResponseConsumeBody=]</i> set to the following steps given
+     |identifierResponse| and |identifierBody|:
+      1. If |manifestURLString| is not null, then abort these steps.
+      1. If |identifierResponse|'s [=response/status=] is not an [=ok status=], then abort these
+        steps.
+      1. If |identifierBody| is null or failure, then abort these steps.
+      1. [=map/Set=] |manifestsMap|[|identifierURL|] to (|identifierResponse|'s [=response/URL=],
+         |identifierBody|).
 1. Once all ongoing [=fetch=] algorithms initiated by the above steps are complete, including the
-   specified [=process response=] and [=process response end-of-body=] steps, asynchronously
-   complete this algorithm with |manifestsMap|.
+   specified <i>[=fetch/processResponse=]</i> and <i>[=fetch/processResponseConsumeBody=]</i> steps,
+   asynchronously complete this algorithm with |manifestsMap|.
 
 <h3 id="validate-and-parse">Validating and parsing payment method manifests</h3>
 
@@ -394,18 +387,13 @@ algorithm will asynchronously complete with either a [=scalar value string=] or 
    |client|, [=request/referrer=] is |referrer|, [=request/mode=] is "<code>cors</code>",
    [=request/credentials mode=] is "<code>omit</code>", and [=request/redirect mode=] is
    "<code>error</code>".
-1. [=Fetch=] |request|. To [=process response end-of-body=] with the [=response=] |response|:
-   1. If |response| is a [=network error=] or |response|'s [=response/status=] is not an
-      [=ok status=], asynchronously complete this algorithm with failure.
-   1. Let |body| be |response|'s [=response/body=].
-   1. If |body| is null, asynchronously complete this algorithm with failure.
-   1. Let |reader| be the result of [=ReadableStream/get a reader|getting a reader=] from
+1. [=Fetch=] |request|, with <i>[=fetch/processResponseConsumeBody=]</i> set the following steps
+   given |response| and |body|:
+   1. If |response| [=response/status=] is not an [=ok status=], asynchronously complete this
+      algorithm with failure.
+   1. If |body| is null or failure, asynchronously complete this algorithm with failure.
+   1. Asynchronously complete this algorithm with the result of [=UTF-8 decode|UTF-8 decoding=]
       |body|.
-   1. Let |promise| be the result of [=ReadableStream/read all bytes|reading all bytes=] from
-      |body| with |reader|.
-   1. [=Upon fulfillment=] of |promise| with a [=byte sequence=] |bytes|, asynchronously complete
-      this algorithm with the result of [=UTF-8 decode|UTF-8 decoding=] |bytes|.
-   1. [=Upon rejection=] of |promise|, asynchronously complete this algorithm with failure.
 
 <h2 id="security">Security and privacy considerations</h2>
 
