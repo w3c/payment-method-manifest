@@ -67,7 +67,7 @@ This is accomplished via the requirement that every [=payment method=] whose
 provide a [=payment method manifest=] file in JSON format containing two key pieces of information:
 
 * any default payment apps that are associated with this [=payment method=], referenced as
-  [=absolute-URL strings=] giving the [=web app manifest/URL=] of their [=web app manifests=]; and
+  [=valid URL strings=] giving the [=web app manifest/URL=] of their [=web app manifests=]; and
 
 * any other [=origins=] that are permitted to return payment credentials for this
   [=payment method=].
