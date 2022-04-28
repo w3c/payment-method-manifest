@@ -8,8 +8,10 @@ ED: https://w3c.github.io/payment-method-manifest/
 TR: https://www.w3.org/TR/payment-method-manifest/
 Level: none
 Editor: Dapeng Liu, Alibaba
-Editor: Domenic Denicola, w3cid 52873, Google https://www.google.com/, d@domenic.me, https://domenic.me/
-Editor: Zach Koch, w3cid 76588, Google https://www.google.com/
+Editor: Rouslan Solomakhin, Google https://www.google.com/, rouslan@google.com
+Editor: Stephen McGruer, Google https://www.google.com/, smcgruer@chromium.org
+Former Editor: Domenic Denicola, w3cid 52873, Google https://www.google.com/, d@domenic.me, https://domenic.me/
+Former Editor: Zach Koch, w3cid 76588, Google https://www.google.com/
 Abstract: This specification defines the machine-readable manifest file, known as a
 Abstract: <dfn export>payment method manifest</dfn>, describing how a [=payment method=]
 Abstract: participates in the Web Payments ecosystem, and how such files are to be used.
