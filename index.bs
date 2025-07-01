@@ -76,20 +76,20 @@ provide a [=payment method manifest=] file in JSON format containing two key pie
 
 <h3 id="accessing">Accessing the manifest</h3>
 
-The machine-readable [=payment method manifest=] might be found either directly at the
-[=payment method identifier=] URL, or in a location indicated indirectly by following a HTTP
-`<code>Link</code>` header from that URL. [[RFC8288]]
+The machine-readable [=payment method manifest=] can be found in a location
+indicated by following the HTTP `<code>Link</code>` header from the [=payment
+method identifier=] URL. [[RFC8288]]
 
-This potential indirection allows the use of generic, human-readable URLs (such as
-"<code>https://alicepay.com/</code>") to serve as [=payment method identifiers=], while still
+This indirection allows the use of generic, human-readable URLs (such as
+"<code>https://alicepay.com/</code>") to serve as [=payment method identifiers=], while
 locating the actual [=payment method manifest=] at a different URL.
 
 For an example [=payment method=] AlicePay, with [=payment method identifier=]
-"<code>https://alicepay.com/</code>", a user agent would issue a GET request to that
+"<code>https://alicepay.com/</code>", a user agent would issue a HEAD request to that
 [=payment method identifier=] URL as follows:
 
 <pre>
-  GET / HTTP/2
+  HEAD / HTTP/2
   Host: alicepay.com
   User-Agent: Mellblomenator/9000
 </pre>
@@ -98,12 +98,11 @@ The server could then either respond with
 
 <pre>
   HTTP/2 204
-  Link: &lt;/pay/payment-manifest.json>; rel="payment-method-manifest"
+  Link: &lt;/pay/payment-manifest.json&gt;; rel="payment-method-manifest"
 </pre>
 
-to redirect the user agent to "<code>https://alicepay.com/pay/payment-manifest.json</code>", or
-could respond with the JSON contents of the payment method manifest directly in a
-<code>200</code>-status response.
+to redirect the user agent to
+"<code>https://alicepay.com/pay/payment-manifest.json</code>".
 
 <h3 id="manifest-example">Example manifest file</h3>
 
@@ -115,7 +114,7 @@ following [=payment method manifest=] file at
 {
   "default_applications": ["app/webappmanifest.json"],
   "supported_origins": [
-    "https://bobpay.xyz",
+    "https://bobbucks.dev",
     "https://alicepay.friendsofalice.example"
   ]
 }
@@ -259,7 +258,7 @@ contents of the corresponding manifest.
 1. Let |manifestsMap| be an empty [=map=].
 1. [=list/For each=] |identifierURL| of |identifierURLs|:
   1. Let |manifestURLString| be null.
-  1. Let |identifierRequest| be a new [=request=] whose [=request/method=] is `<code>GET</code>`,
+  1. Let |identifierRequest| be a new [=request=] whose [=request/method=] is `<code>HEAD</code>`,
      [=request/url=] is |identifierURL|, [=request/client=] is |client|, [=request/mode=] is
      "<code>cors</code>", [=request/credentials mode=] is "<code>omit</code>",
      [=request/redirect mode=] is "<code>error</code>", and [=request/referrer policy=] is
