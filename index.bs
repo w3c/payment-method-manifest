@@ -395,6 +395,21 @@ algorithm will asynchronously complete with either a [=scalar value string=] or 
 
 <h2 id="security">Security and privacy considerations</h2>
 
+<h3 id="link-http-header-required">Link HTTP header requirement</h3>
+
+To enhance security and prevent potential misuse, this specification disallows hosting a payment
+method manifest directly at its payment method identifier URL. Instead, the manifest must be linked
+via a <code>Link</code> HTTP header.
+
+This design mitigates a security vulnerability that could arise on shared hosting platforms. If a
+manifest could be hosted directly at a URL, a user on a cloud-hosted domain could potentially
+register a service worker for the entire domain, using the just-in-time install functionality of
+<cite>Web Payment Handlers</cite>. [[PAYMENT-HANDLER]]
+
+By mandating the use of the <code>Link</code> HTTP header, control is given to the cloud hosting
+provider. The provider can configure their servers to prevent arbitrary users from installing
+service workers, thereby safeguarding their domain.
+
 <h3 id="revealing-to-providers">Revealing user activity to payment providers</h3>
 
 [=ingest payment method manifests|Ingesting payment method manifests=] might reveal information
