@@ -7,9 +7,9 @@ Status: ED
 ED: https://w3c.github.io/payment-method-manifest/
 TR: https://www.w3.org/TR/payment-method-manifest/
 Level: none
-Editor: Dapeng Liu, Alibaba
-Editor: Rouslan Solomakhin, Google https://www.google.com/, rouslan@google.com
 Editor: Stephen McGruer, Google https://www.google.com/, smcgruer@chromium.org
+Former Editor: Dapeng Liu, Alibaba
+Former Editor: Rouslan Solomakhin, Google https://www.google.com/, rouslan@google.com
 Former Editor: Domenic Denicola, w3cid 52873, Google https://www.google.com/, d@domenic.me, https://domenic.me/
 Former Editor: Zach Koch, w3cid 76588, Google https://www.google.com/
 Abstract: This specification defines the machine-readable manifest file, known as a
