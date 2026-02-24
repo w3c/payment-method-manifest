@@ -4,7 +4,7 @@
   <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport">
   <title>Payment Method Manifest</title>
   <meta content="ED" name="w3c-status">
-  <meta content="Bikeshed version 3f621ba99, updated Mon Jul 28 15:38:36 2025 -0700" name="generator">
+  <meta content="Bikeshed version 0ef803fdf, updated Tue Jan 6 11:59:39 2026 -0800" name="generator">
   <link href="https://www.w3.org/TR/payment-method-manifest/" rel="canonical">
   <meta content="dark light" name="color-scheme">
 <style>/* Boilerplate: style-autolinks */
@@ -317,7 +317,7 @@ body {
 }
 .invalid.example:not(.no-marker)::before,
 .illegal.example:not(.no-marker)::before {
-    content: "Invalid Example" counter(example);
+    content: "Invalid Example " counter(example);
 }
 
 figcaption {
@@ -691,9 +691,9 @@ c-[il] { color: #000000 } /* Literal.Number.Integer.Long */
     <img alt="W3C" height="48" src="https://www.w3.org/StyleSheets/TR/2021/logos/W3C" width="72">
 </a>
 </p>
-   <h1 class="p-name no-ref" id="title">Payment Method Manifest</h1>
+   <h1 class="no-ref p-name" id="title">Payment Method Manifest</h1>
    <p id="w3c-state"><a href="https://www.w3.org/standards/types/#ED">Editor’s Draft</a>,
-    <time class="dt-updated" datetime="2025-09-26">26 September 2025</time></p>
+    <time class="dt-updated" datetime="2026-02-24">24 February 2026</time></p>
    <details open>
     <summary>More details about this document</summary>
     <div data-fill-with="spec-metadata">
@@ -705,34 +705,34 @@ c-[il] { color: #000000 } /* Literal.Number.Integer.Long */
       <dt>Feedback:
       <dd><a href="https://github.com/w3c/payment-method-manifest/issues/">GitHub</a>
       <dt class="editor">Editor:
-      <dd class="editor p-author h-card vcard"><a class="p-name fn u-email email" href="mailto:smcgruer@chromium.org">Stephen McGruer</a> (<a class="p-org org" href="https://www.google.com/">Google</a>)
+      <dd class="editor h-card p-author vcard"><a class="email fn p-name u-email" href="mailto:smcgruer@chromium.org">Stephen McGruer</a> (<a class="org p-org" href="https://www.google.com/">Google</a>)
       <dt class="editor">Former Editors:
-      <dd class="editor p-author h-card vcard"><span class="p-name fn">Dapeng Liu</span> (<span class="p-org org">Alibaba</span>)
-      <dd class="editor p-author h-card vcard"><a class="p-name fn u-email email" href="mailto:rouslan@google.com">Rouslan Solomakhin</a> (<a class="p-org org" href="https://www.google.com/">Google</a>)
-      <dd class="editor p-author h-card vcard" data-editor-id="52873"><a class="p-name fn u-url url" href="https://domenic.me/">Domenic Denicola</a> (<a class="p-org org" href="https://www.google.com/">Google</a>) <a class="u-email email" href="mailto:d@domenic.me">d@domenic.me</a>
-      <dd class="editor p-author h-card vcard" data-editor-id="76588"><span class="p-name fn">Zach Koch</span> (<a class="p-org org" href="https://www.google.com/">Google</a>)
+      <dd class="editor h-card p-author vcard"><span class="fn p-name">Dapeng Liu</span> (<span class="org p-org">Alibaba</span>)
+      <dd class="editor h-card p-author vcard"><a class="email fn p-name u-email" href="mailto:rouslan@google.com">Rouslan Solomakhin</a> (<a class="org p-org" href="https://www.google.com/">Google</a>)
+      <dd class="editor h-card p-author vcard" data-editor-id="52873"><a class="fn p-name u-url url" href="https://domenic.me/">Domenic Denicola</a> (<a class="org p-org" href="https://www.google.com/">Google</a>) <a class="email u-email" href="mailto:d@domenic.me">d@domenic.me</a>
+      <dd class="editor h-card p-author vcard" data-editor-id="76588"><span class="fn p-name">Zach Koch</span> (<a class="org p-org" href="https://www.google.com/">Google</a>)
      </dl>
     </div>
    </details>
    <div data-fill-with="warning"></div>
-   <p class="copyright" data-fill-with="copyright"><a href="https://www.w3.org/policies/#copyright">Copyright</a> © 2025 <a href="https://www.w3.org/">World Wide Web Consortium</a>. <abbr title="World Wide Web Consortium">W3C</abbr><sup>®</sup> <a href="https://www.w3.org/policies/#Legal_Disclaimer">liability</a>, <a href="https://www.w3.org/policies/#W3C_Trademarks">trademark</a> and <a href="https://www.w3.org/copyright/software-license/" rel="license" title="W3C Software and Document License">permissive document license</a> rules apply.
+   <p class="copyright" data-fill-with="copyright"><a href="https://www.w3.org/policies/#copyright">Copyright</a> © 2026 <a href="https://www.w3.org/">World Wide Web Consortium</a>. <abbr title="World Wide Web Consortium">W3C</abbr><sup>®</sup> <a href="https://www.w3.org/policies/#Legal_Disclaimer">liability</a>, <a href="https://www.w3.org/policies/#W3C_Trademarks">trademark</a> and <a href="https://www.w3.org/copyright/software-license/" rel="license" title="W3C Software and Document License">permissive document license</a> rules apply.
 </p>
    <hr title="Separator for header">
   </div>
   <div class="p-summary" data-fill-with="abstract">
-   <h2 class="no-num no-toc no-ref heading settled" id="abstract"><span class="content">Abstract</span></h2>
+   <h2 class="heading no-num no-ref no-toc settled" id="abstract"><span class="content">Abstract</span></h2>
    <p>This specification defines the machine-readable manifest file, known as a
 <dfn class="dfn-paneled" data-dfn-type="dfn" data-export id="payment-method-manifest">payment method manifest</dfn>, describing how a <a data-link-type="dfn" href="https://w3c.github.io/payment-request/#dfn-payment-method" id="ref-for-dfn-payment-method">payment method</a>
 participates in the Web Payments ecosystem, and how such files are to be used.</p>
   </div>
-  <h2 class="no-num no-toc no-ref heading settled" id="sotd"><span class="content">Status of this document</span></h2>
+  <h2 class="heading no-num no-ref no-toc settled" id="sotd"><span class="content">Status of this document</span></h2>
   <div data-fill-with="status">
    <p></p>
   </div>
   <div data-fill-with="at-risk"></div>
   <nav data-fill-with="table-of-contents" id="toc">
-   <h2 class="no-num no-toc no-ref" id="contents">Table of Contents</h2>
-   <ol class="toc" role="directory">
+   <h2 class="no-num no-ref no-toc" id="contents">Table of Contents</h2>
+   <ol class="toc">
     <li>
      <a href="#introduction"><span class="secno">1</span> <span class="content">Introduction</span></a>
      <ol class="toc">
@@ -946,7 +946,8 @@ here.</p>
          <p class="note" role="note">In the future, the plan is for there to be a user-agent-independent way to
  use the resulting <a data-link-type="dfn" href="https://w3c.github.io/manifest/#dfn-processed-manifest" id="ref-for-dfn-processed-manifest②">processed web app manifest</a>, by consulting its
  <code>serviceworker</code> field and using that to install a web-based payment app
- conforming to the <cite>Payment Handler API</cite> specification. <a data-link-type="biblio" href="#biblio-payment-handler" title="Payment Handler API">[PAYMENT-HANDLER]</a></p>
+ conforming to the <cite>Web-based Payment Handler API</cite> specification.
+ <a data-link-type="biblio" href="#biblio-web-based-payment-handler" title="Web-based Payment Handler API">[WEB-BASED-PAYMENT-HANDLER]</a></p>
        </ol>
       <li data-md>
        <p>Associate the <a data-link-type="dfn" href="#parsed-payment-method-manifest-supported-origins" id="ref-for-parsed-payment-method-manifest-supported-origins">supported origins</a> to <var>identifier</var> so that the
@@ -1204,7 +1205,7 @@ via a <code>Link</code> HTTP header.</p>
    <p>This design mitigates a security vulnerability that could arise on shared hosting platforms. If a
 manifest could be hosted directly at a URL, a user on a cloud-hosted domain could potentially
 register a service worker for the entire domain, using the just-in-time install functionality of
-<cite>Web Payment Handlers</cite>. <a data-link-type="biblio" href="#biblio-payment-handler" title="Payment Handler API">[PAYMENT-HANDLER]</a></p>
+<cite>Web-based Payment Handlers</cite>. <a data-link-type="biblio" href="#biblio-web-based-payment-handler" title="Web-based Payment Handler API">[WEB-BASED-PAYMENT-HANDLER]</a></p>
    <p>By mandating the use of the <code>Link</code> HTTP header, control is given to the cloud hosting
 provider. The provider can configure their servers to prevent arbitrary users from installing
 service workers, thereby safeguarding their domain.</p>
@@ -1249,7 +1250,7 @@ and registration with IANA.</p>
      <p>See <a href="#fetch-pmm">§ 3.3 Fetching payment method manifests</a> for the specific manner in which such links are expected to be fetched, and
  <a href="#ingest">§ 3.2 Ingesting payment method manifests</a> for the larger context in which they are used.</p>
    </dl>
-   <h2 class="no-num heading settled" id="acknowledgments"><span class="content">Acknowledgments</span><a class="self-link" href="#acknowledgments"></a></h2>
+   <h2 class="heading no-num settled" id="acknowledgments"><span class="content">Acknowledgments</span><a class="self-link" href="#acknowledgments"></a></h2>
    <p><a href="#processing-model">§ 3 Processing model</a> is based heavily on algorithms originally outlined by Rouslan Solomakhin.</p>
    <p>Thanks to
 Andrew Betts,
@@ -1260,8 +1261,8 @@ Marcos Cáceres, and
 Rouslan Solomakhin for their contributions to making this specification awesome!</p>
   </main>
   <div data-fill-with="conformance">
-   <h2 class="no-ref no-num heading settled" id="w3c-conformance"><span class="content">Conformance</span><a class="self-link" href="#w3c-conformance"></a></h2>
-   <h3 class="no-ref no-num heading settled" id="w3c-conventions"><span class="content">Document conventions</span><a class="self-link" href="#w3c-conventions"></a></h3>
+   <h2 class="heading no-num no-ref settled" id="w3c-conformance"><span class="content">Conformance</span><a class="self-link" href="#w3c-conformance"></a></h2>
+   <h3 class="heading no-num no-ref settled" id="w3c-conventions"><span class="content">Document conventions</span><a class="self-link" href="#w3c-conventions"></a></h3>
    <p>Conformance requirements are expressed
     with a combination of descriptive assertions
     and RFC 2119 terminology.
@@ -1296,7 +1297,7 @@ Rouslan Solomakhin for their contributions to making this specification awesome!
     </p>
    <p class="note" role="note">Note, this is an informative note.</p>
    <section>
-    <h3 class="no-ref no-num heading settled" id="w3c-conformant-algorithms"><span class="content">Conformant Algorithms</span><a class="self-link" href="#w3c-conformant-algorithms"></a></h3>
+    <h3 class="heading no-num no-ref settled" id="w3c-conformant-algorithms"><span class="content">Conformant Algorithms</span><a class="self-link" href="#w3c-conformant-algorithms"></a></h3>
     <p>Requirements phrased in the imperative as part of algorithms
     (such as "strip any leading space characters"
     or "return false and abort these steps")
@@ -1316,8 +1317,8 @@ Rouslan Solomakhin for their contributions to making this specification awesome!
    </section>
   </div>
   <script src="https://www.w3.org/scripts/TR/2021/fixup.js"></script>
-  <h2 class="no-num no-ref heading settled" id="index"><span class="content">Index</span><a class="self-link" href="#index"></a></h2>
-  <h3 class="no-num no-ref heading settled" id="index-defined-here"><span class="content">Terms defined by this specification</span><a class="self-link" href="#index-defined-here"></a></h3>
+  <h2 class="heading no-num no-ref settled" id="index"><span class="content">Index</span><a class="self-link" href="#index"></a></h2>
+  <h3 class="heading no-num no-ref settled" id="index-defined-here"><span class="content">Terms defined by this specification</span><a class="self-link" href="#index-defined-here"></a></h3>
   <ul class="index">
    <li><a href="#parsed-payment-method-manifest-default-applications">default applications</a><span>, in § 3.4</span>
    <li><a href="#fetch-payment-method-manifests">fetch payment method manifests</a><span>, in § 3.3</span>
@@ -1331,7 +1332,7 @@ Rouslan Solomakhin for their contributions to making this specification awesome!
    <li><a href="#valid-payment-method-manifest">validity</a><span>, in § 2</span>
    <li><a href="#valid-payment-method-manifest">valid payment method manifest</a><span>, in § 2</span>
   </ul>
-  <h3 class="no-num no-ref heading settled" id="index-defined-elsewhere"><span class="content">Terms defined by reference</span><a class="self-link" href="#index-defined-elsewhere"></a></h3>
+  <h3 class="heading no-num no-ref settled" id="index-defined-elsewhere"><span class="content">Terms defined by reference</span><a class="self-link" href="#index-defined-elsewhere"></a></h3>
   <ul class="index">
    <li>
     <a data-link-type="biblio">[APPMANIFEST]</a> defines the following terms:
@@ -1436,8 +1437,8 @@ Rouslan Solomakhin for their contributions to making this specification awesome!
      <li><span class="dfn-paneled" id="05af0c3f">valid URL string</span>
     </ul>
   </ul>
-  <h2 class="no-num no-ref heading settled" id="references"><span class="content">References</span><a class="self-link" href="#references"></a></h2>
-  <h3 class="no-num no-ref heading settled" id="normative"><span class="content">Normative References</span><a class="self-link" href="#normative"></a></h3>
+  <h2 class="heading no-num no-ref settled" id="references"><span class="content">References</span><a class="self-link" href="#references"></a></h2>
+  <h3 class="heading no-num no-ref settled" id="normative"><span class="content">Normative References</span><a class="self-link" href="#normative"></a></h3>
   <dl>
    <dt id="biblio-appmanifest">[APPMANIFEST]
    <dd>Marcos Caceres; et al. <a href="https://w3c.github.io/manifest/"><cite>Web Application Manifest</cite></a>. URL: <a href="https://w3c.github.io/manifest/">https://w3c.github.io/manifest/</a>
@@ -1452,7 +1453,7 @@ Rouslan Solomakhin for their contributions to making this specification awesome!
    <dt id="biblio-payment-method-id">[PAYMENT-METHOD-ID]
    <dd>Marcos Caceres. <a href="https://w3c.github.io/payment-method-id/"><cite>Payment Method Identifiers</cite></a>. URL: <a href="https://w3c.github.io/payment-method-id/">https://w3c.github.io/payment-method-id/</a>
    <dt id="biblio-payment-request">[PAYMENT-REQUEST]
-   <dd>Marcos Caceres; Rouslan Solomakhin; Ian Jacobs. <a href="https://w3c.github.io/payment-request/"><cite>Payment Request API</cite></a>. URL: <a href="https://w3c.github.io/payment-request/">https://w3c.github.io/payment-request/</a>
+   <dd>Marcos Caceres; Ian Jacobs; Stephen McGruer. <a href="https://w3c.github.io/payment-request/"><cite>Payment Request API</cite></a>. URL: <a href="https://w3c.github.io/payment-request/">https://w3c.github.io/payment-request/</a>
    <dt id="biblio-rfc2119">[RFC2119]
    <dd>S. Bradner. <a href="https://datatracker.ietf.org/doc/html/rfc2119"><cite>Key words for use in RFCs to Indicate Requirement Levels</cite></a>. March 1997. Best Current Practice. URL: <a href="https://datatracker.ietf.org/doc/html/rfc2119">https://datatracker.ietf.org/doc/html/rfc2119</a>
    <dt id="biblio-rfc8288">[RFC8288]
@@ -1460,10 +1461,10 @@ Rouslan Solomakhin for their contributions to making this specification awesome!
    <dt id="biblio-url">[URL]
    <dd>Anne van Kesteren. <a href="https://url.spec.whatwg.org/"><cite>URL Standard</cite></a>. Living Standard. URL: <a href="https://url.spec.whatwg.org/">https://url.spec.whatwg.org/</a>
   </dl>
-  <h3 class="no-num no-ref heading settled" id="informative"><span class="content">Informative References</span><a class="self-link" href="#informative"></a></h3>
+  <h3 class="heading no-num no-ref settled" id="informative"><span class="content">Informative References</span><a class="self-link" href="#informative"></a></h3>
   <dl>
-   <dt id="biblio-payment-handler">[PAYMENT-HANDLER]
-   <dd>Adrian Hope-Bailie; et al. <a href="https://w3c.github.io/payment-handler/"><cite>Payment Handler API</cite></a>. URL: <a href="https://w3c.github.io/payment-handler/">https://w3c.github.io/payment-handler/</a>
+   <dt id="biblio-web-based-payment-handler">[WEB-BASED-PAYMENT-HANDLER]
+   <dd>Ian Jacobs; Stephen McGruer; Jinho Bang. <a href="https://w3c.github.io/web-based-payment-handler/"><cite>Web-based Payment Handler API</cite></a>. URL: <a href="https://w3c.github.io/web-based-payment-handler/">https://w3c.github.io/web-based-payment-handler/</a>
   </dl>
 <script>/* Boilerplate: script-dom-helper */
 "use strict";
