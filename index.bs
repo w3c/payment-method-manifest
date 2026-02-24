@@ -228,7 +228,8 @@ Given a list of [=payment method identifiers=] |identifiers|, as well as an
        <p class="note">In the future, the plan is for there to be a user-agent-independent way to
        use the resulting [=processed web app manifest=], by consulting its
        <code>serviceworker</code> field and using that to install a web-based payment app
-       conforming to the <cite>Payment Handler API</cite> specification. [[PAYMENT-HANDLER]]</p>
+       conforming to the <cite>Web-based Payment Handler API</cite> specification.
+       [[WEB-BASED-PAYMENT-HANDLER]]</p>
   1. Associate the [=parsed payment method manifest/supported origins=] to |identifier| so that the
      user agent can use it in the future to determine what third-party payment apps can be
      displayed for the [=payment method=] identified by |identifier|.
@@ -404,7 +405,7 @@ via a <code>Link</code> HTTP header.
 This design mitigates a security vulnerability that could arise on shared hosting platforms. If a
 manifest could be hosted directly at a URL, a user on a cloud-hosted domain could potentially
 register a service worker for the entire domain, using the just-in-time install functionality of
-<cite>Web Payment Handlers</cite>. [[PAYMENT-HANDLER]]
+<cite>Web-based Payment Handlers</cite>. [[WEB-BASED-PAYMENT-HANDLER]]
 
 By mandating the use of the <code>Link</code> HTTP header, control is given to the cloud hosting
 provider. The provider can configure their servers to prevent arbitrary users from installing
