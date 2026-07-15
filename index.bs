@@ -273,11 +273,12 @@ contents of the corresponding manifest.
        these steps.
        <p class="note">A limit is applied to prevent infinite redirect loops and limit network
        overhead.</p>
-       <p class="issue">TODO</p>
+
+       Issue: Should we just rely on whatever controls [=fetch=] gives to user agents to avoid
+       infinite redirect loops, instead of making it part of this spec?
+
     1. [=list/For each=] |url| of |identifierResponse|'s [=response/URL list=]: if |url| and
        |identifierURL| are not [=same site=], abort these steps.
-       <p class="note">Cross-site redirects are disallowed when fetching the
-       `<code>Link</code>` header.</p>
     1. Let |linkHeaders| be the result of
        [=extract header list values|extracting header list values=] given `<code>Link</code>` and
        |identifierResponse|'s [=response/header list=].
@@ -425,53 +426,33 @@ service workers, thereby safeguarding their domain.
 When [=fetch payment method manifests|fetching payment method manifests=],
 redirects are strictly limited:
 
-* For the initial `<code>HEAD</code>` request (`|identifierRequest|`) used to locate the
-  `<code>Link</code>` header, user agents follow up to 3 redirects, but require that every URL in
-  the redirect chain remains [=same site=] with the initial [=payment method identifier=]. This
-  allows legitimate same-site redirects (such as `<code>http:</code>` to `<code>https:</code>`
-  upgrades or canonical host redirects) while preventing a site from redirecting to and claiming a
-  payment method manifest hosted on an unrelated domain.
-* Once the `<code>Link</code>` header is found, the subsequent request (`|manifestRequest|`) to
-  download the manifest file itself disallows redirects entirely (`[=request/redirect mode=]` is
-  "`<code>error</code>`"). Similarly, requests to [=fetch the web app manifest for a default
-  payment app=] disallow redirects.
+* For the initial `<code>HEAD</code>` request used to locate the `<code>Link</code>` header, user
+  agents require that every URL in the redirect chain remains [=same site=] with the initial
+  [=payment method identifier=]. This allows legitimate same-site redirects (such as
+  `<code>http:</code>` to `<code>https:</code>` upgrades or canonical host redirects), while
+  preventing a site from redirecting to and claiming a payment method manifest hosted on an
+  unrelated domain.
+* Once the `<code>Link</code>` header is found, the subsequent request to download the manifest
+  file itself disallows redirects entirely. Similarly, requests to [=fetch the web app manifest
+  for a default payment app=] disallow redirects.
 
-Limiting initial redirects to [=same site=] prevents unauthorized cross-site
-association—where an external domain
-(`<code>https://attacker.example/pay</code>`) redirects to
-`<code>https://real-bank.example/pay</code>` to claim
-`<code>real-bank.example</code>`'s payment handler without consent—as well as
-multi-hop cross-site tracking chains.
+Limiting initial redirects to [=same site=] prevents unauthorized cross-site association, where an
+attacker domain (`<code>https://attacker.example/pay</code>`) redirects to
+`<code>https://real-bank.example/pay</code>` to appear official, as well as multi-hop cross-site
+tracking chains.
 
-Because [=same site=] evaluation relies on [=registrable domains=] defined via
-the Public Suffix List ([[URL]]), multi-tenant hosting platforms registered on
-the Public Suffix List (such as `<code>github.io</code>`) benefit from
-cross-site protection: `<code>attacker.github.io</code>` and
-`<code>victim.github.io</code>` have different registrable domains and cannot
-redirect to one another during manifest fetching.
+There is some minor risk for shared hosting platforms that are not present on
+the Public Suffix List:
 
-However, on shared hosting platforms **not** listed on the Public Suffix List
-(`<code>attacker.hostingsite.example</code>` and
-`<code>victim.hostingsite.example</code>`), or where tenants share paths on the
-exact same origin (`<code>https://hostingsite.example/~attacker/</code>`),
-`[=same site=]` holds true across tenant boundaries. On these platforms, the
-following residual risks exist:
-
-* **Unauthorized Intra-Site Association:**
-* `<code>attacker.hostingsite.example/pay</code>` can redirect to
-* `<code>victim.hostingsite.example/pay</code>`, causing
-* `<code>victim</code>`'s payment app to be presented when a merchant requests
-* `<code>attacker</code>`'s payment method identifier, without
-* `<code>victim</code>` explicitly consenting to handle
-* `<code>attacker</code>`'s identifier.
-* **Intra-Site Tracking Hops:** Tenants within
-* `<code>hostingsite.example</code>` can chain redirects among themselves
-* (`<code>tracker-a.hostingsite.example</code>` →
-* `<code>tracker-b.hostingsite.example</code>`) during manifest fetching.
+- <b>Unauthorized intra-site association</b>: `<code>attacker.hostingsite.example</code>` can
+  redirect to `<code>victim.hostingsite.example</code>`'s payment method manifest. While the
+  attacker cannot control any aspect of the subsequent payment, it does allow the attacker
+  to present itself to the merchant site as associated with the victim, despite no such
+  relationship existing.
 
 To safeguard their tenants against these risks, cloud hosting providers should
 register multi-tenant domain suffixes on the Public Suffix List, and restrict
-arbitrary users from emitting HTTP response headers or redirects
+arbitrary tenants from emitting HTTP response headers or redirects
 ([[#link-http-header-required]]).
 
 <h3 id="revealing-to-providers">Revealing user activity to payment providers</h3>
