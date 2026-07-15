@@ -269,10 +269,11 @@ contents of the corresponding manifest.
      |identifierResponse|:
     1. If |identifierResponse| is a [=network error=] or |identifierResponse|'s [=response/status=]
        is not an [=ok status=], abort these steps.
-    1. If |identifierResponse|'s [=response/URL list=]'s [=list/size=] is greater than 4, abort these
-       steps.
-       <p class="note">To prevent infinite redirect loops and limit network overhead, user agents
-       follow at most 3 redirects when fetching the `<code>Link</code>` header.</p>
+    1. If |identifierResponse|'s [=response/URL list=]'s [=list/size=] is greater than 4, abort
+       these steps.
+       <p class="note">A limit is applied to prevent infinite redirect loops and limit network
+       overhead.</p>
+       <p class="issue">TODO</p>
     1. [=list/For each=] |url| of |identifierResponse|'s [=response/URL list=]: if |url| and
        |identifierURL| are not [=same site=], abort these steps.
        <p class="note">Cross-site redirects are disallowed when fetching the
