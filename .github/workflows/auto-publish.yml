@@ -17,7 +17,7 @@ jobs:
       - uses: w3c/spec-prod@v2
         with:
           TOOLCHAIN: bikeshed
-          SOURCE: spec.bs
+          SOURCE: index.bs
           GH_PAGES_BRANCH: gh
           W3C_ECHIDNA_TOKEN: ${{ secrets.ECHIDNA_TOKEN }}
           # Replace following with appropriate value. See options.md for details.
