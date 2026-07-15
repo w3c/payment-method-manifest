@@ -421,7 +421,8 @@ service workers, thereby safeguarding their domain.
 
 <h3 id="redirect-restrictions">Redirect restrictions</h3>
 
-When [=fetch payment method manifests|fetching payment method manifests=], redirects are strictly limited:
+When [=fetch payment method manifests|fetching payment method manifests=],
+redirects are strictly limited:
 
 * For the initial `<code>HEAD</code>` request (`|identifierRequest|`) used to locate the
   `<code>Link</code>` header, user agents follow up to 3 redirects, but require that every URL in
@@ -433,6 +434,44 @@ When [=fetch payment method manifests|fetching payment method manifests=], redir
   download the manifest file itself disallows redirects entirely (`[=request/redirect mode=]` is
   "`<code>error</code>`"). Similarly, requests to [=fetch the web app manifest for a default
   payment app=] disallow redirects.
+
+Limiting initial redirects to [=same site=] prevents unauthorized cross-site
+association—where an external domain
+(`<code>https://attacker.example/pay</code>`) redirects to
+`<code>https://real-bank.example/pay</code>` to claim
+`<code>real-bank.example</code>`'s payment handler without consent—as well as
+multi-hop cross-site tracking chains.
+
+Because [=same site=] evaluation relies on [=registrable domains=] defined via
+the Public Suffix List ([[URL]]), multi-tenant hosting platforms registered on
+the Public Suffix List (such as `<code>github.io</code>`) benefit from
+cross-site protection: `<code>attacker.github.io</code>` and
+`<code>victim.github.io</code>` have different registrable domains and cannot
+redirect to one another during manifest fetching.
+
+However, on shared hosting platforms **not** listed on the Public Suffix List
+(`<code>attacker.hostingsite.example</code>` and
+`<code>victim.hostingsite.example</code>`), or where tenants share paths on the
+exact same origin (`<code>https://hostingsite.example/~attacker/</code>`),
+`[=same site=]` holds true across tenant boundaries. On these platforms, the
+following residual risks exist:
+
+* **Unauthorized Intra-Site Association:**
+* `<code>attacker.hostingsite.example/pay</code>` can redirect to
+* `<code>victim.hostingsite.example/pay</code>`, causing
+* `<code>victim</code>`'s payment app to be presented when a merchant requests
+* `<code>attacker</code>`'s payment method identifier, without
+* `<code>victim</code>` explicitly consenting to handle
+* `<code>attacker</code>`'s identifier.
+* **Intra-Site Tracking Hops:** Tenants within
+* `<code>hostingsite.example</code>` can chain redirects among themselves
+* (`<code>tracker-a.hostingsite.example</code>` →
+* `<code>tracker-b.hostingsite.example</code>`) during manifest fetching.
+
+To safeguard their tenants against these risks, cloud hosting providers should
+register multi-tenant domain suffixes on the Public Suffix List, and restrict
+arbitrary users from emitting HTTP response headers or redirects
+([[#link-http-header-required]]).
 
 <h3 id="revealing-to-providers">Revealing user activity to payment providers</h3>
 
