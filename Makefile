@@ -8,6 +8,7 @@ index.html: index.bs
 	                       --output index.html \
 	                       --write-out "%{http_code}" \
 	                       --header "Accept: text/plain, text/html" \
+	                       -F type=bikeshed-spec \
 	                       -F die-on=warning \
 	                       -F type=bikeshed-spec \
 	                       -F file=@index.bs) && \
