@@ -262,13 +262,23 @@ contents of the corresponding manifest.
   1. Let |identifierRequest| be a new [=request=] whose [=request/method=] is `<code>HEAD</code>`,
      [=request/url=] is |identifierURL|, [=request/client=] is |client|, [=request/mode=] is
      "<code>cors</code>", [=request/credentials mode=] is "<code>omit</code>",
-     [=request/redirect mode=] is "<code>error</code>", and [=request/referrer policy=] is
+     [=request/redirect mode=] is "<code>follow</code>", and [=request/referrer policy=] is
      "<code>strict-origin-when-cross-origin</code>".
   1. Let |identifierFetchController| be the result of [=fetching=] |identifierRequest|, with
      <i>[=fetch/processResponse=]</i> set to the following steps given [=response=]
      |identifierResponse|:
     1. If |identifierResponse| is a [=network error=] or |identifierResponse|'s [=response/status=]
        is not an [=ok status=], abort these steps.
+    1. If |identifierResponse|'s [=response/URL list=]'s [=list/size=] is greater than 4, abort
+       these steps.
+       <p class="note">A limit is applied to prevent infinite redirect loops and limit network
+       overhead.</p>
+
+       Issue: Should we just rely on whatever controls [=fetch=] gives to user agents to avoid
+       infinite redirect loops, instead of making it part of this spec?
+
+    1. [=list/For each=] |url| of |identifierResponse|'s [=response/URL list=]: if |url| and
+       |identifierURL| are not [=same site=], abort these steps.
     1. Let |linkHeaders| be the result of
        [=extract header list values|extracting header list values=] given `<code>Link</code>` and
        |identifierResponse|'s [=response/header list=].
@@ -410,6 +420,40 @@ register a service worker for the entire domain, using the just-in-time install 
 By mandating the use of the <code>Link</code> HTTP header, control is given to the cloud hosting
 provider. The provider can configure their servers to prevent arbitrary users from installing
 service workers, thereby safeguarding their domain.
+
+<h3 id="redirect-restrictions">Redirect restrictions</h3>
+
+When [=fetch payment method manifests|fetching payment method manifests=],
+redirects are strictly limited:
+
+* For the initial `<code>HEAD</code>` request used to locate the `<code>Link</code>` header, user
+  agents require that every URL in the redirect chain remains [=same site=] with the initial
+  [=payment method identifier=]. This allows legitimate same-site redirects (such as
+  `<code>http:</code>` to `<code>https:</code>` upgrades or canonical host redirects), while
+  preventing a site from redirecting to and claiming a payment method manifest hosted on an
+  unrelated domain.
+* Once the `<code>Link</code>` header is found, the subsequent request to download the manifest
+  file itself disallows redirects entirely. Similarly, requests to [=fetch the web app manifest
+  for a default payment app=] disallow redirects.
+
+Limiting initial redirects to [=same site=] prevents unauthorized cross-site association, where an
+attacker domain (`<code>https://attacker.example/pay</code>`) redirects to
+`<code>https://real-bank.example/pay</code>` to appear official, as well as multi-hop cross-site
+tracking chains.
+
+There is some minor risk for shared hosting platforms that are not present on
+the Public Suffix List:
+
+- <b>Unauthorized intra-site association</b>: `<code>attacker.hostingsite.example</code>` can
+  redirect to `<code>victim.hostingsite.example</code>`'s payment method manifest. While the
+  attacker cannot control any aspect of the subsequent payment, it does allow the attacker
+  to present itself to the merchant site as associated with the victim, despite no such
+  relationship existing.
+
+To safeguard their tenants against these risks, cloud hosting providers should
+register multi-tenant domain suffixes on the Public Suffix List, and restrict
+arbitrary tenants from emitting HTTP response headers or redirects
+([[#link-http-header-required]]).
 
 <h3 id="revealing-to-providers">Revealing user activity to payment providers</h3>
 
